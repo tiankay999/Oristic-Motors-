@@ -32,6 +32,22 @@ export default function Navbar() {
 
                 {/* Icons */}
                 <div className="flex items-center gap-4">
+                    {/* Login/Signup - Desktop */}
+                    <div className="hidden md:flex items-center gap-3">
+                        <Link
+                            href="/login"
+                            className="text-sm font-medium text-luxury-black/80 hover:text-luxury-black transition-colors"
+                        >
+                            Login
+                        </Link>
+                        <Link
+                            href="/signup"
+                            className="bg-luxury-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-luxury-black/90 transition-all"
+                        >
+                            Sign Up
+                        </Link>
+                    </div>
+
                     <Link href="/cart" className="relative p-2 text-luxury-black hover:text-luxury-black/80 transition-colors">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -91,6 +107,24 @@ export default function Navbar() {
                                 {category.name}
                             </Link>
                         ))}
+
+                        {/* Mobile Login/Signup */}
+                        <div className="border-t border-champagne-dark/30 mt-4 pt-4 space-y-2">
+                            <Link
+                                href="/login"
+                                className="block py-3 text-base font-medium text-luxury-black hover:bg-champagne-dark/20 rounded-md px-2"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Login
+                            </Link>
+                            <Link
+                                href="/signup"
+                                className="block py-3 text-center text-base font-medium bg-luxury-black text-white rounded-full"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Sign Up
+                            </Link>
+                        </div>
                     </div>
                 </div>
             )}

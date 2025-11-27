@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useProducts } from "./context/ProductContext";
+import { categories } from "./lib/data";
 import ProductCard from "./components/ProductCard";
 
 export default function Home() {
@@ -81,14 +82,22 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="mb-12 font-serif text-3xl font-bold text-luxury-black text-center">Shop by Category</h2>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {['Wigs', 'Sunglasses', 'Bags', 'Skincare'].map((cat) => (
+            {categories.slice(0, 4).map((category) => (
               <Link
-                key={cat}
-                href={`/${cat.toLowerCase()}`}
-                className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-champagne-dark/20 shadow-md hover:shadow-xl transition-all"
+                key={category.slug}
+                href={`/${category.slug}`}
+                className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all"
               >
-                <div className="absolute inset-0 flex items-center justify-center bg-luxury-black/10 transition-colors group-hover:bg-luxury-black/30">
-                  <span className="font-serif text-2xl font-bold text-white drop-shadow-md">{cat}</span>
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+                <div className="absolute inset-0 bg-luxury-black/20 transition-colors group-hover:bg-luxury-black/40"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="font-serif text-2xl font-bold text-white drop-shadow-lg">{category.name}</span>
                 </div>
               </Link>
             ))}
