@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function CheckoutPage() {
     const { items, totalPrice, clearCart } = useCart();
@@ -16,8 +17,6 @@ export default function CheckoutPage() {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        // Create order logic would go here
-        // For now, just clear cart and redirect
         clearCart();
         alert('Order placed successfully!');
         router.push('/');
@@ -25,23 +24,23 @@ export default function CheckoutPage() {
 
     if (items.length === 0) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-white dark:bg-black">
-                <p className="text-gray-500">Your cart is empty. Redirecting...</p>
+            <div className="flex min-h-screen items-center justify-center bg-champagne-light">
+                <p className="text-luxury-black/60">Your cart is empty. Redirecting...</p>
             </div>
         );
     }
 
     return (
-        <div className="bg-white dark:bg-black min-h-screen py-12">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20">
+        <div className="min-h-screen bg-champagne-light py-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                     <div>
-                        <h2 className="text-lg font-medium text-luxury-black dark:text-white">Contact information</h2>
+                        <h2 className="font-serif text-2xl font-medium text-luxury-black">Contact information</h2>
 
-                        <form onSubmit={handleSubmit} className="mt-4">
+                        <form onSubmit={handleSubmit} className="mt-6">
                             <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                                 <div className="sm:col-span-2">
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="email" className="block text-sm font-medium text-luxury-black/80">
                                         Email address
                                     </label>
                                     <div className="mt-1">
@@ -51,13 +50,13 @@ export default function CheckoutPage() {
                                             name="email"
                                             autoComplete="email"
                                             required
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-luxury-black focus:ring-luxury-black dark:bg-zinc-900 dark:border-zinc-700 dark:text-white sm:text-sm py-2 px-3"
+                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="first-name" className="block text-sm font-medium text-luxury-black/80">
                                         First name
                                     </label>
                                     <div className="mt-1">
@@ -67,13 +66,13 @@ export default function CheckoutPage() {
                                             name="first-name"
                                             autoComplete="given-name"
                                             required
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-luxury-black focus:ring-luxury-black dark:bg-zinc-900 dark:border-zinc-700 dark:text-white sm:text-sm py-2 px-3"
+                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="last-name" className="block text-sm font-medium text-luxury-black/80">
                                         Last name
                                     </label>
                                     <div className="mt-1">
@@ -83,13 +82,13 @@ export default function CheckoutPage() {
                                             name="last-name"
                                             autoComplete="family-name"
                                             required
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-luxury-black focus:ring-luxury-black dark:bg-zinc-900 dark:border-zinc-700 dark:text-white sm:text-sm py-2 px-3"
+                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="sm:col-span-2">
-                                    <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label htmlFor="address" className="block text-sm font-medium text-luxury-black/80">
                                         Address
                                     </label>
                                     <div className="mt-1">
@@ -99,16 +98,16 @@ export default function CheckoutPage() {
                                             id="address"
                                             autoComplete="street-address"
                                             required
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-luxury-black focus:ring-luxury-black dark:bg-zinc-900 dark:border-zinc-700 dark:text-white sm:text-sm py-2 px-3"
+                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="sm:col-span-2">
+                                <div className="sm:col-span-2 mt-6">
                                     <button
                                         type="submit"
                                         disabled={isProcessing}
-                                        className="w-full rounded-full border border-transparent bg-luxury-black px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-gray-50 disabled:bg-gray-400 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                                        className="w-full rounded-full border border-transparent bg-luxury-black px-6 py-4 text-base font-medium text-white shadow-sm hover:bg-luxury-black/90 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-champagne disabled:bg-gray-400 transition-all"
                                     >
                                         {isProcessing ? 'Processing...' : `Pay ₵${totalPrice.toLocaleString()}`}
                                     </button>
@@ -119,19 +118,19 @@ export default function CheckoutPage() {
 
                     {/* Order Summary Side */}
                     <div className="mt-10 lg:mt-0">
-                        <h2 className="text-lg font-medium text-luxury-black dark:text-white">Order summary</h2>
+                        <h2 className="font-serif text-2xl font-medium text-luxury-black">Order summary</h2>
 
-                        <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-                            <ul role="list" className="divide-y divide-gray-200 dark:divide-zinc-800">
+                        <div className="mt-6 rounded-2xl border border-champagne-dark/30 bg-champagne shadow-sm">
+                            <ul role="list" className="divide-y divide-champagne-dark/30">
                                 {items.map((item) => (
-                                    <li key={item.id} className="flex py-6 px-4 sm:px-6">
+                                    <li key={item.id} className="flex py-6 px-6">
                                         <div className="shrink-0">
-                                            <div className="relative h-20 w-20 rounded-md bg-gray-100">
+                                            <div className="relative h-20 w-20 rounded-lg bg-white overflow-hidden">
                                                 <Image
                                                     src={item.image}
                                                     alt={item.name}
                                                     fill
-                                                    className="object-cover rounded-md"
+                                                    className="object-cover"
                                                 />
                                             </div>
                                         </div>
@@ -139,26 +138,26 @@ export default function CheckoutPage() {
                                             <div className="flex">
                                                 <div className="min-w-0 flex-1">
                                                     <h4 className="text-sm">
-                                                        <a href={`/product/${item.slug}`} className="font-medium text-gray-700 hover:text-gray-800 dark:text-gray-300">
+                                                        <a href={`/product/${item.slug}`} className="font-medium text-luxury-black hover:text-luxury-black/80">
                                                             {item.name}
                                                         </a>
                                                     </h4>
                                                 </div>
                                             </div>
                                             <div className="flex flex-1 items-end justify-between pt-2">
-                                                <p className="mt-1 text-sm font-medium text-gray-900 dark:text-white">₵{item.price.toLocaleString()}</p>
+                                                <p className="mt-1 text-sm font-medium text-luxury-black">₵{item.price.toLocaleString()}</p>
                                                 <div className="ml-4">
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">Qty {item.quantity}</p>
+                                                    <p className="text-sm text-luxury-black/60">Qty {item.quantity}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
-                            <dl className="border-t border-gray-200 py-6 px-4 space-y-6 sm:px-6 dark:border-zinc-800">
-                                <div className="flex items-center justify-between border-t border-gray-200 pt-6 dark:border-zinc-800">
-                                    <dt className="text-base font-medium text-luxury-black dark:text-white">Total</dt>
-                                    <dd className="text-base font-medium text-luxury-black dark:text-white">₵{totalPrice.toLocaleString()}</dd>
+                            <dl className="border-t border-champagne-dark/30 py-6 px-6 space-y-6">
+                                <div className="flex items-center justify-between pt-2">
+                                    <dt className="text-lg font-bold text-luxury-black">Total</dt>
+                                    <dd className="text-lg font-bold text-luxury-black">₵{totalPrice.toLocaleString()}</dd>
                                 </div>
                             </dl>
                         </div>

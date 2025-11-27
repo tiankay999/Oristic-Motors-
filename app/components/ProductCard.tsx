@@ -13,39 +13,39 @@ export default function ProductCard({ product }: ProductCardProps) {
     const { addToCart } = useCart();
 
     return (
-        <div className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-all hover:shadow-md dark:bg-zinc-900">
-            <Link href={`/product/${product.slug}`} className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100">
+        <div className="group relative flex flex-col overflow-hidden rounded-xl bg-champagne shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
+            <Link href={`/product/${product.slug}`} className="relative aspect-[3/4] w-full overflow-hidden bg-champagne-dark/20">
                 <Image
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                 />
                 {product.discountPercent && (
-                    <span className="absolute top-3 left-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white">
+                    <span className="absolute top-2 left-2 rounded-full bg-luxury-black px-2.5 py-0.5 text-[10px] font-bold text-white tracking-wide">
                         {product.discountPercent}% OFF
                     </span>
                 )}
             </Link>
 
-            <div className="flex flex-1 flex-col p-4">
+            <div className="flex flex-1 flex-col p-3 sm:p-4">
                 <Link href={`/product/${product.slug}`}>
-                    <h3 className="text-lg font-medium text-luxury-black dark:text-white line-clamp-1">
+                    <h3 className="font-serif text-sm sm:text-base font-medium text-luxury-black line-clamp-1 group-hover:text-luxury-black/80 transition-colors">
                         {product.name}
                     </h3>
                 </Link>
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                <p className="mt-1 text-xs sm:text-sm text-luxury-black/60 line-clamp-1 sm:line-clamp-2">
                     {product.description}
                 </p>
 
-                <div className="mt-auto flex items-center justify-between pt-4">
-                    <span className="text-xl font-bold text-luxury-black dark:text-white">
+                <div className="mt-auto flex items-center justify-between pt-3 gap-2">
+                    <span className="font-serif text-base sm:text-lg font-bold text-luxury-black">
                         ₵{product.price.toLocaleString()}
                     </span>
                     <button
                         onClick={() => addToCart(product)}
-                        className="rounded-full bg-luxury-black px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-black/80 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                        className="rounded-full bg-luxury-black px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-luxury-black/80 hover:shadow-lg active:scale-95 whitespace-nowrap"
                     >
                         Add to Cart
                     </button>

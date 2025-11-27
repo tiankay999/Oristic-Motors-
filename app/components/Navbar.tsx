@@ -10,10 +10,10 @@ export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-champagne-light/20 bg-champagne/90 backdrop-blur-md dark:border-zinc-800 dark:bg-black/80">
-            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <nav className="sticky top-0 z-50 w-full border-b border-champagne-dark/30 bg-champagne/95 backdrop-blur-md shadow-sm">
+            <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
-                <Link href="/" className="text-2xl font-bold tracking-tight text-luxury-black dark:text-white">
+                <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-luxury-black">
                     Minaglitzy
                 </Link>
 
@@ -23,7 +23,7 @@ export default function Navbar() {
                         <Link
                             key={category.slug}
                             href={`/${category.slug}`}
-                            className="text-sm font-medium text-gray-700 hover:text-luxury-black dark:text-gray-300 dark:hover:text-white"
+                            className="text-sm font-medium text-luxury-black/80 hover:text-luxury-black transition-colors uppercase tracking-wide"
                         >
                             {category.name}
                         </Link>
@@ -32,7 +32,7 @@ export default function Navbar() {
 
                 {/* Icons */}
                 <div className="flex items-center gap-4">
-                    <Link href="/cart" className="relative p-2 text-gray-700 hover:text-luxury-black dark:text-gray-300 dark:hover:text-white">
+                    <Link href="/cart" className="relative p-2 text-luxury-black hover:text-luxury-black/80 transition-colors">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -48,7 +48,7 @@ export default function Navbar() {
                             />
                         </svg>
                         {totalItems > 0 && (
-                            <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-luxury-black text-xs font-bold text-white dark:bg-white dark:text-black">
+                            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-luxury-black text-[10px] font-bold text-champagne">
                                 {totalItems}
                             </span>
                         )}
@@ -57,7 +57,7 @@ export default function Navbar() {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="p-2 md:hidden text-gray-700 dark:text-gray-300"
+                        className="p-2 md:hidden text-luxury-black"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -79,13 +79,13 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="border-t border-gray-100 bg-white md:hidden dark:border-zinc-800 dark:bg-black">
+                <div className="border-t border-champagne-dark/30 bg-champagne md:hidden">
                     <div className="space-y-1 px-4 py-4">
                         {categories.map((category) => (
                             <Link
                                 key={category.slug}
                                 href={`/${category.slug}`}
-                                className="block py-2 text-base font-medium text-gray-700 hover:text-luxury-black dark:text-gray-300 dark:hover:text-white"
+                                className="block py-3 text-base font-medium text-luxury-black hover:bg-champagne-dark/20 rounded-md px-2"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {category.name}

@@ -1,20 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAF3F0;
+  /* champagne-light */
+  --foreground: #1A1A1A;
+  /* luxury-black */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-champagne: #F7E7CE;
-  --color-champagne-light: #FFF8F0;
-  --color-beige: #F5F5DC;
-  --color-luxury-black: #1a1a1a;
-  --color-soft-gold: #D4AF37;
+  --font-sans: var(--font-montserrat);
+  --font-serif: var(--font-playfair);
+
+  /* Champagne Palette */
+  --color-champagne: #F3E5DC;
+  --color-champagne-light: #FAF3F0;
+  --color-champagne-dark: #E6D0C2;
+  --color-luxury-black: #1A1A1A;
+  --color-gold-accent: #D4AF37;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,5 +31,14 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair), serif;
 }

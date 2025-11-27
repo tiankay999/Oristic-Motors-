@@ -9,12 +9,12 @@ export default function CartPage() {
 
     if (items.length === 0) {
         return (
-            <div className="flex min-h-[60vh] flex-col items-center justify-center bg-white dark:bg-black px-4">
-                <h2 className="text-2xl font-bold text-luxury-black dark:text-white">Your cart is empty</h2>
-                <p className="mt-2 text-gray-500 dark:text-gray-400">Looks like you haven't added anything yet.</p>
+            <div className="flex min-h-[60vh] flex-col items-center justify-center bg-champagne-light px-4">
+                <h2 className="font-serif text-3xl font-bold text-luxury-black">Your cart is empty</h2>
+                <p className="mt-4 text-luxury-black/60">Looks like you haven't added anything yet.</p>
                 <Link
                     href="/"
-                    className="mt-8 rounded-full bg-luxury-black px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/80 dark:bg-white dark:text-black"
+                    className="mt-8 rounded-full bg-luxury-black px-10 py-3.5 text-sm font-semibold text-white transition-all hover:bg-luxury-black/80 hover:shadow-lg"
                 >
                     Start Shopping
                 </Link>
@@ -23,37 +23,37 @@ export default function CartPage() {
     }
 
     return (
-        <div className="bg-white dark:bg-black min-h-screen py-12">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20">
-                <h1 className="text-3xl font-bold tracking-tight text-luxury-black dark:text-white">Shopping Cart</h1>
+        <div className="min-h-screen bg-champagne-light py-12">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12">
+                <h1 className="font-serif text-4xl font-bold tracking-tight text-luxury-black">Shopping Cart</h1>
 
                 <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
                     <section className="lg:col-span-7">
-                        <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200 dark:divide-zinc-800 dark:border-zinc-800">
+                        <ul role="list" className="divide-y divide-champagne-dark/30 border-b border-t border-champagne-dark/30">
                             {items.map((item) => (
-                                <li key={item.id} className="flex py-6 sm:py-10">
+                                <li key={item.id} className="flex py-8">
                                     <div className="shrink-0">
-                                        <div className="relative h-24 w-24 rounded-md object-cover sm:h-48 sm:w-48 bg-gray-100">
+                                        <div className="relative h-28 w-28 rounded-xl overflow-hidden bg-champagne shadow-sm">
                                             <Image
                                                 src={item.image}
                                                 alt={item.name}
                                                 fill
-                                                className="object-cover rounded-md"
+                                                className="object-cover"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
+                                    <div className="ml-6 flex flex-1 flex-col justify-between">
                                         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                                             <div>
                                                 <div className="flex justify-between">
-                                                    <h3 className="text-sm">
-                                                        <Link href={`/product/${item.slug}`} className="font-medium text-luxury-black dark:text-white hover:text-gray-800">
+                                                    <h3 className="text-base font-medium">
+                                                        <Link href={`/product/${item.slug}`} className="font-serif text-lg text-luxury-black hover:text-luxury-black/80">
                                                             {item.name}
                                                         </Link>
                                                     </h3>
                                                 </div>
-                                                <p className="mt-1 text-sm font-medium text-gray-900 dark:text-gray-300">₵{item.price.toLocaleString()}</p>
+                                                <p className="mt-1 text-sm font-medium text-luxury-black">₵{item.price.toLocaleString()}</p>
                                             </div>
 
                                             <div className="mt-4 sm:mt-0 sm:pr-9">
@@ -65,7 +65,7 @@ export default function CartPage() {
                                                     name={`quantity-${item.id}`}
                                                     value={item.quantity}
                                                     onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
-                                                    className="max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-luxury-black focus:outline-none focus:ring-1 focus:ring-luxury-black dark:bg-zinc-900 dark:text-white sm:text-sm"
+                                                    className="max-w-full rounded-md border border-champagne-dark bg-white py-1.5 text-left text-base font-medium leading-5 text-luxury-black shadow-sm focus:border-luxury-black focus:outline-none focus:ring-1 focus:ring-luxury-black sm:text-sm"
                                                 >
                                                     {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
                                                         <option key={num} value={num}>
@@ -78,7 +78,7 @@ export default function CartPage() {
                                                     <button
                                                         type="button"
                                                         onClick={() => removeFromCart(item.id)}
-                                                        className="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500"
+                                                        className="-m-2 inline-flex p-2 text-gray-400 hover:text-red-500 transition-colors"
                                                     >
                                                         <span className="sr-only">Remove</span>
                                                         <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -97,23 +97,23 @@ export default function CartPage() {
                     {/* Order Summary */}
                     <section
                         aria-labelledby="summary-heading"
-                        className="mt-16 rounded-lg bg-gray-50 px-4 py-6 dark:bg-zinc-900 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
+                        className="mt-16 rounded-2xl bg-champagne px-6 py-8 shadow-sm lg:col-span-5 lg:mt-0 lg:p-10"
                     >
-                        <h2 id="summary-heading" className="text-lg font-medium text-luxury-black dark:text-white">
+                        <h2 id="summary-heading" className="font-serif text-2xl font-medium text-luxury-black">
                             Order summary
                         </h2>
 
-                        <dl className="mt-6 space-y-4">
-                            <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-zinc-800">
-                                <dt className="text-base font-medium text-luxury-black dark:text-white">Order total</dt>
-                                <dd className="text-base font-medium text-luxury-black dark:text-white">₵{totalPrice.toLocaleString()}</dd>
+                        <dl className="mt-8 space-y-4">
+                            <div className="flex items-center justify-between border-t border-champagne-dark/30 pt-4">
+                                <dt className="text-lg font-bold text-luxury-black">Order total</dt>
+                                <dd className="text-lg font-bold text-luxury-black">₵{totalPrice.toLocaleString()}</dd>
                             </div>
                         </dl>
 
-                        <div className="mt-6">
+                        <div className="mt-8">
                             <Link
                                 href="/checkout"
-                                className="w-full rounded-full border border-transparent bg-luxury-black px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-gray-50 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                                className="w-full flex items-center justify-center rounded-full border border-transparent bg-luxury-black px-6 py-4 text-base font-semibold text-white shadow-sm hover:bg-luxury-black/90 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-champagne transition-all"
                             >
                                 Proceed to Checkout
                             </Link>
