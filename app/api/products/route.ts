@@ -18,12 +18,20 @@ async function ensureDataDir() {
 export async function GET() {
     try {
         await ensureDataDir();
-        const fileContents = await fs.readFile(DATA_FILE, 'utf8');
-        const products = JSON.parse(fileContents);
-        return NextResponse.json(products);
+
+        try {
+            const fileContents = await fs.readFile(DATA_FILE, 'utf8');
+            const products = JSON.parse(fileContents);
+            return NextResponse.json(products);
+        } catch (error) {
+            // File doesn't exist, initialize with empty array
+            console.log('Products file not found, initializing with empty array');
+            await fs.writeFile(DATA_FILE, JSON.stringify([], null, 2));
+            return NextResponse.json([]);
+        }
     } catch (error) {
         console.error('Error reading products:', error);
-        return NextResponse.json([], { status: 500 });
+        return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
     }
 }
 
@@ -33,9 +41,17 @@ export async function POST(request: Request) {
         await ensureDataDir();
         const newProduct = await request.json();
 
-        // Read existing products
-        const fileContents = await fs.readFile(DATA_FILE, 'utf8');
-        const products = JSON.parse(fileContents);
+        let products = [];
+
+        // Read existing products or initialize empty array
+        try {
+            const fileContents = await fs.readFile(DATA_FILE, 'utf8');
+            products = JSON.parse(fileContents);
+        } catch (error) {
+            // File doesn't exist yet, start with empty array
+            console.log('Initializing new products file');
+            products = [];
+        }
 
         // Add new product
         products.push(newProduct);
@@ -46,6 +62,7 @@ export async function POST(request: Request) {
         return NextResponse.json(newProduct, { status: 201 });
     } catch (error) {
         console.error('Error adding product:', error);
-        return NextResponse.json({ error: 'Failed to add product' }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : 'Failed to add product';
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }

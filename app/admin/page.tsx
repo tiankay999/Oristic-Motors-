@@ -14,6 +14,8 @@ export default function AdminPage() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [imageMode, setImageMode] = useState<'url' | 'upload'>('url');
     const [imagePreview, setImagePreview] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const [formData, setFormData] = useState({
         name: '',
         slug: '',
@@ -57,31 +59,49 @@ export default function AdminPage() {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        addProduct({
-            name: formData.name,
-            slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, '-'),
-            price: parseFloat(formData.price),
-            category: formData.category,
-            description: formData.description,
-            image: formData.image,
-            isFeatured: formData.isFeatured,
-            stock: parseInt(formData.stock),
-        });
-        setShowAddModal(false);
-        setImageMode('url');
-        setImagePreview('');
-        setFormData({
-            name: '',
-            slug: '',
-            price: '',
-            category: 'wigs',
-            description: '',
-            image: '',
-            isFeatured: false,
-            stock: '',
-        });
+        setIsSubmitting(true);
+        setMessage(null);
+
+        try {
+            await addProduct({
+                name: formData.name,
+                slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, '-'),
+                price: parseFloat(formData.price),
+                category: formData.category,
+                description: formData.description,
+                image: formData.image,
+                isFeatured: formData.isFeatured,
+                stock: parseInt(formData.stock),
+            });
+
+            // Show success message
+            setMessage({ type: 'success', text: 'Product added successfully!' });
+
+            // Reset form
+            setShowAddModal(false);
+            setImageMode('url');
+            setImagePreview('');
+            setFormData({
+                name: '',
+                slug: '',
+                price: '',
+                category: 'wigs',
+                description: '',
+                image: '',
+                isFeatured: false,
+                stock: '',
+            });
+
+            // Clear message after 3 seconds
+            setTimeout(() => setMessage(null), 3000);
+        } catch (error) {
+            setMessage({ type: 'error', text: 'Failed to add product. Please try again.' });
+            console.error('Error submitting product:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -147,6 +167,13 @@ export default function AdminPage() {
                                 Add New Product
                             </button>
                         </div>
+
+                        {/* Success/Error Message */}
+                        {message && (
+                            <div className={`mb-6 p-4 rounded-lg ${message.type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' : 'bg-red-100 text-red-800 border border-red-200'}`}>
+                                <p className="font-medium">{message.text}</p>
+                            </div>
+                        )}
 
                         <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-champagne-dark/30">
                             <table className="min-w-full divide-y divide-champagne-dark/30">
@@ -382,14 +409,19 @@ export default function AdminPage() {
                             <div className="flex gap-4 pt-4">
                                 <button
                                     type="submit"
-                                    className="flex-1 bg-luxury-black text-white px-6 py-3 rounded-full hover:bg-luxury-black/90 transition-all"
+                                    disabled={isSubmitting}
+                                    className="flex-1 bg-luxury-black text-white px-6 py-3 rounded-full hover:bg-luxury-black/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    Add Product
+                                    {isSubmitting ? 'Adding Product...' : 'Add Product'}
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => setShowAddModal(false)}
-                                    className="flex-1 bg-champagne-dark text-luxury-black px-6 py-3 rounded-full hover:bg-champagne-dark/80 transition-all"
+                                    onClick={() => {
+                                        setShowAddModal(false);
+                                        setMessage(null);
+                                    }}
+                                    disabled={isSubmitting}
+                                    className="flex-1 bg-champagne-dark text-luxury-black px-6 py-3 rounded-full hover:bg-champagne-dark/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     Cancel
                                 </button>

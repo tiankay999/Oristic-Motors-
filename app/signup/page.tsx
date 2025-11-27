@@ -100,7 +100,7 @@ export default function SignupPage() {
                                 Phone number
                             </label>
                             <input
-                                type="email"
+                                type="text"
                                 id="phone"
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
