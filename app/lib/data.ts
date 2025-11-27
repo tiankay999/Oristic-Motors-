@@ -109,6 +109,28 @@ export const products: Product[] = [
         isFeatured: true,
         stock: 30,
     },
+    {
+        id: '9',
+        name:'Bone Straight Hair Wig',
+        slug: 'bone-straight-hair-wig',
+        price: 400,
+        category: 'wigs',
+        description: 'Authentic bone straight hair wig  ',
+        image: 'https://t4.ftcdn.net/jpg/17/19/63/13/240_F_1719631314_fOaIB2ipNNFTOg9jcrIZvriGOTs9MQcf.jpg',
+        isFeatured: true,
+        stock: 30,
+    },
+    {
+        id: '10',
+        name:'Brown Luxury Turban',
+        slug: 'Brown-turban',
+        price: 250,
+        category: 'turbans',
+        description: ' Brown Silk Turban Authentically Produced from Singapore   ',
+        image: 'https://images-eu.ssl-images-amazon.com/images/I/51Xi69LmQ0L._AC_UL600_SR600,600_.jpg',
+        isFeatured: true,
+        stock: 15,
+    },
 ];
 
 export const categories = [
