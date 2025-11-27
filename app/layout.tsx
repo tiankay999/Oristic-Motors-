@@ -3,6 +3,7 @@ import { Playfair_Display, Montserrat } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "./context/CartContext";
 import { ProductProvider } from "./context/ProductContext";
+import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -33,15 +34,17 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${montserrat.variable} antialiased bg-champagne-light text-luxury-black flex flex-col min-h-screen`}
       >
-        <ProductProvider>
-          <CartProvider>
-            <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </CartProvider>
-        </ProductProvider>
+        <AuthProvider>
+          <ProductProvider>
+            <CartProvider>
+              <Navbar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </CartProvider>
+          </ProductProvider>
+        </AuthProvider>
       </body>
     </html>
   );

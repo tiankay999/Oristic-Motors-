@@ -1,10 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useProducts } from '../context/ProductContext';
+import { useAuth } from '../context/AuthContext';
 import { Product } from '../lib/data';
 
 export default function AdminPage() {
+    const router = useRouter();
+    const { isAuthenticated, logout } = useAuth();
     const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
     const { products, addProduct, deleteProduct } = useProducts();
     const [showAddModal, setShowAddModal] = useState(false);
@@ -26,6 +30,13 @@ export default function AdminPage() {
         { id: 'ORD-001', customer: 'Jane Doe', total: 1650, status: 'Completed', date: '2023-10-25' },
         { id: 'ORD-002', customer: 'John Smith', total: 450, status: 'Pending', date: '2023-10-26' },
     ]);
+
+    // Check authentication
+    useEffect(() => {
+        if (!isAuthenticated) {
+            router.push('/admin/login');
+        }
+    }, [isAuthenticated, router]);
 
     const handleDeleteProduct = (id: string) => {
         if (confirm('Are you sure you want to delete this product?')) {
@@ -79,6 +90,12 @@ export default function AdminPage() {
             <aside className="w-64 bg-champagne border-r border-champagne-dark/30 hidden md:block">
                 <div className="p-8">
                     <h2 className="font-serif text-2xl font-bold text-luxury-black">Admin</h2>
+                    <button
+                        onClick={logout}
+                        className="mt-4 text-sm text-luxury-black/60 hover:text-luxury-black transition-colors"
+                    >
+                        Logout
+                    </button>
                 </div>
                 <nav className="mt-4 px-4 space-y-2">
                     <button
@@ -287,8 +304,8 @@ export default function AdminPage() {
                                             setImagePreview('');
                                         }}
                                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${imageMode === 'url'
-                                                ? 'bg-luxury-black text-white'
-                                                : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
+                                            ? 'bg-luxury-black text-white'
+                                            : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
                                             }`}
                                     >
                                         Image URL
@@ -297,8 +314,8 @@ export default function AdminPage() {
                                         type="button"
                                         onClick={() => setImageMode('upload')}
                                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${imageMode === 'upload'
-                                                ? 'bg-luxury-black text-white'
-                                                : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
+                                            ? 'bg-luxury-black text-white'
+                                            : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
                                             }`}
                                     >
                                         Upload from Device

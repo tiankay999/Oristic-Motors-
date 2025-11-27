@@ -15,7 +15,7 @@ export default function Home() {
       <section className="relative h-[85vh] w-full overflow-hidden bg-champagne">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&q=80&w=2000"
+            src="https://i.pinimg.com/736x/4d/5d/11/4d5d1137ce8e873454dc4938027f2c89.jpg"
             alt="Luxury Beauty"
             fill
             className="object-cover opacity-60"

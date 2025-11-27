@@ -5,35 +5,61 @@ import { products as initialProducts, Product } from '../lib/data';
 
 interface ProductContextType {
     products: Product[];
-    addProduct: (product: Omit<Product, 'id'>) => void;
+    addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
     updateProduct: (id: string, product: Partial<Product>) => void;
-    deleteProduct: (id: string) => void;
+    deleteProduct: (id: string) => Promise<void>;
+    isLoading: boolean;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
 export function ProductProvider({ children }: { children: React.ReactNode }) {
-    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // Load products from local storage on mount
+    // Fetch products from API on mount
     useEffect(() => {
-        const savedProducts = localStorage.getItem('products');
-        if (savedProducts) {
-            setProducts(JSON.parse(savedProducts));
-        }
+        fetchProducts();
     }, []);
 
-    // Save products to local storage whenever they change
-    useEffect(() => {
-        localStorage.setItem('products', JSON.stringify(products));
-    }, [products]);
+    const fetchProducts = async () => {
+        try {
+            const response = await fetch('/api/products');
+            if (response.ok) {
+                const data = await response.json();
+                setProducts(data);
+            } else {
+                // Fallback to initial products if API fails
+                setProducts(initialProducts);
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setProducts(initialProducts);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-    const addProduct = (product: Omit<Product, 'id'>) => {
+    const addProduct = async (product: Omit<Product, 'id'>) => {
         const newProduct: Product = {
             ...product,
             id: Date.now().toString(),
         };
-        setProducts((prev) => [...prev, newProduct]);
+
+        try {
+            const response = await fetch('/api/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newProduct),
+            });
+
+            if (response.ok) {
+                // Refresh products from server
+                await fetchProducts();
+            }
+        } catch (error) {
+            console.error('Error adding product:', error);
+        }
     };
 
     const updateProduct = (id: string, updates: Partial<Product>) => {
@@ -44,8 +70,19 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
         );
     };
 
-    const deleteProduct = (id: string) => {
-        setProducts((prev) => prev.filter((product) => product.id !== id));
+    const deleteProduct = async (id: string) => {
+        try {
+            const response = await fetch(`/api/products/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                // Refresh products from server
+                await fetchProducts();
+            }
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
     };
 
     return (
@@ -55,6 +92,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
                 addProduct,
                 updateProduct,
                 deleteProduct,
+                isLoading,
             }}
         >
             {children}
