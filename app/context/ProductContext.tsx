@@ -27,9 +27,16 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
             const response = await fetch('/api/products');
             if (response.ok) {
                 const data = await response.json();
-                setProducts(data);
+                // Validate that data is an array before setting
+                if (Array.isArray(data)) {
+                    setProducts(data);
+                } else {
+                    console.error('API returned non-array data:', data);
+                    setProducts(initialProducts);
+                }
             } else {
                 // Fallback to initial products if API fails
+                console.error('API response not OK:', response.status);
                 setProducts(initialProducts);
             }
         } catch (error) {

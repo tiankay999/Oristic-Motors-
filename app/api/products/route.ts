@@ -22,15 +22,17 @@ export async function GET() {
         try {
             const fileContents = await fs.readFile(DATA_FILE, 'utf8');
             const products = JSON.parse(fileContents);
+            console.log(`Successfully loaded ${products.length} products`);
             return NextResponse.json(products);
         } catch (error) {
             // File doesn't exist, initialize with empty array
             console.log('Products file not found, initializing with empty array');
+            console.error('File read error:', error);
             await fs.writeFile(DATA_FILE, JSON.stringify([], null, 2));
             return NextResponse.json([]);
         }
     } catch (error) {
-        console.error('Error reading products:', error);
+        console.error('Critical error in GET /api/products:', error);
         return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
     }
 }
