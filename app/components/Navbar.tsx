@@ -10,24 +10,27 @@ export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-champagne-dark/30 bg-champagne/95 backdrop-blur-md shadow-sm">
+        <nav className="sticky top-0 z-50 w-full border-b border-champagne-dark/30 bg-black/95 backdrop-blur-md shadow-sm">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
-                <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-luxury-black">
+                <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-white">
                     Minaglitzy
                 </Link>
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex md:items-center md:gap-8">
-                    {categories.map((category) => (
+                    {categories.slice(0, 5).map((category) => (
                         <Link
                             key={category.slug}
                             href={`/${category.slug}`}
-                            className="text-sm font-medium text-luxury-black/80 hover:text-luxury-black transition-colors uppercase tracking-wide"
+                            className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide"
                         >
                             {category.name}
                         </Link>
                     ))}
+                    <Link href="/about" className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide">
+                        About
+                    </Link>
                 </div>
 
                 {/* Icons */}
@@ -36,19 +39,19 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-3">
                         <Link
                             href="/login"
-                            className="text-sm font-medium text-luxury-black/80 hover:text-luxury-black transition-colors"
+                            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
                         >
                             Login
                         </Link>
                         <Link
                             href="/signup"
-                            className="bg-luxury-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-luxury-black/90 transition-all"
+                            className="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-luxury-black/90 transition-all"
                         >
                             Sign Up
                         </Link>
                     </div>
 
-                    <Link href="/cart" className="relative p-2 text-luxury-black hover:text-luxury-black/80 transition-colors">
+                    <Link href="/cart" className="relative p-2 text-white hover:text-white/80 transition-colors">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -64,7 +67,7 @@ export default function Navbar() {
                             />
                         </svg>
                         {totalItems > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-luxury-black text-[10px] font-bold text-champagne">
+                            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] font-bold text-champagne">
                                 {totalItems}
                             </span>
                         )}
@@ -73,7 +76,7 @@ export default function Navbar() {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="p-2 md:hidden text-luxury-black"
+                        className="p-2 md:hidden text-white"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -95,31 +98,38 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="border-t border-champagne-dark/30 bg-champagne md:hidden">
+                <div className="border-t border-champagne-dark/30 bg-black md:hidden">
                     <div className="space-y-1 px-4 py-4">
                         {categories.map((category) => (
                             <Link
                                 key={category.slug}
                                 href={`/${category.slug}`}
-                                className="block py-3 text-base font-medium text-luxury-black hover:bg-champagne-dark/20 rounded-md px-2"
+                                className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {category.name}
                             </Link>
                         ))}
+                        <Link
+                            href="/about"
+                            className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                            onClick={() => setIsMenuOpen(false)}
+                        >
+                            About
+                        </Link>
 
                         {/* Mobile Login/Signup */}
                         <div className="border-t border-champagne-dark/30 mt-4 pt-4 space-y-2">
                             <Link
                                 href="/login"
-                                className="block py-3 text-base font-medium text-luxury-black hover:bg-champagne-dark/20 rounded-md px-2"
+                                className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Login
                             </Link>
                             <Link
                                 href="/signup"
-                                className="block py-3 text-center text-base font-medium bg-luxury-black text-white rounded-full"
+                                className="block py-3 text-center text-base font-medium bg-white text-white rounded-full"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Sign Up

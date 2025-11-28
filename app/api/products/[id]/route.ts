@@ -28,3 +28,4 @@ export async function DELETE(
         return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
     }
 }
+

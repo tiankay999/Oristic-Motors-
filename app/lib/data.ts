@@ -100,7 +100,7 @@ export const products: Product[] = [
     },
     {
         id: '8',
-        name:'Authentic Scarf',
+        name: 'Authentic Scarf',
         slug: 'authentic-scarf',
         price: 200,
         category: 'scarfs',
@@ -111,7 +111,7 @@ export const products: Product[] = [
     },
     {
         id: '9',
-        name:'Bone Straight Hair Wig',
+        name: 'Bone Straight Hair Wig',
         slug: 'bone-straight-hair-wig',
         price: 400,
         category: 'wigs',
@@ -122,7 +122,7 @@ export const products: Product[] = [
     },
     {
         id: '10',
-        name:'Brown Luxury Turban',
+        name: 'Brown Luxury Turban',
         slug: 'Brown-turban',
         price: 250,
         category: 'turbans',

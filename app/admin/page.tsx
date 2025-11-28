@@ -194,7 +194,7 @@ export default function AdminPage() {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">₵{product.price}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">{product.stock}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <button onClick={() => handleDeleteProduct(product.id)} className="text-red-600 hover:text-red-900">Delete</button>
+                                                <button onClick={() => handleDeleteProduct(product.id.toString())} className="text-red-600 hover:text-red-900">Delete</button>
                                             </td>
                                         </tr>
                                     ))}
