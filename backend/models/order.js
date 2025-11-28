@@ -1,31 +1,35 @@
- const {Datatypes}= require('sequelize');
- const sequelize = require('../config/database');
+ const {DataTypes}= require('sequelize');
+ const {sequelize}= require('../config/database');
 
- const Order = sequelize.define('Order', {
+ const Order =sequelize.define('order', {
     id: {
-        type: Datatypes.INTEGER,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    FirstName: {
-        type: Datatypes.STRING,
+    firstName: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    LastName: {
-        type: Datatypes.STRING,
+    lastName: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    Email: {
-        type: Datatypes.STRING,
+    email: {
+        type: DataTypes.STRING,
         allowNull: false
     },
-    Phone: {
-        type: Datatypes.STRING,
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    address: {
+        type: DataTypes.STRING,
         allowNull: false
     },
     totalAmount: {
-        type: Datatypes.DECIMAL(10, 2),
-        allowNull: false
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
     }
 });
 

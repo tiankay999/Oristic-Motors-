@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const{sequelize}= require('./config/database');
 app.use(express.json()); 
+const User= require('./models/user');
+const Admin= require('./models/admin');
+const Order = require('./models/order');
+
 
 
 
@@ -33,7 +37,7 @@ app.post("/signup", async(req,res)=>{
     
     const Account= await User.create({name,password,email,phone})
      if (Account){
-        res.status(201).json({message:"User Created Successfully"})
+        res.status(201).json({message:"User Created Successfully,",Account})
      }else{
         res.status(401).json({message:"User Not Created"})
      }
@@ -72,13 +76,13 @@ app.post("/login", async(req,res)=>{
 
 app.post("/create-admin", async(req,res)=>{
     try{
-        const {name,password}= req.body;
-        if (!name || !password){
+        const {name,password,email}= req.body;
+        if (!name || !password || !email){
             res.status(401).json({message:"All the Credentials are Required"})
         }
-        const admin=await Admin.create({name,password})
+        const admin=await Admin.create({name,password,email})
         if (admin){
-            res.status(200).json({message:"Admin Created Successfully"})
+            res.status(201).json({message:"Admin Created Successfully",admin})
         }else{
             res.status(401).json({message:"Admin Not Created"})
         }
@@ -88,15 +92,15 @@ app.post("/create-admin", async(req,res)=>{
     }
 })
 
-app.post('admin-login', async(req,res)=>{
+app.post('/admin-login', async(req,res)=>{
     try{
         const {name,password}= req.body;
         if (!name || !password){
             res.status(401).json({message:"All the Credentials are Required"})
         }
-        const admin=await Admin.findOne({where:{name:name,password:password}})
+        const admin= await Admin.findOne({where:{name:name,password:password}})
         if (admin){
-            res.status(200).json({message:"Admin Logged In Successfully"})
+            res.status(200).json({message:"Admin Logged In Successfully",admin})
         }else{
             res.status(401).json({message:"Admin Not Found"})
         }
@@ -104,9 +108,25 @@ app.post('admin-login', async(req,res)=>{
         console.log(err)
         res.status(500).json({message:"Internal Server Error"})
     }
-});
+});``
 
-
+app.post('/orders',async(req,res)=>{
+ try{
+        const {firstName,lastName,email,phone,address,totalAmount}= req.body;
+        if (!firstName || !lastName || !email || !phone || !address || !totalAmount){
+            res.status(401).json({message:"All the Credentials are Required"})
+        }
+        const order=await Order.create({firstName,lastName,email,phone,address,totalAmount})
+        if (order){
+            res.status(201).json({message:"Order Created Successfully",order})
+        }else{
+            res.status(401).json({message:"Order Not Created"})
+        }
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message:"Internal Server Error"})
+    }
+})
 
 
 

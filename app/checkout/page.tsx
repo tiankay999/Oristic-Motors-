@@ -86,6 +86,21 @@ export default function CheckoutPage() {
                                         />
                                     </div>
                                 </div>
+                                <div>
+                                    <label htmlFor="phone" className="block text-sm font-medium text-luxury-black/80">
+                                        Phone
+                                    </label>
+                                    <div className="mt-1">
+                                        <input
+                                            type="text"
+                                            id="phone"
+                                            name="phone"
+                                            autoComplete="Phone"
+                                            required
+                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                        />
+                                    </div>
+                                </div>
 
                                 <div className="sm:col-span-2">
                                     <label htmlFor="address" className="block text-sm font-medium text-luxury-black/80">
