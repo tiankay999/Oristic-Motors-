@@ -3,7 +3,7 @@ export interface Product {
     name: string;
     slug: string;
     price: number;
-    category: 'wigs' | 'sunglasses' | 'turbans' | 'bags' | 'footwear' | 'skincare' | 'scarfs';
+    category: 'wigs' | 'sunglasses' | 'turbans' | 'bags' | 'footwear' | 'skincare' | 'scarfs' | 'more';
     description: string;
     image: string;
     isFeatured: boolean;
@@ -141,4 +141,5 @@ export const categories = [
     { name: 'Footwear', slug: 'footwear', image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=800' },
     { name: 'Skincare', slug: 'skincare', image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800' },
     { name: 'Scarfs', slug: 'scarfs', image: 'https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?auto=format&fit=crop&q=80&w=800' },
+    { name: 'More', slug: 'more', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=800' },
 ];

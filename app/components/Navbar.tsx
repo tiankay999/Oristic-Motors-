@@ -28,6 +28,9 @@ export default function Navbar() {
                             {category.name}
                         </Link>
                     ))}
+                    <Link href="/more" className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide">
+                        More
+                    </Link>
                     <Link href="/about" className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide">
                         About
                     </Link>

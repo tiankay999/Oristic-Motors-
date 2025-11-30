@@ -251,7 +251,7 @@ export default function AdminPage() {
                                     required
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                    className="w-full px-4 py-2 text-black border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                 />
                             </div>
 
@@ -262,7 +262,7 @@ export default function AdminPage() {
                                     value={formData.slug}
                                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                                     placeholder="auto-generated from name if empty"
-                                    className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                    className="w-full px-4 py-2 text-black border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                 />
                             </div>
 
@@ -274,7 +274,7 @@ export default function AdminPage() {
                                         required
                                         value={formData.price}
                                         onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                                        className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                        className="w-full px-4 py-2 text-black border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                     />
                                 </div>
 
@@ -285,7 +285,7 @@ export default function AdminPage() {
                                         required
                                         value={formData.stock}
                                         onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                                        className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                        className="w-full px-4 py-2 text-black border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                     />
                                 </div>
                             </div>
@@ -296,7 +296,7 @@ export default function AdminPage() {
                                     required
                                     value={formData.category}
                                     onChange={(e) => setFormData({ ...formData, category: e.target.value as Product['category'] })}
-                                    className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                    className="w-full px-4 py-2 border border-champagne-dark  text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                 >
                                     <option value="wigs">Wigs</option>
                                     <option value="sunglasses">Sunglasses</option>
@@ -305,6 +305,7 @@ export default function AdminPage() {
                                     <option value="footwear">Footwear</option>
                                     <option value="skincare">Skincare</option>
                                     <option value="scarfs">Scarfs</option>
+                                    <option value="more">More (Jewelry & Accessories)</option>
                                 </select>
                             </div>
 
@@ -315,7 +316,7 @@ export default function AdminPage() {
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     rows={3}
-                                    className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                    className="w-full px-4 py-2 border border-champagne-dark text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                 />
                             </div>
 
@@ -360,7 +361,7 @@ export default function AdminPage() {
                                             setImagePreview(e.target.value);
                                         }}
                                         placeholder="https://images.unsplash.com/..."
-                                        className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                        className="w-full px-4 py-2 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                     />
                                 )}
 
@@ -372,7 +373,7 @@ export default function AdminPage() {
                                             accept="image/*"
                                             required={imageMode === 'upload' && !formData.image}
                                             onChange={handleImageUpload}
-                                            className="w-full px-4 py-2 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-luxury-black file:text-white hover:file:bg-luxury-black/90"
+                                            className="w-full px-4 py-2 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-luxury-black file:text-white hover:file:bg-luxury-black/90"
                                         />
                                         <p className="mt-1 text-xs text-luxury-black/60">
                                             Upload an image from your device (JPG, PNG, WebP)

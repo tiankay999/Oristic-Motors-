@@ -50,7 +50,7 @@ export default function CheckoutPage() {
                                             name="email"
                                             autoComplete="email"
                                             required
-                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@ export default function CheckoutPage() {
                                             name="first-name"
                                             autoComplete="given-name"
                                             required
-                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@ export default function CheckoutPage() {
                                             name="last-name"
                                             autoComplete="family-name"
                                             required
-                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
                                             name="phone"
                                             autoComplete="Phone"
                                             required
-                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
                                             id="address"
                                             autoComplete="street-address"
                                             required
-                                            className="block w-full rounded-md border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
                                         />
                                     </div>
                                 </div>
