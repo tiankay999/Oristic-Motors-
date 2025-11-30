@@ -6,6 +6,24 @@ const User = require('./models/user');
 const Admin = require('./models/admin');
 const Order = require('./models/order');
 const Product = require('./models/product');
+const cors= require('cors')
+
+
+
+
+// 1) CORS FIRST (above any routes)
+const allowed = ["http://localhost:3000", "http://127.0.0.1:3000"];
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin || allowed.includes(origin)) return cb(null, true);
+    return cb(new Error("Not allowed by CORS"));
+  },
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: false, // set true only if using cookies/sessions
+}));
+// Handle preflight for all routes
+app.options("", cors());
 
 
 
@@ -62,11 +80,15 @@ app.post("/login", async (req, res) => {
             res.status(401).json({ message: "All the Credentials are Required" })
         }
         const user = await User.findOne({ where: { email: email, password: password } })
-        if (user) {
-            res.status(200).json({ message: "User Logged In Successfully" })
-        } else {
-            res.status(401).json({ message: "User Not Found" })
+        if(!user){
+            res.status(401).json({message:"User not Found"})
         }
+        if (user.password !== password){
+            res.status(401).json({message:"Password is Incorrect "})
+        }
+        
+          
+           res.status(200).json({messsage:"You have Successfully Logged In ",user})
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Internal Server Error" })
@@ -95,11 +117,11 @@ app.post("/create-admin", async (req, res) => {
 
 app.post('/admin-login', async (req, res) => {
     try {
-        const { name, password } = req.body;
-        if (!name || !password) {
+        const { email, password } = req.body;
+        if (!email || !password) {
             res.status(401).json({ message: "All the Credentials are Required" })
         }
-        const admin = await Admin.findOne({ where: { name: name, password: password } })
+        const admin = await Admin.findOne({ where: { email: email, password: password } })
         if (admin) {
             res.status(200).json({ message: "Admin Logged In Successfully", admin })
         } else {
@@ -113,11 +135,11 @@ app.post('/admin-login', async (req, res) => {
 
 app.post('/orders', async (req, res) => {
     try {
-        const { firstName, lastName, email, phone, address, totalAmount } = req.body;
-        if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {
+        const { firstName, lastName, email, phone, address, totalAmount,price } = req.body;
+        if (!firstName || !lastName || !email || !phone || !address || !totalAmount || !price) {
             res.status(401).json({ message: "All the Credentials are Required" })
         }
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount })
+        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount,price })
         if (order) {
             res.status(201).json({ message: "Order Created Successfully", order })
         } else {

@@ -108,5 +108,16 @@
     "isFeatured": true,
     "stock": 5,
     "id": "1764366469277"
+  },
+  {
+    "name": "Original Chanel White Channel Bag",
+    "slug": "Chanel-bag",
+    "price": 300,
+    "category": "bags",
+    "description": "Only 3 colors are available for this type , All sizes Available only 3 in stock",
+    "image": "https://media.istockphoto.com/id/588349052/photo/white-chanel-bag.jpg?s=612x612&w=0&k=20&c=jjBaxF1C7WwfComTREFEUdRzGpbYPoAN1V4d2lZkZu8=",
+    "isFeatured": true,
+    "stock": 3,
+    "id": "1764546258806"
   }
 ]

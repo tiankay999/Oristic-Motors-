@@ -9,21 +9,36 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const router = useRouter();
+    const[loading,setLoading]=useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        // Simple mock authentication
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const user = users.find((u: any) => u.email === email && u.password === password);
+        try {
+            const res = await fetch('http://localhost:5006/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email,password})
+            });
 
-        if (user) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            router.push('/');
-        } else {
-            setError('Invalid email or password');
-        }
+            const data = await res.json();
+            console.log(data);
+
+            if (res.ok) {
+                router.push('/');
+            } else {
+                setError(data.message || 'Login Failed ');
+            }
+
+        } catch (err) {
+            console.log(err);
+            setError('Something went wrong. Please try again.');
+        } 
+       
     };
 
     return (
@@ -78,7 +93,7 @@ export default function LoginPage() {
                             type="submit"
                             className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
                         >
-                            Sign In
+                            {loading? "Logging...In":"Login"}
                         </button>
                     </form>
 

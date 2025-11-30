@@ -1,0 +1,110 @@
+
+> minaglitzy@0.1.0 lint
+> eslint
+
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\[category]\page.tsx
+  23:9  error  'categoryProducts' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\about\page.tsx
+  54:197  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  54:227  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  57:29   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  57:72   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\admin\page.tsx
+  389:45  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\api\products\[id]\route.ts
+  20:53  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\api\products\route.ts
+  52:18  warning  'error' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\cart\page.tsx
+  14:78  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\checkout\page.tsx
+  23:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\components\Footer.tsx
+  16:33  error  Do not use an `<a>` element to navigate to `/wigs/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages        @next/next/no-html-link-for-pages
+  17:33  error  Do not use an `<a>` element to navigate to `/sunglasses/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+  18:33  error  Do not use an `<a>` element to navigate to `/turbans/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages     @next/next/no-html-link-for-pages
+  19:33  error  Do not use an `<a>` element to navigate to `/skincare/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages    @next/next/no-html-link-for-pages
+  25:33  error  Do not use an `<a>` element to navigate to `/about/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages       @next/next/no-html-link-for-pages
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\context\AuthContext.tsx
+  20:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\context\AuthContext.tsx:20:13
+  18 |         const authStatus = localStorage.getItem('isAdminAuthenticated');
+  19 |         if (authStatus === 'true') {
+> 20 |             setIsAuthenticated(true);
+     |             ^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  21 |         }
+  22 |     }, []);
+  23 |  react-hooks/set-state-in-effect
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\context\CartContext.tsx
+  29:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\context\CartContext.tsx:29:13
+  27 |         const savedCart = localStorage.getItem('cart');
+  28 |         if (savedCart) {
+> 29 |             setItems(JSON.parse(savedCart));
+     |             ^^^^^^^^ Avoid calling setState() directly within an effect
+  30 |         }
+  31 |     }, []);
+  32 |  react-hooks/set-state-in-effect
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\lib\models.ts
+  17:11  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\app\login\page.tsx
+  101:28  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\backend\config\database.js
+  1:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\backend\index.js
+    1:17  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+    3:23  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+    5:14  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+    6:15  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+    7:15  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+    8:17  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+    9:13  error    A `require()` style import is forbidden                                @typescript-eslint/no-require-imports
+  134:5   warning  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\backend\models\admin.js
+  1:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\backend\models\order.js
+  1:21  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:21  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\backend\models\product.js
+  1:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\kwabe\OneDrive\Desktop\Nextjs projects\minaglitzy\backend\models\user.js
+  1:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:23  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+✖ 36 problems (33 errors, 3 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+

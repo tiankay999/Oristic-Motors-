@@ -14,10 +14,12 @@ export default function SignupPage() {
     });
     const [error, setError] = useState('');
     const router = useRouter();
+    const[loading,setLoading]=useState(false)
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(false)
 
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
@@ -29,29 +31,28 @@ export default function SignupPage() {
             return;
         }
 
-        // Get existing users
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        try {
+            const res = await fetch('http://localhost:5006/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
 
-        // Check if email already exists
-        if (users.some((u: any) => u.email === formData.email)) {
-            setError('Email already registered');
-            return;
+            const data = await res.json();
+            console.log(data);
+
+            if (res.ok) {
+                router.push('/');
+            } else {
+                setError(data.message || 'Signup failed');
+            }
+
+        } catch (err) {
+            console.log(err);
+            setError('Something went wrong. Please try again.');
         }
-
-        // Add new user
-        const newUser = {
-            id: Date.now().toString(),
-            name: formData.name,
-            email: formData.email,
-            password: formData.password, // In production, hash this!
-        };
-
-        users.push(newUser);
-        localStorage.setItem('users', JSON.stringify(users));
-        localStorage.setItem('currentUser', JSON.stringify(newUser));
-
-        // Redirect to home
-        router.push('/');
     };
 
     return (
@@ -106,7 +107,7 @@ export default function SignupPage() {
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                 required
                                 className="w-full px-4 py-3 border border-champagne-dark text-luxury-black rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white text-black"
-                                placeholder="+233 505 504 505"
+                                placeholder="0505504505"
                             />
                         </div>
 
@@ -147,10 +148,11 @@ export default function SignupPage() {
                         )}
 
                         <button
+                        disabled={loading}
                             type="submit"
                             className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
                         >
-                            Create Account
+                            {loading? "Creating Account...":"Create Account"}
                         </button>
                     </form>
 

@@ -1,0 +1,80 @@
+app/checkout/page.tsx(5,25): error TS6142: Module '../context/CartContext' was resolved to 'C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/app/context/CartContext.tsx', but '--jsx' is not set.
+app/checkout/page.tsx(54,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(55,17): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(61,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(62,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(63,17): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(64,21): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(65,25): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(67,25): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(68,29): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(69,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(70,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(73,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(74,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(87,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(88,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(91,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(92,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(103,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(104,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(107,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(108,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(118,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(119,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(122,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(123,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(134,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(135,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(138,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(139,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(150,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(151,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(164,21): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(165,25): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(167,25): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(168,29): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(170,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(171,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(172,45): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(173,49): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(181,41): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(182,45): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(183,49): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(184,53): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(185,57): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(191,45): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(192,49): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(193,49): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(194,53): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(201,29): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(202,33): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(203,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+app/checkout/page.tsx(204,37): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+node_modules/next/dist/build/templates/app-page.d.ts(3,25): error TS2307: Cannot find module 'VAR_MODULE_GLOBAL_ERROR' or its corresponding type declarations.
+node_modules/next/dist/build/webpack-config.d.ts(10,104): error TS2694: Namespace '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/next/dist/compiled/webpack/webpack".webpack' has no exported member 'RuleSetUseItem'.
+node_modules/next/dist/build/webpack/loaders/next-app-loader/index.d.ts(1,13): error TS2613: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/next/dist/compiled/webpack/webpack"' has no default export. Did you mean to use 'import { webpack } from "C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/next/dist/compiled/webpack/webpack"' instead?
+node_modules/next/dist/client/components/error-boundary.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/client/components/http-access-fallback/error-boundary.d.ts(11,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/client/components/layout-router.d.ts(2,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/client/image-component.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/client/with-router.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/lib/metadata/metadata.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/server/app-render/entry-base.d.ts(1,114): error TS2307: Cannot find module 'react-server-dom-webpack/server' or its corresponding type declarations.
+node_modules/next/dist/server/app-render/entry-base.d.ts(2,27): error TS2307: Cannot find module 'react-server-dom-webpack/static' or its corresponding type declarations.
+node_modules/next/dist/server/web/spec-extension/adapters/headers.d.ts(39,16): error TS2304: Cannot find name 'HeadersIterator'.
+node_modules/next/dist/server/web/spec-extension/adapters/headers.d.ts(40,13): error TS2304: Cannot find name 'HeadersIterator'.
+node_modules/next/dist/server/web/spec-extension/adapters/headers.d.ts(41,15): error TS2304: Cannot find name 'HeadersIterator'.
+node_modules/next/dist/server/web/spec-extension/adapters/headers.d.ts(42,26): error TS2304: Cannot find name 'HeadersIterator'.
+node_modules/next/dist/shared/lib/app-router-context.shared-runtime.d.ts(4,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/app-router-types.d.ts(8,13): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/head-manager-context.shared-runtime.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/image-config-context.shared-runtime.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/loadable-context.shared-runtime.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/loadable.shared-runtime.d.ts(21,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/router-context.shared-runtime.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/server-inserted-html.shared-runtime.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/next/dist/shared/lib/utils.d.ts(10,13): error TS1192: Module '"fs"' has no default export.
+node_modules/react-paystack/dist/paystack-button.d.ts(11,128): error TS2503: Cannot find namespace 'JSX'.
+node_modules/react-paystack/dist/paystack-consumer.d.ts(1,8): error TS1259: Module '"C:/Users/kwabe/OneDrive/Desktop/Nextjs projects/minaglitzy/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag

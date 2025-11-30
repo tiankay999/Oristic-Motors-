@@ -75,6 +75,23 @@ export default function AdminPage() {
                 isFeatured: formData.isFeatured,
                 stock: parseInt(formData.stock),
             });
+            try{
+                const res= await fetch('http://localhost:5006/products',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                    },
+                    body:JSON.stringify(formData),
+                });
+                if(!res.ok){
+                    throw new Error('Failed to add product');
+                }
+                const data=await res.json();
+                console.log(data);
+            
+            }catch(err){
+                console.log(err);
+            }
 
             // Show success message
             setMessage({ type: 'success', text: 'Product added successfully!' });
