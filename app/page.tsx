@@ -8,7 +8,7 @@ import ProductCard from "./components/ProductCard";
 
 export default function Home() {
   const { products } = useProducts();
-  const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 6);
+  const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 24);
 
   return (
     <div className="flex flex-col min-h-screen">
