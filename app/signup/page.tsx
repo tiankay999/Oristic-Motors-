@@ -1,8 +1,8 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -14,20 +14,24 @@ export default function SignupPage() {
     });
     const [error, setError] = useState('');
     const router = useRouter();
-    const[loading,setLoading]=useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
-        setLoading(false)
+        setLoading(true);
 
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
+            setLoading(false);
             return;
         }
 
         if (formData.password.length < 6) {
             setError('Password must be at least 6 characters');
+            setLoading(false);
             return;
         }
 
@@ -44,14 +48,20 @@ export default function SignupPage() {
             console.log(data);
 
             if (res.ok) {
+                if (data.token && data.user) {
+                    login(data.token, data.user);
+                }
                 router.push('/');
             } else {
                 setError(data.message || 'Signup failed');
             }
 
+
         } catch (err) {
             console.log(err);
             setError('Something went wrong. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -148,11 +158,11 @@ export default function SignupPage() {
                         )}
 
                         <button
-                        disabled={loading}
+                            disabled={loading}
                             type="submit"
                             className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
                         >
-                            {loading? "Creating Account...":"Create Account"}
+                            {loading ? "Creating Account..." : "Create Account"}
                         </button>
                     </form>
 

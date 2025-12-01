@@ -2,25 +2,44 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
+
 
 export default function AdminLoginPage() {
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth();
+    
     const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
-        const success = login(username, password);
-        if (success) {
-            router.push('/admin');
-        } else {
-            setError('Invalid username or password');
-        }
+try{
+
+    const res=await fetch('http://localhost:5006/admin-login',{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json',
+        },
+        body:JSON.stringify({name,password}),
+    });
+    if(!res.ok){
+        throw new Error('Failed to login');
+    }
+    const data=await res.json();
+    console.log(data);
+    if(data){
+        router.push('/admin');
+    }else{
+        setError('Invalid username or password');
+    }
+}catch(err){
+    console.log(err);
+}
+
+
+        
     };
 
     return (
@@ -42,8 +61,8 @@ export default function AdminLoginPage() {
                             <input
                                 type="text"
                                 id="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 required
                                 className="w-full px-4 py-3 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white"
                                 placeholder="Enter username"
@@ -78,10 +97,6 @@ export default function AdminLoginPage() {
                             Sign In
                         </button>
                     </form>
-
-                    <p className="mt-6 text-center text-sm text-luxury-black/60">
-                        Default: admin / minaglitzy2024
-                    </p>
                 </div>
             </div>
         </div>

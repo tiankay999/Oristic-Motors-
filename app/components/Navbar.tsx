@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { categories } from '../lib/data';
 
 export default function Navbar() {
     const { totalItems } = useCart();
+    const { isAuthenticated, logout } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
@@ -38,21 +40,54 @@ export default function Navbar() {
 
                 {/* Icons */}
                 <div className="flex items-center gap-4">
-                    {/* Login/Signup - Desktop */}
+                    {/* Auth Links - Desktop */}
                     <div className="hidden md:flex items-center gap-3">
-                        <Link
-                            href="/login"
-                            className="text-sm font-medium text-white/80 hover:text-white transition-colors"
-                        >
-                            Login
-                        </Link>
-                        <Link
-                            href="/signup"
-                            className="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-luxury-black/90 transition-all"
-                        >
-                            Sign Up
-                        </Link>
+                        {isAuthenticated ? (
+                            <>
+                                <button
+                                    onClick={logout}
+                                    className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+                                >
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href="/login"
+                                    className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    href="/signup"
+                                    className="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-luxury-black/90 transition-all"
+                                >
+                                    Sign Up
+                                </Link>
+                            </>
+                        )}
                     </div>
+
+                    {/* Profile Icon (Visible when authenticated) */}
+                    {isAuthenticated && (
+                        <Link href="/profile" className="p-2 text-white hover:text-white/80 transition-colors">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="h-6 w-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                                />
+                            </svg>
+                        </Link>
+                    )}
 
                     <Link href="/cart" className="relative p-2 text-white hover:text-white/80 transition-colors">
                         <svg
@@ -121,22 +156,45 @@ export default function Navbar() {
                             About
                         </Link>
 
-                        {/* Mobile Login/Signup */}
+                        {/* Mobile Auth Links */}
                         <div className="border-t border-champagne-dark/30 mt-4 pt-4 space-y-2">
-                            <Link
-                                href="/login"
-                                className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Login
-                            </Link>
-                            <Link
-                                href="/signup"
-                                className="block py-3 text-center text-base font-medium bg-white text-white rounded-full"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Sign Up
-                            </Link>
+                            {isAuthenticated ? (
+                                <>
+                                    <Link
+                                        href="/profile"
+                                        className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Profile
+                                    </Link>
+                                    <button
+                                        onClick={() => {
+                                            logout();
+                                            setIsMenuOpen(false);
+                                        }}
+                                        className="block w-full text-left py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        href="/signup"
+                                        className="block py-3 text-center text-base font-medium bg-white text-black rounded-full"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

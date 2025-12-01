@@ -27,11 +27,8 @@ export default function AdminPage() {
         stock: '',
     });
 
-    // Mock Orders
-    const [orders] = useState([
-        { id: 'ORD-001', customer: 'Jane Doe', total: 1650, status: 'Completed', date: '2023-10-25' },
-        { id: 'ORD-002', customer: 'John Smith', total: 450, status: 'Pending', date: '2023-10-26' },
-    ]);
+    // Orders state
+    const [orders, setOrders] = useState<any[]>([]);
 
     // Check authentication
     useEffect(() => {
@@ -75,21 +72,21 @@ export default function AdminPage() {
                 isFeatured: formData.isFeatured,
                 stock: parseInt(formData.stock),
             });
-            try{
-                const res= await fetch('http://localhost:5006/products',{
-                    method:'POST',
-                    headers:{
-                        'Content-Type':'application/json',
+            try {
+                const res = await fetch('http://localhost:5006/products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                    body:JSON.stringify(formData),
+                    body: JSON.stringify(formData),
                 });
-                if(!res.ok){
+                if (!res.ok) {
                     throw new Error('Failed to add product');
                 }
-                const data=await res.json();
+                const data = await res.json();
                 console.log(data);
-            
-            }catch(err){
+
+            } catch (err) {
                 console.log(err);
             }
 
@@ -120,6 +117,20 @@ export default function AdminPage() {
             setIsSubmitting(false);
         }
     };
+
+    // Fetch orders
+    useEffect(() => {
+        if (activeTab === 'orders') {
+            fetch('http://localhost:5006/all-orders')
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setOrders(data);
+                    }
+                })
+                .catch(err => console.error('Error fetching orders:', err));
+        }
+    }, [activeTab]);
 
     return (
         <div className="min-h-screen bg-champagne-light flex">
@@ -229,23 +240,21 @@ export default function AdminPage() {
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Order ID</th>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Customer</th>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Date</th>
-                                        <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Status</th>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-champagne-dark/30">
-                                    {orders.map((order) => (
+                                    {orders.map((order: any) => (
                                         <tr key={order.id} className="hover:bg-champagne-light/50 transition-colors">
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-black">{order.id}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">{order.customer}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">{order.date}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                                <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${order.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                                                    }`}>
-                                                    {order.status}
-                                                </span>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-black">#{order.id}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">
+                                                {order.firstName} {order.lastName}<br />
+                                                <span className="text-xs text-gray-500">{order.email}</span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">₵{order.total}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">
+                                                {new Date(order.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">₵{order.totalAmount}</td>
                                         </tr>
                                     ))}
                                 </tbody>
