@@ -2,44 +2,46 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '../../context/AuthContext';
 
 
 export default function AdminLoginPage() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    
+
+    const { loginAdmin } = useAuth();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
 
-try{
+        try {
+            const res = await fetch('http://localhost:5006/admin-login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, password }),
+            });
 
-    const res=await fetch('http://localhost:5006/admin-login',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify({name,password}),
-    });
-    if(!res.ok){
-        throw new Error('Failed to login');
-    }
-    const data=await res.json();
-    console.log(data);
-    if(data){
-        router.push('/admin');
-    }else{
-        setError('Invalid username or password');
-    }
-}catch(err){
-    console.log(err);
-}
+            const data = await res.json();
 
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to login');
+            }
 
-        
+            if (data.token) {
+                loginAdmin(data.token);
+                router.push('/admin');
+            } else {
+                setError('Login failed: No token received');
+            }
+        } catch (err: any) {
+            console.log(err);
+            setError(err.message || 'An error occurred');
+        }
     };
 
     return (

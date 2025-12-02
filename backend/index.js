@@ -114,13 +114,35 @@ app.post('/admin-login', async (req, res) => {
         }
         const admin = await Admin.findOne({ where: { name: name, password: password } })
         if (admin) {
-            res.status(200).json({ message: "Admin Logged In Successfully", admin })
+            const token = jwt.sign({ id: admin.id, email: admin.email, isAdmin: true }, JWT_SECRET, { expiresIn: '1h' });
+            res.status(200).json({ message: "Admin Logged In Successfully", admin, token })
         } else {
             res.status(401).json({ message: "Admin Not Found" })
         }
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Internal Server Error" })
+    }
+});
+
+app.get('/admin/me', authenticateToken, async (req, res) => {
+    try {
+        // Check if the token belongs to an admin
+        if (!req.user.isAdmin) {
+            return res.status(403).json({ message: "Access denied. Admins only." });
+        }
+
+        const admin = await Admin.findByPk(req.user.id, {
+            attributes: { exclude: ['password'] }
+        });
+        if (admin) {
+            res.status(200).json(admin);
+        } else {
+            res.status(404).json({ message: "Admin not found" });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
@@ -193,7 +215,7 @@ app.get('/my-orders', authenticateToken, async (req, res) => {
 app.get('/all-orders', async (req, res) => {
     try {
         const orders = await Order.findAll({
-            order   : [
+            order: [
                 ['createdAt', 'DESC']
             ]
         });

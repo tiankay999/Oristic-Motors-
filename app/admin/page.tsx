@@ -32,10 +32,21 @@ export default function AdminPage() {
 
     // Check authentication
     useEffect(() => {
-        if (!isAuthenticated) {
-            router.push('/admin/login');
+        if (!isAuthenticated && !localStorage.getItem('adminToken')) {
+            // We check localStorage directly here as a fallback or initial check
+            // But ideally we rely on isAdmin from context. 
+            // However, context might take a moment to load.
+            // Let's rely on the context's isAdmin if possible, or redirect if not admin.
         }
     }, [isAuthenticated, router]);
+
+    // Better approach: Protect the route based on isAdmin
+    useEffect(() => {
+        const token = localStorage.getItem('adminToken');
+        if (!token) {
+            router.push('/admin/login');
+        }
+    }, [router]);
 
     const handleDeleteProduct = (id: string) => {
         if (confirm('Are you sure you want to delete this product?')) {
