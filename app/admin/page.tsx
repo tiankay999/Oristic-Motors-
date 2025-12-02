@@ -29,6 +29,8 @@ export default function AdminPage() {
 
     // Orders state
     const [orders, setOrders] = useState<any[]>([]);
+    const [selectedOrder, setSelectedOrder] = useState<any>(null);
+    const [showOrderModal, setShowOrderModal] = useState(false);
 
     // Check authentication
     useEffect(() => {
@@ -214,8 +216,10 @@ export default function AdminPage() {
                             </div>
                         )}
 
+                        {/* Products List - Responsive */}
                         <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-champagne-dark/30">
-                            <table className="min-w-full divide-y divide-champagne-dark/30">
+                            {/* Desktop Table View */}
+                            <table className="min-w-full divide-y divide-champagne-dark/30 hidden md:table">
                                 <thead className="bg-champagne">
                                     <tr>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Name</th>
@@ -228,30 +232,71 @@ export default function AdminPage() {
                                 <tbody className="bg-white divide-y divide-champagne-dark/30">
                                     {products.map((product) => (
                                         <tr key={product.id} className="hover:bg-champagne-light/50 transition-colors">
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-black">{product.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-black">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+                                                        <img src={product.image} alt="" className="h-full w-full object-cover" />
+                                                    </div>
+                                                    {product.name}
+                                                </div>
+                                            </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70 capitalize">{product.category}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">₵{product.price}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">{product.stock}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <button onClick={() => handleDeleteProduct(product.id.toString())} className="text-red-600 hover:text-red-900">Delete</button>
+                                                <button onClick={() => handleDeleteProduct(product.id.toString())} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-full transition-colors">Delete</button>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+
+                            {/* Mobile Card View */}
+                            <div className="md:hidden divide-y divide-champagne-dark/30">
+                                {products.map((product) => (
+                                    <div key={product.id} className="p-4 flex flex-col gap-3">
+                                        <div className="flex items-start gap-4">
+                                            <div className="h-20 w-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                                <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="text-base font-medium text-luxury-black truncate">{product.name}</h3>
+                                                <p className="text-sm text-luxury-black/60 capitalize">{product.category}</p>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <span className="text-sm font-bold text-luxury-black">₵{product.price}</span>
+                                                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">Stock: {product.stock}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-end pt-2">
+                                            <button
+                                                onClick={() => handleDeleteProduct(product.id.toString())}
+                                                className="w-full sm:w-auto text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                Delete Product
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 ) : (
                     <div>
                         <h1 className="font-serif text-3xl font-bold text-luxury-black mb-8">Orders</h1>
                         <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-champagne-dark/30">
-                            <table className="min-w-full divide-y divide-champagne-dark/30">
+                            {/* Desktop Table View */}
+                            <table className="min-w-full divide-y divide-champagne-dark/30 hidden md:table">
                                 <thead className="bg-champagne">
                                     <tr>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Order ID</th>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Customer</th>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Date</th>
                                         <th className="px-6 py-4 text-left text-xs font-bold text-luxury-black uppercase tracking-wider">Total</th>
+                                        <th className="px-6 py-4 text-right text-xs font-bold text-luxury-black uppercase tracking-wider">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-champagne-dark/30">
@@ -266,10 +311,55 @@ export default function AdminPage() {
                                                 {new Date(order.createdAt).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">₵{order.totalAmount}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedOrder(order);
+                                                        setShowOrderModal(true);
+                                                    }}
+                                                    className="text-luxury-black hover:text-luxury-black/70 bg-gray-100 px-3 py-1 rounded-full transition-colors"
+                                                >
+                                                    View Details
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+
+                            {/* Mobile Card View */}
+                            <div className="md:hidden divide-y divide-champagne-dark/30">
+                                {orders.map((order: any) => (
+                                    <div key={order.id} className="p-4 flex flex-col gap-3">
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h3 className="text-base font-medium text-luxury-black">Order #{order.id}</h3>
+                                                <p className="text-sm text-luxury-black/60">{new Date(order.createdAt).toLocaleDateString()}</p>
+                                            </div>
+                                            <span className="text-base font-bold text-luxury-black">₵{order.totalAmount}</span>
+                                        </div>
+                                        <div className="text-sm text-luxury-black/80">
+                                            <p className="font-medium">{order.firstName} {order.lastName}</p>
+                                            <p className="text-xs text-gray-500">{order.email}</p>
+                                        </div>
+                                        <div className="pt-2">
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedOrder(order);
+                                                    setShowOrderModal(true);
+                                                }}
+                                                className="w-full bg-luxury-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-luxury-black/90 transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                                View Order Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 )}
@@ -465,6 +555,113 @@ export default function AdminPage() {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Order Details Modal */}
+            {showOrderModal && selectedOrder && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8">
+                        <div className="flex justify-between items-start mb-6">
+                            <div>
+                                <h2 className="font-serif text-2xl font-bold text-luxury-black">Order Details</h2>
+                                <p className="text-sm text-gray-500">#{selectedOrder.id}</p>
+                            </div>
+                            <button
+                                onClick={() => setShowOrderModal(false)}
+                                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="space-y-6">
+                            {/* Customer Info */}
+                            <div className="bg-champagne-light/30 p-4 rounded-xl border border-champagne-dark/20">
+                                <h3 className="font-medium text-luxury-black mb-3 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-luxury-black/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    Customer Information
+                                </h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <p className="text-gray-500">Name</p>
+                                        <p className="font-medium text-luxury-black">{selectedOrder.firstName} {selectedOrder.lastName}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-500">Email</p>
+                                        <p className="font-medium text-luxury-black">{selectedOrder.email}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-500">Phone</p>
+                                        <p className="font-medium text-luxury-black">{selectedOrder.phone}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-500">Address</p>
+                                        <p className="font-medium text-luxury-black">{selectedOrder.address}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Order Items */}
+                            <div>
+                                <h3 className="font-medium text-luxury-black mb-3 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-luxury-black/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                    </svg>
+                                    Ordered Items
+                                </h3>
+                                <div className="border border-champagne-dark/20 rounded-xl overflow-hidden">
+                                    <table className="min-w-full divide-y divide-champagne-dark/20">
+                                        <thead className="bg-champagne-light/50">
+                                            <tr>
+                                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                                                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Price</th>
+                                                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Qty</th>
+                                                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-champagne-dark/20 bg-white">
+                                            {selectedOrder.items && Array.isArray(selectedOrder.items) ? (
+                                                selectedOrder.items.map((item: any, index: number) => (
+                                                    <tr key={index}>
+                                                        <td className="px-4 py-3 text-sm text-luxury-black">{item.name || 'Product Name'}</td>
+                                                        <td className="px-4 py-3 text-sm text-gray-500 text-right">₵{item.price}</td>
+                                                        <td className="px-4 py-3 text-sm text-gray-500 text-right">{item.quantity}</td>
+                                                        <td className="px-4 py-3 text-sm font-medium text-luxury-black text-right">₵{item.price * item.quantity}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan={4} className="px-4 py-8 text-center text-gray-500 text-sm">
+                                                        No item details available for this order.
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                        <tfoot className="bg-champagne-light/30">
+                                            <tr>
+                                                <td colSpan={3} className="px-4 py-3 text-sm font-bold text-luxury-black text-right">Total Amount</td>
+                                                <td className="px-4 py-3 text-sm font-bold text-luxury-black text-right">₵{selectedOrder.totalAmount}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 flex justify-end">
+                            <button
+                                onClick={() => setShowOrderModal(false)}
+                                className="bg-luxury-black text-white px-6 py-2.5 rounded-full hover:bg-luxury-black/90 transition-all"
+                            >
+                                Close Details
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
