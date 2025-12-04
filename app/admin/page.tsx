@@ -10,8 +10,10 @@ export default function AdminPage() {
     const router = useRouter();
     const { isAuthenticated, logout } = useAuth();
     const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
-    const { products, addProduct, deleteProduct } = useProducts();
+    const { products, addProduct, updateProduct, deleteProduct } = useProducts();
     const [showAddModal, setShowAddModal] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [editingProductId, setEditingProductId] = useState<string | null>(null);
     const [imageMode, setImageMode] = useState<'url' | 'upload'>('url');
     const [imagePreview, setImagePreview] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +27,7 @@ export default function AdminPage() {
         image: '',
         isFeatured: false,
         stock: '',
+        discountPercent: '',
     });
 
     // Orders state
@@ -56,6 +59,24 @@ export default function AdminPage() {
         }
     };
 
+    const handleEditProduct = (product: Product) => {
+        setIsEditMode(true);
+        setEditingProductId(product.id.toString());
+        setFormData({
+            name: product.name,
+            slug: product.slug,
+            price: product.price.toString(),
+            category: product.category,
+            description: product.description,
+            image: product.image,
+            isFeatured: product.isFeatured || false,
+            stock: product.stock?.toString() || '0',
+            discountPercent: product.discountPercent?.toString() || '0',
+        });
+        setImagePreview(product.image);
+        setShowAddModal(true);
+    };
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -75,39 +96,40 @@ export default function AdminPage() {
         setMessage(null);
 
         try {
-            await addProduct({
-                name: formData.name,
-                slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, '-'),
-                price: parseFloat(formData.price),
-                category: formData.category,
-                description: formData.description,
-                image: formData.image,
-                isFeatured: formData.isFeatured,
-                stock: parseInt(formData.stock),
-            });
-            try {
-                const res = await fetch('http://localhost:5006/products', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
+            if (isEditMode && editingProductId) {
+                // Update existing product
+                await updateProduct(editingProductId, {
+                    name: formData.name,
+                    slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, '-'),
+                    price: parseFloat(formData.price),
+                    category: formData.category,
+                    description: formData.description,
+                    image: formData.image,
+                    isFeatured: formData.isFeatured,
+                    stock: parseInt(formData.stock),
+                    discountPercent: parseInt(formData.discountPercent) || 0,
                 });
-                if (!res.ok) {
-                    throw new Error('Failed to add product');
-                }
-                const data = await res.json();
-                console.log(data);
-
-            } catch (err) {
-                console.log(err);
+                setMessage({ type: 'success', text: 'Product updated successfully!' });
+            } else {
+                // Add new product
+                await addProduct({
+                    name: formData.name,
+                    slug: formData.slug || formData.name.toLowerCase().replace(/\s+/g, '-'),
+                    price: parseFloat(formData.price),
+                    category: formData.category,
+                    description: formData.description,
+                    image: formData.image,
+                    isFeatured: formData.isFeatured,
+                    stock: parseInt(formData.stock),
+                    discountPercent: parseInt(formData.discountPercent) || 0,
+                });
+                setMessage({ type: 'success', text: 'Product added successfully!' });
             }
-
-            // Show success message
-            setMessage({ type: 'success', text: 'Product added successfully!' });
 
             // Reset form
             setShowAddModal(false);
+            setIsEditMode(false);
+            setEditingProductId(null);
             setImageMode('url');
             setImagePreview('');
             setFormData({
@@ -119,12 +141,13 @@ export default function AdminPage() {
                 image: '',
                 isFeatured: false,
                 stock: '',
+                discountPercent: '',
             });
 
             // Clear message after 3 seconds
             setTimeout(() => setMessage(null), 3000);
         } catch (error) {
-            setMessage({ type: 'error', text: 'Failed to add product. Please try again.' });
+            setMessage({ type: 'error', text: `Failed to ${isEditMode ? 'update' : 'add'} product. Please try again.` });
             console.error('Error submitting product:', error);
         } finally {
             setIsSubmitting(false);
@@ -244,7 +267,10 @@ export default function AdminPage() {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">₵{product.price}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-luxury-black/70">{product.stock}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <button onClick={() => handleDeleteProduct(product.id.toString())} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-full transition-colors">Delete</button>
+                                                <div className="flex gap-2 justify-end">
+                                                    <button onClick={() => handleEditProduct(product)} className="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded-full transition-colors">Edit</button>
+                                                    <button onClick={() => handleDeleteProduct(product.id.toString())} className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-full transition-colors">Delete</button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -268,15 +294,24 @@ export default function AdminPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex justify-end pt-2">
+                                        <div className="flex gap-2 pt-2">
+                                            <button
+                                                onClick={() => handleEditProduct(product)}
+                                                className="flex-1 text-blue-600 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                                Edit
+                                            </button>
                                             <button
                                                 onClick={() => handleDeleteProduct(product.id.toString())}
-                                                className="w-full sm:w-auto text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="flex-1 text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
-                                                Delete Product
+                                                Delete
                                             </button>
                                         </div>
                                     </div>
@@ -369,7 +404,7 @@ export default function AdminPage() {
             {showAddModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
                     <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8">
-                        <h2 className="font-serif text-2xl font-bold text-luxury-black mb-6">Add New Product</h2>
+                        <h2 className="font-serif text-2xl font-bold text-luxury-black mb-6">{isEditMode ? 'Edit Product' : 'Add New Product'}</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-luxury-black mb-1">Product Name *</label>
@@ -415,6 +450,20 @@ export default function AdminPage() {
                                         className="w-full px-4 py-2 text-black border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
                                     />
                                 </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-luxury-black mb-1">Discount (%)</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={formData.discountPercent}
+                                    onChange={(e) => setFormData({ ...formData, discountPercent: e.target.value })}
+                                    placeholder="0"
+                                    className="w-full px-4 py-2 text-black border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                />
+                                <p className="text-xs text-luxury-black/60 mt-1">Enter discount percentage (e.g., 20 for 20% off)</p>
                             </div>
 
                             <div>
@@ -540,13 +589,27 @@ export default function AdminPage() {
                                     disabled={isSubmitting}
                                     className="flex-1 bg-luxury-black text-white px-6 py-3 rounded-full hover:bg-luxury-black/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {isSubmitting ? 'Adding Product...' : 'Add Product'}
+                                    {isSubmitting ? (isEditMode ? 'Updating...' : 'Adding...') : (isEditMode ? 'Update Product' : 'Add Product')}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => {
                                         setShowAddModal(false);
+                                        setIsEditMode(false);
+                                        setEditingProductId(null);
                                         setMessage(null);
+                                        setFormData({
+                                            name: '',
+                                            slug: '',
+                                            price: '',
+                                            category: 'wigs',
+                                            description: '',
+                                            image: '',
+                                            isFeatured: false,
+                                            stock: '',
+                                            discountPercent: '',
+                                        });
+                                        setImagePreview('');
                                     }}
                                     disabled={isSubmitting}
                                     className="flex-1 bg-champagne-dark text-luxury-black px-6 py-3 rounded-full hover:bg-champagne-dark/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"

@@ -92,36 +92,36 @@ app.post("/create-admin", async (req, res) => {
     try {
         const { name, password, email } = req.body;
         if (!name || !password || !email) {
-            res.status(401).json({ message: "All the Credentials are Required" })
+            return res.status(401).json({ message: "All the Credentials are Required" });
         }
-        const admin = await Admin.create({ name, password, email })
+        const admin = await Admin.create({ name, password, email });
         if (admin) {
-            res.status(201).json({ message: "Admin Created Successfully", admin })
+            res.status(201).json({ message: "Admin Created Successfully", admin });
         } else {
-            res.status(401).json({ message: "Admin Not Created" })
+            res.status(401).json({ message: "Admin Not Created" });
         }
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-})
+});
 
 app.post('/admin-login', async (req, res) => {
     try {
         const { name, password } = req.body;
         if (!name || !password) {
-            res.status(401).json({ message: "All the Credentials are Required" })
+            return res.status(401).json({ message: "All the Credentials are Required" });
         }
-        const admin = await Admin.findOne({ where: { name: name, password: password } })
+        const admin = await Admin.findOne({ where: { name: name, password: password } });
         if (admin) {
             const token = jwt.sign({ id: admin.id, email: admin.email, isAdmin: true }, JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json({ message: "Admin Logged In Successfully", admin, token })
+            res.status(200).json({ message: "Admin Logged In Successfully", admin, token });
         } else {
-            res.status(401).json({ message: "Admin Not Found" })
+            res.status(401).json({ message: "Admin Not Found" });
         }
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
@@ -150,37 +150,104 @@ app.post('/orders', async (req, res) => {
     try {
         const { firstName, lastName, email, phone, address, totalAmount, price } = req.body;
         if (!firstName || !lastName || !email || !phone || !address || !totalAmount || !price) {
-            res.status(401).json({ message: "All the Credentials are Required" })
+            return res.status(401).json({ message: "All the Credentials are Required" });
         }
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, price })
+        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, price });
         if (order) {
-            res.status(201).json({ message: "Order Created Successfully", order })
+            res.status(201).json({ message: "Order Created Successfully", order });
         } else {
-            res.status(401).json({ message: "Order Not Created" })
+            res.status(401).json({ message: "Order Not Created" });
         }
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-})
+});
+
+// PRODUCT ROUTES
+app.get('/products', async (req, res) => {
+    try {
+        const products = await Product.findAll();
+        res.status(200).json(products);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 app.post('/products', async (req, res) => {
     try {
-        const { name, description, price, image, category, stockStatus } = req.body;
-        if (!name || !description || !price || !image || !category || !stockStatus) {
-            res.status(401).json({ message: "All the Credentials are Required" })
+        const { name, description, price, image, category, stock, discountPercent } = req.body;
+        if (!name || !description || !price || !image || !category) {
+            return res.status(400).json({ message: "Name, description, price, image, and category are required" });
         }
-        const product = await Product.create({ name, description, price, image, category, stockStatus })
-        if (product) {
-            res.status(201).json({ message: "Product Created Successfully", product })
-        } else {
-            res.status(401).json({ message: "Product Not Created" })
-        }
+
+        // Determine stock status based on stock count
+        const stockStatus = parseInt(stock) > 0 ? 'instock' : 'outstock';
+
+        const product = await Product.create({
+            name,
+            description,
+            price,
+            image,
+            category,
+            stock: parseInt(stock) || 0,
+            discountPercent: parseInt(discountPercent) || 0,
+            stockStatus
+        });
+
+        res.status(201).json({ message: "Product Created Successfully", product });
     } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "Internal Server Error" })
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-})
+});
+
+app.put('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, description, price, image, category, stock, discountPercent } = req.body;
+
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        // Determine stock status based on stock count
+        const stockStatus = parseInt(stock) > 0 ? 'instock' : 'outstock';
+
+        await product.update({
+            name,
+            description,
+            price,
+            image,
+            category,
+            stock: parseInt(stock) || 0,
+            discountPercent: parseInt(discountPercent) || 0,
+            stockStatus
+        });
+
+        res.status(200).json({ message: "Product Updated Successfully", product });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+app.delete('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        await product.destroy();
+        res.status(200).json({ message: "Product Deleted Successfully" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 
 app.get('/me', authenticateToken, async (req, res) => {
     try {

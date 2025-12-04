@@ -27,6 +27,16 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    stock: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+    },
+    discountPercent: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+    },
     stockStatus: {
         type: DataTypes.ENUM('instock', 'outstock'),
         defaultValue: 'instock',
