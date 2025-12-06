@@ -60,7 +60,6 @@ export default function CheckoutForm() {
                     address,
                     phone,
                     totalAmount: totalprice,
-                    price: totalprice,
                     items: items // Pass cart items to backend
                 }),
 

@@ -149,15 +149,15 @@ app.get('/admin/me', authenticateToken, async (req, res) => {
 
 app.post('/orders', async (req, res) => {
     try {
-        const { firstName, lastName, email, phone, address, totalAmount, price, items } = req.body;
-        if (!firstName || !lastName || !email || !phone || !address || !totalAmount || !price) {
-            return res.status(401).json({ message: "All the Credentials are Required" });
+        const { firstName, lastName, email, phone, address, totalAmount, items } = req.body;
+        if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {
+            return res.status(400).json({ message: "All fields are required" });
         }
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, price, items });
+        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items });
         if (order) {
             res.status(201).json({ message: "Order Created Successfully", order });
         } else {
-            res.status(401).json({ message: "Order Not Created" });
+            res.status(400).json({ message: "Order Not Created" });
         }
     } catch (err) {
         console.log(err);

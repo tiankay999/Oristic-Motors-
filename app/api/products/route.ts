@@ -4,6 +4,9 @@ import path from 'path';
 
 const DATA_FILE = path.join(process.cwd(), 'data', 'products.json');
 
+// Enable ISR (Incremental Static Regeneration) - revalidate every 60 seconds
+export const revalidate = 60;
+
 // Ensure data directory exists
 async function ensureDataDir() {
     const dataDir = path.join(process.cwd(), 'data');
@@ -23,13 +26,24 @@ export async function GET() {
             const fileContents = await fs.readFile(DATA_FILE, 'utf8');
             const products = JSON.parse(fileContents);
             console.log(`Successfully loaded ${products.length} products`);
-            return NextResponse.json(products);
+
+            // Add aggressive caching headers for CDN and browser caching
+            return NextResponse.json(products, {
+                headers: {
+                    'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+                },
+            });
         } catch (error) {
             // File doesn't exist, initialize with empty array
             console.log('Products file not found, initializing with empty array');
             console.error('File read error:', error);
             await fs.writeFile(DATA_FILE, JSON.stringify([], null, 2));
-            return NextResponse.json([]);
+
+            return NextResponse.json([], {
+                headers: {
+                    'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+                },
+            });
         }
     } catch (error) {
         console.error('Critical error in GET /api/products:', error);

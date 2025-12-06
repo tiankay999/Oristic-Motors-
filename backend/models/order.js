@@ -29,7 +29,7 @@ const Order = sequelize.define('order', {
     },
     totalAmount: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true
+        allowNull: false
     },
     items: {
         type: DataTypes.JSON,

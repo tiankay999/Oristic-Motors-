@@ -24,7 +24,13 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('/api/products');
+            // Add caching to reduce redundant API calls
+            // cache: 'force-cache' with revalidation enables CDN and browser caching
+            const response = await fetch('/api/products', {
+                cache: 'force-cache',
+                next: { revalidate: 60 } // Revalidate every 60 seconds
+            });
+
             if (response.ok) {
                 const data = await response.json();
                 // Validate that data is an array before setting
