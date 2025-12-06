@@ -1,11 +1,53 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useCart } from '../context/CartContext';
 
+
 export default function CartPage() {
     const { items, removeFromCart, updateQuantity, totalPrice } = useCart();
+
+    const router = useRouter();
+
+    const handleProceedToCheckout = async () => {
+        const token = localStorage.getItem('token');
+
+        if (token && items.length > 0) {
+            try {
+                // Clear existing cart in database
+                await fetch('http://localhost:5006/cart', {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                // Sync current items to database
+                for (const item of items) {
+                    await fetch('http://localhost:5006/cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            productname: item.name,
+                            price: item.price,
+                            quantity: item.quantity,
+                            productId: item.id,
+                        }),
+                    });
+                }
+                console.log('Cart synced to database');
+            } catch (error) {
+                console.error('Error syncing cart to database:', error);
+            }
+        }
+
+        router.push('/checkout');
+    };
 
     if (items.length === 0) {
         return (
@@ -111,12 +153,13 @@ export default function CartPage() {
                         </dl>
 
                         <div className="mt-8">
-                            <Link
-                                href="/checkout"
+                            <button
+                                type="button"
+                                onClick={handleProceedToCheckout}
                                 className="w-full flex items-center justify-center rounded-full border border-transparent bg-luxury-black px-6 py-4 text-base font-semibold text-white shadow-sm hover:bg-luxury-black/90 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-champagne transition-all"
                             >
                                 Proceed to Checkout
-                            </Link>
+                            </button>
                         </div>
                     </section>
                 </div>

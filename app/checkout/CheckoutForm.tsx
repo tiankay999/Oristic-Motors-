@@ -59,8 +59,9 @@ export default function CheckoutForm() {
                     lastName,
                     address,
                     phone,
-                    items,
-                    totalPrice: totalprice,
+                    totalAmount: totalprice,
+                    price: totalprice,
+                    items: items // Pass cart items to backend
                 }),
 
 

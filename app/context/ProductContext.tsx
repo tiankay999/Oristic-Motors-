@@ -6,7 +6,7 @@ import { products as initialProducts, Product } from '../lib/data';
 interface ProductContextType {
     products: Product[];
     addProduct: (product: Omit<Product, 'id'>) => Promise<void>;
-    updateProduct: (id: string, product: Partial<Product>) => void;
+    updateProduct: (id: string, product: Partial<Product>) => Promise<void>;
     deleteProduct: (id: string) => Promise<void>;
     isLoading: boolean;
 }
@@ -69,12 +69,21 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    const updateProduct = (id: string, updates: Partial<Product>) => {
-        setProducts((prev) =>
-            prev.map((product) =>
-                product.id === id ? { ...product, ...updates } : product
-            )
-        );
+    const updateProduct = async (id: string, updates: Partial<Product>) => {
+        try {
+            const response = await fetch(`/api/products/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updates),
+            });
+
+            if (response.ok) {
+                // Refresh products from server
+                await fetchProducts();
+            }
+        } catch (error) {
+            console.error('Error updating product:', error);
+        }
     };
 
     const deleteProduct = async (id: string) => {

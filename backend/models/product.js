@@ -27,6 +27,15 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    isFeatured: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+    },
     stock: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
