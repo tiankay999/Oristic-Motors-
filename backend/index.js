@@ -11,9 +11,11 @@ const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
 const Cart = require('./models/cart');
 
-const JWT_SECRET = 'minaglitzy_secret_key'; // In production, use environment variable
+require('dotenv').config();
 
-app.use(express.json());
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // 1) CORS FIRST (above any routes)
 const allowed = ["http://localhost:3000", "http://127.0.0.1:3000"];
@@ -54,7 +56,7 @@ app.post("/signup", async (req, res) => {
         const user = await User.create({ name, password: hashedPassword, email, phone });
 
         if (user) {
-            const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.status(201).json({ message: "User Created Successfully", user: { id: user.id, name: user.name, email: user.email, phone: user.phone }, token });
         } else {
             res.status(400).json({ message: "User Not Created" });
@@ -81,7 +83,7 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Invalid Credentials" });
         }
 
-        const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ message: "Logged In Successfully", user: { id: user.id, name: user.name, email: user.email, phone: user.phone }, token });
     } catch (err) {
         console.log(err);
@@ -115,7 +117,7 @@ app.post('/admin-login', async (req, res) => {
         }
         const admin = await Admin.findOne({ where: { name: name, password: password } });
         if (admin) {
-            const token = jwt.sign({ id: admin.id, email: admin.email, isAdmin: true }, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: admin.id, email: admin.email, isAdmin: true }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.status(200).json({ message: "Admin Logged In Successfully", admin, token });
         } else {
             res.status(401).json({ message: "Admin Not Found" });
@@ -153,7 +155,14 @@ app.post('/orders', async (req, res) => {
         if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {
             return res.status(400).json({ message: "All fields are required" });
         }
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items });
+
+        // Sanitize items to remove large images if they slipped through
+        const sanitizedItems = items ? items.map(item => {
+            const { image, ...rest } = item;
+            return rest;
+        }) : [];
+
+        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items: sanitizedItems });
         if (order) {
             res.status(201).json({ message: "Order Created Successfully", order });
         } else {

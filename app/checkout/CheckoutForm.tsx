@@ -60,7 +60,13 @@ export default function CheckoutForm() {
                     address,
                     phone,
                     totalAmount: totalprice,
-                    items: items // Pass cart items to backend
+                    // Strip heavy image data from items to prevent ER_NET_PACKET_TOO_LARGE
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    items: items.map((item: any) => {
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        const { image, ...rest } = item;
+                        return rest;
+                    })
                 }),
 
 
