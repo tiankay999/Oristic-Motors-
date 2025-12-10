@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
+import FormSpinner from '../components/formspinner';
 
 export default function SignupPage() {
     const [formData, setFormData] = useState({
@@ -162,7 +163,7 @@ export default function SignupPage() {
                             type="submit"
                             className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
                         >
-                            {loading ? "Creating Account..." : "Create Account"}
+                            {loading ? <FormSpinner /> : "Create Account"}
                         </button>
                     </form>
 

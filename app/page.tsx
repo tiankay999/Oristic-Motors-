@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useProducts } from "./context/ProductContext";
 import { categories } from "./lib/data";
 import ProductCard from "./components/ProductCard";
+import LoadingSpinner from "./components/LoadingSpinner";
 
 export default function Home() {
-  const { products } = useProducts();
+  const { products, isLoading } = useProducts();
   const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 24);
 
   return (
@@ -60,11 +61,15 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-10">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <div className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-10">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
 
           <div className="mt-20 text-center">
             <Link

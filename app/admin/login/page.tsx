@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
+import FormSpinner from '../../components/formspinner';
 
 
 export default function AdminLoginPage() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const { loginAdmin } = useAuth();
     const router = useRouter();
@@ -41,6 +43,8 @@ export default function AdminLoginPage() {
         } catch (err: any) {
             console.log(err);
             setError(err.message || 'An error occurred');
+        }finally{
+            setIsLoading(true);
         }
     };
 
@@ -91,12 +95,13 @@ export default function AdminLoginPage() {
                                 {error}
                             </div>
                         )}
-
+                        
                         <button
+                      
                             type="submit"
                             className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
                         >
-                            Sign In
+                        {isLoading  ? <FormSpinner /> : "Sign In"}
                         </button>
                     </form>
                 </div>

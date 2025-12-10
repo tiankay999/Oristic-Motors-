@@ -33,7 +33,7 @@ export default function AboutPage() {
                     {/* Owner Image */}
                     <div className="relative aspect-[3/4] w-full max-w-md mx-auto md:max-w-none rounded-2xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition-transform duration-500">
                         <Image
-                            src="https://scontent.facc1-1.fna.fbcdn.net/v/t39.30808-6/471060448_18473176264039795_3582118303691142227_n.jpg?_nc_cat=111&_nc_cb=99be929b-f3b7c874&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGt9t57_Fs6Q0R6zU2ViSn6at_9e8AXhnJq3_17wBeGctsqS_v_3EinXjb5szJiXJgf3p1CFVYt0XctkcPYgBzQ&_nc_ohc=0RlSn426CEoQ7kNvwEKJ8Nw&_nc_oc=AdmoYQsjCBk67yDY7NV8lho6nIl64hleaFY6G3_F22H7HnVlCiY0IKvAUJ3j1f9dAdc&_nc_zt=23&_nc_ht=scontent.facc1-1.fna&_nc_gid=HgPp2jB_XzE2YL2OQjmHMg&oh=00_AfjAyv5n5G7wdBIxwntvQkaC0GqKTIfNtpk9moVMTsqNxg&oe=692FEF50"
+                            src="/missmina.jpg"
                             alt="Founder of Minaglitzy"
                             fill
                             className="object-cover"

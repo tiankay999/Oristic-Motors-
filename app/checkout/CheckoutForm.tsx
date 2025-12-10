@@ -5,6 +5,7 @@ import { usePaystackPayment } from 'react-paystack';
 import { useCart } from '../context/CartContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import FormSpinner from '../components/formspinner';
 
 export default function CheckoutForm() {
     const { items, totalPrice, clearCart } = useCart();
@@ -16,6 +17,7 @@ export default function CheckoutForm() {
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [totalprice, setTotalPrice] = useState(totalPrice);
+
 
     const config = {
         reference: (new Date()).getTime().toString(),
@@ -60,10 +62,9 @@ export default function CheckoutForm() {
                     address,
                     phone,
                     totalAmount: totalprice,
-                    // Strip heavy image data from items to prevent ER_NET_PACKET_TOO_LARGE
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                
                     items: items.map((item: any) => {
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
                         const { image, ...rest } = item;
                         return rest;
                     })
@@ -79,7 +80,6 @@ export default function CheckoutForm() {
             alert('Something went wrong. Please try again.');
             setIsProcessing(false);
         }
-
 
 
 
@@ -213,7 +213,7 @@ export default function CheckoutForm() {
                                         disabled={isProcessing}
                                         className="w-full rounded-full border border-transparent bg-luxury-black px-6 py-4 text-base font-medium text-white shadow-sm hover:bg-luxury-black/90 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-champagne disabled:bg-gray-400 transition-all"
                                     >
-                                        {isProcessing ? 'Processing...' : `Pay ₵${totalPrice.toLocaleString()}`}
+                                        {isProcessing ? <FormSpinner /> : `Pay ₵${totalPrice.toLocaleString()}`}
                                     </button>
                                 </div>
                             </div>

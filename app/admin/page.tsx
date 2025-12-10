@@ -151,6 +151,7 @@ export default function AdminPage() {
             console.error('Error submitting product:', error);
         } finally {
             setIsSubmitting(false);
+       
         }
     };
 
@@ -191,6 +192,7 @@ export default function AdminPage() {
                     >
                         Products
                     </button>
+                  
                     <button
                         onClick={() => setActiveTab('orders')}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'orders'

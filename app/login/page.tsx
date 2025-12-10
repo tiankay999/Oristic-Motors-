@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
+import LoadingSpinner from '../components/LoadingSpinner';
+import FormSpinner from '../components/formspinner';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -99,7 +101,7 @@ export default function LoginPage() {
                             type="submit"
                             className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
                         >
-                            {loading ? "Logging...In" : "Login"}
+                            {loading ?(<FormSpinner />) : "Login"}
                         </button>
                     </form>
 
