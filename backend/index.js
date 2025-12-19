@@ -40,7 +40,7 @@ app.get('/health', (req, res) => {
     res.status(200).json({ message: 'OK' });
 });
 
-app.post("/signup", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
     try {
         const { name, email, password, phone } = req.body;
         if (!name || !email || !password || !phone) {
@@ -275,9 +275,9 @@ app.get('/me', authenticateToken, async (req, res) => {
     }
 });
 
-app.get('/my-orders', authenticateToken, async (req, res) => {
+app.get('/my-orders',authenticateToken, async (req, res) => {
     try {
-        const orders = await Order.findAll({ where: { email: req.user.email } });
+        const orders = await Order.findAll({ where: { email:req.user.email } });
         if (orders) {
             res.status(200).json(orders);
         } else {
