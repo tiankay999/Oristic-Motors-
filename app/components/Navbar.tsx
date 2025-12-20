@@ -16,7 +16,7 @@ export default function Navbar() {
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
                 <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-white">
-                    Minaglitzy
+                    MinaGlitzy
                 </Link>
 
                 {/* Desktop Navigation */}
