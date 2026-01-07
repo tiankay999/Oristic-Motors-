@@ -151,7 +151,7 @@ export default function AdminPage() {
             console.error('Error submitting product:', error);
         } finally {
             setIsSubmitting(false);
-       
+
         }
     };
 
@@ -192,7 +192,7 @@ export default function AdminPage() {
                     >
                         Products
                     </button>
-                  
+
                     <button
                         onClick={() => setActiveTab('orders')}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === 'orders'
@@ -627,7 +627,7 @@ export default function AdminPage() {
             {/* Order Details Modal */}
             {showOrderModal && selectedOrder && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8">
+                    <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6 md:p-8">
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <h2 className="font-serif text-2xl font-bold text-luxury-black">Order Details</h2>
@@ -684,6 +684,7 @@ export default function AdminPage() {
                                     <table className="min-w-full divide-y divide-champagne-dark/20">
                                         <thead className="bg-champagne-light/50">
                                             <tr>
+                                                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                                                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
                                                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Price</th>
                                                 <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Qty</th>
@@ -692,17 +693,34 @@ export default function AdminPage() {
                                         </thead>
                                         <tbody className="divide-y divide-champagne-dark/20 bg-white">
                                             {selectedOrder.items && Array.isArray(selectedOrder.items) ? (
-                                                selectedOrder.items.map((item: any, index: number) => (
-                                                    <tr key={index}>
-                                                        <td className="px-4 py-3 text-sm text-luxury-black">{item.name || 'Product Name'}</td>
-                                                        <td className="px-4 py-3 text-sm text-gray-500 text-right">₵{item.price}</td>
-                                                        <td className="px-4 py-3 text-sm text-gray-500 text-right">{item.quantity}</td>
-                                                        <td className="px-4 py-3 text-sm font-medium text-luxury-black text-right">₵{item.price * item.quantity}</td>
-                                                    </tr>
-                                                ))
+                                                selectedOrder.items.map((item: any, index: number) => {
+                                                    // Find product image: try item.image first, then fallback to current product list
+                                                    const productImage = item.image || products.find(p => p.id === item.productId || p.name === item.name)?.image || '';
+
+                                                    return (
+                                                        <tr key={index}>
+                                                            <td className="px-4 py-3">
+                                                                <div className="h-12 w-12 rounded-lg overflow-hidden bg-gray-100 border border-champagne-dark/20">
+                                                                    {productImage ? (
+                                                                        <img src={productImage} alt={item.name} className="h-full w-full object-cover" />
+                                                                    ) : (
+                                                                        <div className="h-full w-full flex items-center justify-center text-gray-400 text-xs">No Img</div>
+                                                                    )}
+                                                                </div>
+                                                            </td>
+                                                            <td className="px-4 py-3 text-sm text-luxury-black">{item.name || 'Product Name'}</td>
+                                                            <td className="px-4 py-3 text-sm text-gray-500 text-right">₵{item.price}</td>
+                                                            <td className="px-4 py-3 text-sm text-gray-500 text-right">{item.quantity}</td>
+                                                            <td className="px-4 py-3 text-sm font-medium text-luxury-black text-right">₵{item.price * item.quantity}</td>
+
+                                                        </tr>
+
+
+                                                    );
+                                                })
                                             ) : (
                                                 <tr>
-                                                    <td colSpan={4} className="px-4 py-8 text-center text-gray-500 text-sm">
+                                                    <td colSpan={5} className="px-4 py-8 text-center text-gray-500 text-sm">
                                                         No item details available for this order.
                                                     </td>
                                                 </tr>
@@ -710,7 +728,7 @@ export default function AdminPage() {
                                         </tbody>
                                         <tfoot className="bg-champagne-light/30">
                                             <tr>
-                                                <td colSpan={3} className="px-4 py-3 text-sm font-bold text-luxury-black text-right">Total Amount</td>
+                                                <td colSpan={4} className="px-4 py-3 text-sm font-bold text-luxury-black text-right">Total Amount</td>
                                                 <td className="px-4 py-3 text-sm font-bold text-luxury-black text-right">₵{selectedOrder.totalAmount}</td>
                                             </tr>
                                         </tfoot>

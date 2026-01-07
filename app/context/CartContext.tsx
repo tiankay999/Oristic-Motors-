@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product } from '../lib/data';
+import { useProducts } from './ProductContext';
 
 interface CartItem extends Product {
     quantity: number;
@@ -21,19 +22,59 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
     const [items, setItems] = useState<CartItem[]>([]);
+    const { products } = useProducts();
 
     // Load cart from local storage on mount
     useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
-        if (savedCart) {
-            setItems(JSON.parse(savedCart));
+        try {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                setItems(JSON.parse(savedCart));
+            }
+        } catch (error) {
+            console.error('Error loading cart from localStorage:', error);
+            // Optionally clear corrupted cart
+            // localStorage.removeItem('cart');
         }
     }, []);
 
-    // Save cart to local storage whenever it changes
+    // Save cart to local storage whenever it changes (with sanitization)
     useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(items));
+        try {
+            // Sanitize items: remove large base64 images to prevent QuotaExceededError
+            const itemsToSave = items.map(item => {
+                if (item.image && item.image.length > 1000 && item.image.startsWith('data:')) {
+                    // Create a copy without the image or with a placeholder
+                    return { ...item, image: '' };
+                }
+                return item;
+            });
+            localStorage.setItem('cart', JSON.stringify(itemsToSave));
+        } catch (error) {
+            console.error('Error saving cart to localStorage:', error);
+        }
     }, [items]);
+
+    // Hydrate images from ProductContext if missing (e.g. after reload)
+    useEffect(() => {
+        if (products.length > 0) {
+            setItems(currentItems => {
+                let hasChanges = false;
+                const hydratedItems = currentItems.map(item => {
+                    // If image is missing, try to find it in products
+                    if (!item.image || item.image === '') {
+                        const product = products.find(p => p.id === item.id);
+                        if (product && product.image) {
+                            hasChanges = true;
+                            return { ...item, image: product.image };
+                        }
+                    }
+                    return item;
+                });
+                return hasChanges ? hydratedItems : currentItems;
+            });
+        }
+    }, [products]);
 
     const addToCart = (product: Product) => {
         setItems((prevItems) => {

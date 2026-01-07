@@ -156,13 +156,8 @@ app.post('/orders', async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Sanitize items to remove large images if they slipped through
-        const sanitizedItems = items ? items.map(item => {
-            const { image, ...rest } = item;
-            return rest;
-        }) : [];
-
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items: sanitizedItems });
+        // Create order directly with items (including images)
+        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items });
         if (order) {
             res.status(201).json({ message: "Order Created Successfully", order });
         } else {
@@ -275,9 +270,9 @@ app.get('/me', authenticateToken, async (req, res) => {
     }
 });
 
-app.get('/my-orders',authenticateToken, async (req, res) => {
+app.get('/my-orders', authenticateToken, async (req, res) => {
     try {
-        const orders = await Order.findAll({ where: { email:req.user.email } });
+        const orders = await Order.findAll({ where: { email: req.user.email } });
         if (orders) {
             res.status(200).json(orders);
         } else {
