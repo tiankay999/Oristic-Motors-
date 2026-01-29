@@ -13,7 +13,7 @@ const Cart = require('./models/cart');
 const Signup= require('./routes/signup');
 const Login= require('./routes/login');
 const Orders=require('./routes/orders');
-const 
+const Cart=require('./routes/cart');
 
 
 require('dotenv').config();
@@ -110,90 +110,8 @@ app.get('/admin/me', authenticateToken, async (req, res) => {
     }
 });
 
-// PRODUCT ROUTES
-app.get('/products', async (req, res) => {
-    try {
-        const products = await Product.findAll();
-        res.status(200).json(products);
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
+// PRODUCT ROUTES//
 
-app.post('/products', async (req, res) => {
-    try {
-        const { name, description, price, image, category, stock, discountPercent } = req.body;
-        if (!name || !description || !price || !image || !category) {
-            return res.status(400).json({ message: "Name, description, price, image, and category are required" });
-        }
-
-        // Determine stock status based on stock count
-        const stockStatus = parseInt(stock) > 0 ? 'instock' : 'outstock';
-
-        const product = await Product.create({
-            name,
-            description,
-            price,
-            image,
-            category,
-            stock: parseInt(stock) || 0,
-            discountPercent: parseInt(discountPercent) || 0,
-            stockStatus
-        });
-
-        res.status(201).json({ message: "Product Created Successfully", product });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
-
-app.put('/products/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { name, description, price, image, category, stock, discountPercent } = req.body;
-
-        const product = await Product.findByPk(id);
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-        }
-
-        // Determine stock status based on stock count
-        const stockStatus = parseInt(stock) > 0 ? 'instock' : 'outstock';
-
-        await product.update({
-            name,
-            description,
-            price,
-            image,
-            category,
-            stock: parseInt(stock) || 0,
-            discountPercent: parseInt(discountPercent) || 0,
-            stockStatus
-        });
-
-        res.status(200).json({ message: "Product Updated Successfully", product });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
-
-app.delete('/products/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findByPk(id);
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-        }
-        await product.destroy();
-        res.status(200).json({ message: "Product Deleted Successfully" });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
 
 app.get('/me', authenticateToken, async (req, res) => {
     try {
@@ -252,7 +170,7 @@ app.get('/all-orders', async (req, res) => {
 
 
 // CART ENDPOINTS//
-
+ app.use('/api',Cart);
 
 
 

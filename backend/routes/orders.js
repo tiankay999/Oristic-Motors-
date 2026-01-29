@@ -49,12 +49,4 @@ router.get('/my-orders', authenticateToken, async (req, res) => {
 });
 
 
-
-
-
-
-
-
-
-
 module.exports = router;
