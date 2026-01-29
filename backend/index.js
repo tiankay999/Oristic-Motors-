@@ -10,6 +10,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
 const Cart = require('./models/cart');
+const Signup= require('./routes/signup')
+const Login= require('./routes/login')
+const Orders=require('./routes/orders')
 
 require('dotenv').config();
 
@@ -39,57 +42,13 @@ sequelize.sync()
 app.get('/health', (req, res) => {
     res.status(200).json({ message: 'OK' });
 });
+//sigup api 
+app.use('/api',Signup)
 
-app.post("/api/signup", async (req, res) => {
-    try {
-        const { name, email, password, phone } = req.body;
-        if (!name || !email || !password || !phone) {
-            return res.status(400).json({ message: "All Credentials are Required" });
-        }
 
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
-        }
+// login 
+app.use("/api",Login)
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ name, password: hashedPassword, email, phone });
-
-        if (user) {
-            const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.status(201).json({ message: "User Created Successfully", user: { id: user.id, name: user.name, email: user.email, phone: user.phone }, token });
-        } else {
-            res.status(400).json({ message: "User Not Created" });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
-
-app.post("/login", async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ message: "All Credentials are Required" });
-        }
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return res.status(404).json({ message: "User not Found" });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: "Invalid Credentials" });
-        }
-
-        const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.status(200).json({ message: "Logged In Successfully", user: { id: user.id, name: user.name, email: user.email, phone: user.phone }, token });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
 
 app.post("/create-admin", async (req, res) => {
     try {
@@ -142,26 +101,6 @@ app.get('/admin/me', authenticateToken, async (req, res) => {
             res.status(200).json(admin);
         } else {
             res.status(404).json({ message: "Admin not found" });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
-
-app.post('/orders', async (req, res) => {
-    try {
-        const { firstName, lastName, email, phone, address, totalAmount, items } = req.body;
-        if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        // Create order directly with items (including images)
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items });
-        if (order) {
-            res.status(201).json({ message: "Order Created Successfully", order });
-        } else {
-            res.status(400).json({ message: "Order Not Created" });
         }
     } catch (err) {
         console.log(err);
@@ -267,22 +206,27 @@ app.get('/me', authenticateToken, async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
-    }
-});
+    }});
 
-app.get('/my-orders', authenticateToken, async (req, res) => {
-    try {
-        const orders = await Order.findAll({ where: { email: req.user.email } });
-        if (orders) {
-            res.status(200).json(orders);
-        } else {
-            res.status(404).json({ message: "No orders found" });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
+
+    //orders routes//
+ app.use('/api',Orders)
+
+
+
+
+
+
+
+// all orders api//
+app.use('/api/',Orders)
+
+
+
+
+
+
+
 
 app.get('/all-orders', async (req, res) => {
     try {
