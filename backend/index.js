@@ -10,9 +10,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
 const Cart = require('./models/cart');
-const Signup= require('./routes/signup')
-const Login= require('./routes/login')
-const Orders=require('./routes/orders')
+const Signup= require('./routes/signup');
+const Login= require('./routes/login');
+const Orders=require('./routes/orders');
+const 
+
 
 require('dotenv').config();
 
@@ -219,7 +221,7 @@ app.get('/me', authenticateToken, async (req, res) => {
 
 
 // all orders api//
-app.use('/api/all-orders',Orders)
+
 
 
 
@@ -249,48 +251,9 @@ app.get('/all-orders', async (req, res) => {
 
 
 
-// CART ENDPOINTS  
-app.post('/cart', authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const { productname, price, quantity, productId } = req.body;
-        const cart = await Cart.create({ userId, productname, price, quantity, productId });
-        if (cart) {
-            res.status(201).json({ message: "Cart Created Successfully", cart });
-        } else {
-            res.status(401).json({ message: "Cart Not Created" });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
+// CART ENDPOINTS//
 
-app.delete('/cart', authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const deleted = await Cart.destroy({ where: { userId } });
-        res.status(200).json({ message: "Cart Cleared Successfully", deleted });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
 
-app.get('/cart-orders', authenticateToken, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const cart = await Cart.findAll({ where: { userId } });
-        if (cart) {
-            res.status(200).json(cart);
-        } else {
-            res.status(404).json({ message: "No cart found" });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-});
 
 
 
