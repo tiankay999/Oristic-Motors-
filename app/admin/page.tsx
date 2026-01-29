@@ -158,7 +158,7 @@ export default function AdminPage() {
     // Fetch orders
     useEffect(() => {
         if (activeTab === 'orders') {
-            fetch('http://localhost:5006/all-orders')
+            fetch('http://localhost:5006/api/all-orders')
                 .then(res => res.json())
                 .then(data => {
                     if (Array.isArray(data)) {

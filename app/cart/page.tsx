@@ -17,7 +17,7 @@ export default function CartPage() {
         if (token && items.length > 0) {
             try {
                 // Clear existing cart in database
-                await fetch('http://localhost:5006/cart', {
+                await fetch('http://localhost:5006/api/cart', {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -26,7 +26,7 @@ export default function CartPage() {
 
                 // Sync current items to database
                 for (const item of items) {
-                    await fetch('http://localhost:5006/cart', {
+                    await fetch('http://localhost:5006/api/cart', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

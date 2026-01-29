@@ -50,7 +50,7 @@ export default function CheckoutForm() {
         setIsProcessing(true);
 
         try {
-            const res = await fetch('http://localhost:5006/orders', {
+            const res = await fetch('http://localhost:5006/api/orders', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

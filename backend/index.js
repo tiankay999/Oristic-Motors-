@@ -14,6 +14,7 @@ const Signup= require('./routes/signup');
 const Login= require('./routes/login');
 const Orders=require('./routes/orders');
 const Cart=require('./routes/cart');
+const Product=require('./routes/product');
 
 
 require('dotenv').config();
@@ -111,6 +112,8 @@ app.get('/admin/me', authenticateToken, async (req, res) => {
 });
 
 // PRODUCT ROUTES//
+app.use('/api',Product); 
+
 
 
 app.get('/me', authenticateToken, async (req, res) => {
