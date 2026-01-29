@@ -219,7 +219,7 @@ app.get('/me', authenticateToken, async (req, res) => {
 
 
 // all orders api//
-app.use('/api/',Orders)
+app.use('/api/all-orders',Orders)
 
 
 
