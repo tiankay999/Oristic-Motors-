@@ -6,7 +6,6 @@ const Admin = require('./models/admin');
 const Order = require('./models/order');
 const Product = require('./models/product');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
 const CartRoutes = require('./routes/cart');
@@ -132,7 +131,7 @@ app.get('/me', authenticateToken, async (req, res) => {
 
 
 //orders routes//
-app.use('/api', Orders)
+app.use('/api',Orders)
 
 
 
@@ -172,7 +171,7 @@ app.get('/all-orders', async (req, res) => {
 
 
 // CART ENDPOINTS//
-app.use('/api', CartRoutes);
+app.use('/api',CartRoutes);
 
 
 
