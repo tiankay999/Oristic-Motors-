@@ -13,8 +13,6 @@ const Cart = require('./models/cart');
 const Signup= require('./routes/signup');
 const Login= require('./routes/login');
 const Orders=require('./routes/orders');
-const Cart=require('./routes/cart');
-const Product=require('./routes/product');
 
 
 require('dotenv').config();
