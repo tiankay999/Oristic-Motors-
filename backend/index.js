@@ -4,14 +4,14 @@ const { sequelize } = require('./config/database');
 const User = require('./models/user');
 const Admin = require('./models/admin');
 const Order = require('./models/order');
-const Product = require('./models/product');
+const ProductRoutes = require('./routes/product');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
 const CartRoutes = require('./routes/cart');
-const Signup = require('./routes/signup');
-const Login = require('./routes/login');
-const Orders = require('./routes/orders');
+const SignupRoutes = require('./routes/signup');
+const LoginRoutes = require('./routes/login');
+const OrdersRoutes = require('./routes/orders');
 
 
 require('dotenv').config();
@@ -43,11 +43,11 @@ app.get('/health', (req, res) => {
     res.status(200).json({ message: 'OK' });
 });
 //sigup api 
-app.use('/api', Signup)
+app.use('/api', SignupRoutes)
 
 
 // login 
-app.use("/api", Login)
+app.use("/api", LoginRoutes)
 
 
 app.post("/create-admin", async (req, res) => {
@@ -109,7 +109,7 @@ app.get('/admin/me', authenticateToken, async (req, res) => {
 });
 
 // PRODUCT ROUTES//
-app.use('/api', Product);
+app.use('/api', ProductRoutes);
 
 
 
@@ -131,7 +131,7 @@ app.get('/me', authenticateToken, async (req, res) => {
 
 
 //orders routes//
-app.use('/api',Orders)
+app.use('/api', OrdersRoutes)
 
 
 
@@ -147,6 +147,9 @@ app.use('/api',Orders)
 
 
 
+
+
+///this the admins endpoint for orders //
 
 
 app.get('/all-orders', async (req, res) => {
@@ -171,7 +174,7 @@ app.get('/all-orders', async (req, res) => {
 
 
 // CART ENDPOINTS//
-app.use('/api',CartRoutes);
+app.use('/api', CartRoutes);
 
 
 

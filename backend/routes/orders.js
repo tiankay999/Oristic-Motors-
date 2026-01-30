@@ -6,7 +6,7 @@ const authenticateToken = require('../middleware/auth');
 
 
 
-router.post('/orders', async (req, res) => {
+router.post('/orders', authenticateToken, async (req, res) => {
     try {
         const { firstName, lastName, email, phone, address, totalAmount, items } = req.body;
         if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {

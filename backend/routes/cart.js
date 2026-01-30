@@ -11,7 +11,7 @@ router.post('/cart', authenticateToken, async (req, res) => {
     try {
         const userId = req.user.id;
         const { productname, price, quantity, productId } = req.body;
-        const cart = await  Cart.create({ userId, productname, price, quantity, productId });
+        const cart = await Cart.create({ userId, productname, price, quantity, productId });
         if (cart) {
             res.status(201).json({ message: "Cart Created Successfully", cart });
         } else {
