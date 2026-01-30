@@ -9,10 +9,10 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authenticateToken = require('./middleware/auth');
-const Cart = require('./models/cart');
-const Signup= require('./routes/signup');
-const Login= require('./routes/login');
-const Orders=require('./routes/orders');
+const CartRoutes = require('./routes/cart');
+const Signup = require('./routes/signup');
+const Login = require('./routes/login');
+const Orders = require('./routes/orders');
 
 
 require('dotenv').config();
@@ -44,11 +44,11 @@ app.get('/health', (req, res) => {
     res.status(200).json({ message: 'OK' });
 });
 //sigup api 
-app.use('/api',Signup)
+app.use('/api', Signup)
 
 
 // login 
-app.use("/api",Login)
+app.use("/api", Login)
 
 
 app.post("/create-admin", async (req, res) => {
@@ -110,7 +110,7 @@ app.get('/admin/me', authenticateToken, async (req, res) => {
 });
 
 // PRODUCT ROUTES//
-app.use('/api',Product); 
+app.use('/api', Product);
 
 
 
@@ -127,11 +127,12 @@ app.get('/me', authenticateToken, async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal Server Error" });
-    }});
+    }
+});
 
 
-    //orders routes//
- app.use('/api',Orders)
+//orders routes//
+app.use('/api', Orders)
 
 
 
@@ -171,7 +172,7 @@ app.get('/all-orders', async (req, res) => {
 
 
 // CART ENDPOINTS//
- app.use('/api',Cart);
+app.use('/api', CartRoutes);
 
 
 

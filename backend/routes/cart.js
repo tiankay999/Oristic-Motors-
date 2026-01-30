@@ -1,7 +1,7 @@
-const express= require('express');
-const router= express.Router();
-const {Cart}= require('../models/cart');
-const authenticateToken= require('../middleware/auth');
+const express = require('express');
+const router = express.Router();
+const Cart = require('../models/cart');
+const authenticateToken = require('../middleware/auth');
 
 
 
@@ -49,4 +49,4 @@ router.get('/cart-orders', authenticateToken, async (req, res) => {
     }
 });
 
-module.exports=router;
+module.exports = router;
