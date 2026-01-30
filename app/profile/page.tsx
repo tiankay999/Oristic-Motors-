@@ -34,7 +34,7 @@ export default function ProfilePage() {
             if (!token) return;
 
             try {
-                const res = await fetch(`http://localhost:5006/api/my-orders`, {
+                const res = await fetch(`http://localhost:5006/my-orders`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
