@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { usePaystackPayment } from 'react-paystack';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import FormSpinner from '../components/formspinner';
 
 export default function CheckoutForm() {
     const { items, totalPrice, clearCart } = useCart();
+    const { token } = useAuth();
     const router = useRouter();
     const [isProcessing, setIsProcessing] = useState(false);
     const [email, setEmail] = useState('');
@@ -54,6 +56,7 @@ export default function CheckoutForm() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     email,
@@ -62,7 +65,7 @@ export default function CheckoutForm() {
                     address,
                     phone,
                     totalAmount: totalprice,
-                
+
                     items: items.map((item: any) => {
 
                         const { image, ...rest } = item;

@@ -6,7 +6,7 @@ const authenticateToken = require('../middleware/auth');
 
 
 
-router.post('/orders', authenticateToken, async (req, res) => {
+router.post('/orders',authenticateToken, async (req, res) => {
     try {
         const { firstName, lastName, email, phone, address, totalAmount, items } = req.body;
         if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {
@@ -34,7 +34,7 @@ router.post('/orders', authenticateToken, async (req, res) => {
 
 
 
-router.get('/my-orders', authenticateToken, async (req, res) => {
+router.get('/my-orders',authenticateToken, async (req, res) => {
     try {
         const orders = await Order.findAll({ where: { email: req.user.email } });
         if (orders) {
