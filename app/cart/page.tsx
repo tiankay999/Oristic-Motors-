@@ -76,9 +76,9 @@ export default function CartPage() {
                                 <li key={item.id} className="flex py-8">
                                     <div className="shrink-0">
                                         <div className="relative h-28 w-28 rounded-xl overflow-hidden bg-champagne shadow-sm">
-                                            {item.image ? (
+                                            {((item.images && item.images[0]) || item.image) ? (
                                                 <Image
-                                                    src={item.image}
+                                                    src={(item.images && item.images[0]) || item.image || ''}
                                                     alt={item.name}
                                                     fill
                                                     className="object-cover"

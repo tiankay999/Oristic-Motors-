@@ -43,9 +43,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         try {
             // Sanitize items: remove large base64 images to prevent QuotaExceededError
             const itemsToSave = items.map(item => {
-                if (item.image && item.image.length > 1000 && item.image.startsWith('data:')) {
+                // Check images array first, then legacy image field
+                const primaryImage = (item.images && item.images[0]) || item.image || '';
+                if (primaryImage.length > 1000 && primaryImage.startsWith('data:')) {
                     // Create a copy without the image or with a placeholder
-                    return { ...item, image: '' };
+                    return { ...item, image: '', images: [] };
                 }
                 return item;
             });
@@ -55,18 +57,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
     }, [items]);
 
-    // Hydrate images from ProductContext if missing (e.g. after reload)
     useEffect(() => {
         if (products.length > 0) {
             setItems(currentItems => {
                 let hasChanges = false;
                 const hydratedItems = currentItems.map(item => {
-                    // If image is missing, try to find it in products
-                    if (!item.image || item.image === '') {
+                    // Check if images are missing
+                    const hasImages = item.images && item.images.length > 0 && item.images[0];
+                    const hasLegacyImage = item.image && item.image !== '';
+                    if (!hasImages && !hasLegacyImage) {
                         const product = products.find(p => p.id === item.id);
-                        if (product && product.image) {
-                            hasChanges = true;
-                            return { ...item, image: product.image };
+                        if (product) {
+                            const productImage = (product.images && product.images[0]) || product.image || '';
+                            if (productImage) {
+                                hasChanges = true;
+                                return { ...item, image: productImage, images: product.images || [] };
+                            }
                         }
                     }
                     return item;

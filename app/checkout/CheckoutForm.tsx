@@ -234,7 +234,7 @@ export default function CheckoutForm() {
                                         <div className="shrink-0">
                                             <div className="relative h-20 w-20 rounded-lg bg-white overflow-hidden">
                                                 <Image
-                                                    src={item.image}
+                                                    src={(item.images && item.images[0]) || item.image || '/placeholder.jpg'}
                                                     alt={item.name}
                                                     fill
                                                     className="object-cover"
