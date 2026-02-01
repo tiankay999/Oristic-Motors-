@@ -14,8 +14,8 @@ export default function AdminPage() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
     const [editingProductId, setEditingProductId] = useState<string | null>(null);
-    const [imageMode, setImageMode] = useState<'url' | 'upload'>('url');
-    const [imagePreview, setImagePreview] = useState('');
+    const [imageMode, setImageMode] = useState<('url' | 'upload')[]>(['url', 'url', 'url']);
+    const [imagePreviews, setImagePreviews] = useState<string[]>(['', '', '']);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const [formData, setFormData] = useState({
@@ -24,7 +24,7 @@ export default function AdminPage() {
         price: '',
         category: 'wigs' as Product['category'],
         description: '',
-        image: '',
+        images: ['', '', ''],
         isFeatured: false,
         stock: '',
         discountPercent: '',
@@ -62,38 +62,69 @@ export default function AdminPage() {
     const handleEditProduct = (product: Product) => {
         setIsEditMode(true);
         setEditingProductId(product.id.toString());
+        // Handle both old single image and new images array format
+        const productImages = product.images && product.images.length > 0
+            ? [...product.images, '', '', ''].slice(0, 3)
+            : [product.image || '', '', ''];
         setFormData({
             name: product.name,
             slug: product.slug,
             price: product.price.toString(),
             category: product.category,
             description: product.description,
-            image: product.image,
+            images: productImages,
             isFeatured: product.isFeatured || false,
             stock: product.stock?.toString() || '0',
             discountPercent: product.discountPercent?.toString() || '0',
         });
-        setImagePreview(product.image);
+        setImagePreviews(productImages);
         setShowAddModal(true);
     };
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const file = e.target.files?.[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64String = reader.result as string;
-                setFormData({ ...formData, image: base64String });
-                setImagePreview(base64String);
+                const newImages = [...formData.images];
+                newImages[index] = base64String;
+                setFormData({ ...formData, images: newImages });
+                const newPreviews = [...imagePreviews];
+                newPreviews[index] = base64String;
+                setImagePreviews(newPreviews);
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleImageUrlChange = (url: string, index: number) => {
+        const newImages = [...formData.images];
+        newImages[index] = url;
+        setFormData({ ...formData, images: newImages });
+        const newPreviews = [...imagePreviews];
+        newPreviews[index] = url;
+        setImagePreviews(newPreviews);
+    };
+
+    const setImageModeForIndex = (mode: 'url' | 'upload', index: number) => {
+        const newModes = [...imageMode];
+        newModes[index] = mode;
+        setImageMode(newModes);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         setMessage(null);
+
+        // Filter out empty images
+        const validImages = formData.images.filter(img => img && img.trim());
+        if (validImages.length === 0) {
+            setMessage({ type: 'error', text: 'At least one image is required.' });
+            setIsSubmitting(false);
+            return;
+        }
 
         try {
             if (isEditMode && editingProductId) {
@@ -104,7 +135,7 @@ export default function AdminPage() {
                     price: parseFloat(formData.price),
                     category: formData.category,
                     description: formData.description,
-                    image: formData.image,
+                    images: validImages,
                     isFeatured: formData.isFeatured,
                     stock: parseInt(formData.stock),
                     discountPercent: parseInt(formData.discountPercent) || 0,
@@ -118,7 +149,7 @@ export default function AdminPage() {
                     price: parseFloat(formData.price),
                     category: formData.category,
                     description: formData.description,
-                    image: formData.image,
+                    images: validImages,
                     isFeatured: formData.isFeatured,
                     stock: parseInt(formData.stock),
                     discountPercent: parseInt(formData.discountPercent) || 0,
@@ -130,15 +161,15 @@ export default function AdminPage() {
             setShowAddModal(false);
             setIsEditMode(false);
             setEditingProductId(null);
-            setImageMode('url');
-            setImagePreview('');
+            setImageMode(['url', 'url', 'url']);
+            setImagePreviews(['', '', '']);
             setFormData({
                 name: '',
                 slug: '',
                 price: '',
                 category: 'wigs',
                 description: '',
-                image: '',
+                images: ['', '', ''],
                 isFeatured: false,
                 stock: '',
                 discountPercent: '',

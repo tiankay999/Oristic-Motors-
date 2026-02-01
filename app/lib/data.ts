@@ -5,7 +5,8 @@ export interface Product {
     price: number;
     category: 'wigs' | 'sunglasses' | 'turbans' | 'bags' | 'footwear' | 'skincare' | 'scarfs' | 'more';
     description: string;
-    image: string;
+    images: string[];
+    image?: string; // Backward compatibility - derived from images[0]
     isFeatured: boolean;
     discountPercent?: number;
     stock: number;
@@ -28,7 +29,7 @@ export const products: Product[] = [
         price: 1500,
         category: 'wigs',
         description: 'Premium quality bone straight hair, silky and smooth. Perfect for a glamorous look.',
-        image: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&q=80&w=800'],
         isFeatured: true,
         stock: 10,
     },
@@ -39,7 +40,7 @@ export const products: Product[] = [
         price: 150,
         category: 'sunglasses',
         description: 'Chic oversized sunglasses for a glamorous look. UV protection included.',
-        image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=800'],
         isFeatured: true,
         stock: 25,
     },
@@ -50,7 +51,7 @@ export const products: Product[] = [
         price: 80,
         category: 'turbans',
         description: 'Soft velvet turban, perfect for any occasion. Comfortable and stylish.',
-        image: 'https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1582095133179-bfd08e2fc6b3?auto=format&fit=crop&q=80&w=800'],
         isFeatured: false,
         stock: 50,
     },
@@ -61,7 +62,7 @@ export const products: Product[] = [
         price: 450,
         category: 'bags',
         description: 'Genuine leather crossbody bag with gold accents. Spacious and elegant.',
-        image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=800'],
         isFeatured: true,
         stock: 15,
     },
@@ -72,7 +73,7 @@ export const products: Product[] = [
         price: 300,
         category: 'footwear',
         description: 'Elegant gold heels for your special events. Comfortable fit.',
-        image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=800'],
         isFeatured: false,
         stock: 20,
     },
@@ -83,7 +84,7 @@ export const products: Product[] = [
         price: 120,
         category: 'skincare',
         description: 'Rejuvenating serum for glowing skin. All natural ingredients.',
-        image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&q=80&w=800'],
         isFeatured: true,
         stock: 40,
     },
@@ -94,7 +95,7 @@ export const products: Product[] = [
         price: 90,
         category: 'scarfs',
         description: '100% silk scarf with unique patterns. Soft and luxurious.',
-        image: 'https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?auto=format&fit=crop&q=80&w=800',
+        images: ['https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?auto=format&fit=crop&q=80&w=800'],
         isFeatured: false,
         stock: 30,
     },
@@ -105,7 +106,7 @@ export const products: Product[] = [
         price: 200,
         category: 'scarfs',
         description: '100% silk scarf with unique patterns. Soft and luxurious.',
-        image: 'https://eu-images.contentstack.com/v3/assets/blt7dcd2cfbc90d45de/bltf3590877fe05ae6f/633ec071c3ed6a1034872f1c/1-1saren.jpg?format=pjpg&auto=webp&quality=75%2C90&width=3840',
+        images: ['https://eu-images.contentstack.com/v3/assets/blt7dcd2cfbc90d45de/bltf3590877fe05ae6f/633ec071c3ed6a1034872f1c/1-1saren.jpg?format=pjpg&auto=webp&quality=75%2C90&width=3840'],
         isFeatured: true,
         stock: 30,
     },
@@ -116,7 +117,7 @@ export const products: Product[] = [
         price: 400,
         category: 'wigs',
         description: 'Authentic bone straight hair wig  ',
-        image: 'https://t4.ftcdn.net/jpg/17/19/63/13/240_F_1719631314_fOaIB2ipNNFTOg9jcrIZvriGOTs9MQcf.jpg',
+        images: ['https://t4.ftcdn.net/jpg/17/19/63/13/240_F_1719631314_fOaIB2ipNNFTOg9jcrIZvriGOTs9MQcf.jpg'],
         isFeatured: true,
         stock: 30,
     },
@@ -127,7 +128,7 @@ export const products: Product[] = [
         price: 250,
         category: 'turbans',
         description: ' Brown Silk Turban Authentically Produced from Singapore   ',
-        image: 'https://images-eu.ssl-images-amazon.com/images/I/51Xi69LmQ0L._AC_UL600_SR600,600_.jpg',
+        images: ['https://images-eu.ssl-images-amazon.com/images/I/51Xi69LmQ0L._AC_UL600_SR600,600_.jpg'],
         isFeatured: true,
         stock: 15,
     },
