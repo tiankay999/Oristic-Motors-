@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { use } from 'react';
+import { use, useState } from 'react';
 import { useProducts } from '../../context/ProductContext';
 import { useCart } from '../../context/CartContext';
 import ProductCard from '../../components/ProductCard';
@@ -11,12 +11,18 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
     const { slug } = use(params);
     const { addToCart } = useCart();
     const { products } = useProducts();
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     const product = products.find((p) => p.slug === slug);
 
     if (!product) {
         notFound();
     }
+
+    // Get images array - handle both new images array and legacy image field
+    const productImages = product.images && product.images.length > 0
+        ? product.images.filter(img => img && img.trim())
+        : (product.image ? [product.image] : []);
 
     const relatedProducts = products
         .filter((p) => p.category === product.category && p.id !== product.id)
@@ -27,10 +33,11 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12">
                 <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-12">
                     {/* Image Gallery */}
-                    <div className="flex flex-col-reverse">
+                    <div className="flex flex-col">
+                        {/* Main Image */}
                         <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-champagne shadow-lg">
                             <Image
-                                src={product.image}
+                                src={productImages[selectedImageIndex] || '/placeholder.jpg'}
                                 alt={product.name}
                                 width={800}
                                 height={1000}
@@ -38,6 +45,29 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                 priority
                             />
                         </div>
+
+                        {/* Thumbnail Navigation - only show if more than 1 image */}
+                        {productImages.length > 1 && (
+                            <div className="mt-4 flex gap-3 justify-center">
+                                {productImages.map((img, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setSelectedImageIndex(index)}
+                                        className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImageIndex === index
+                                                ? 'border-luxury-black shadow-md'
+                                                : 'border-transparent opacity-70 hover:opacity-100'
+                                            }`}
+                                    >
+                                        <Image
+                                            src={img}
+                                            alt={`${product.name} - Image ${index + 1}`}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Product Info */}

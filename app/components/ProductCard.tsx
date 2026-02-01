@@ -16,7 +16,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="group relative flex flex-col overflow-hidden rounded-xl bg-champagne shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
             <Link href={`/product/${product.slug}`} className="relative aspect-[3/4] w-full overflow-hidden bg-champagne-dark/20">
                 <Image
-                    src={product.image}
+                    src={(product.images && product.images[0]) || product.image || '/placeholder.jpg'}
                     alt={product.name}
                     fill
                     className={`object-cover transition-transform duration-500 group-hover:scale-105 ${product.stock <= 0 ? 'opacity-50 grayscale' : ''}`}
@@ -54,8 +54,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                         onClick={() => addToCart(product)}
                         disabled={product.stock <= 0}
                         className={`rounded-full px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-white transition-all whitespace-nowrap ${product.stock <= 0
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-luxury-black hover:bg-luxury-black/80 hover:shadow-lg active:scale-95'
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-luxury-black hover:bg-luxury-black/80 hover:shadow-lg active:scale-95'
                             }`}
                     >
                         {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}

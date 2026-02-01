@@ -291,7 +291,7 @@ export default function AdminPage() {
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-luxury-black">
                                                 <div className="flex items-center gap-3">
                                                     <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
-                                                        <img src={product.image} alt="" className="h-full w-full object-cover" />
+                                                        <img src={(product.images && product.images[0]) || product.image || ''} alt="" className="h-full w-full object-cover" />
                                                     </div>
                                                     {product.name}
                                                 </div>
@@ -316,7 +316,7 @@ export default function AdminPage() {
                                     <div key={product.id} className="p-4 flex flex-col gap-3">
                                         <div className="flex items-start gap-4">
                                             <div className="h-20 w-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                                                <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                                                <img src={(product.images && product.images[0]) || product.image || ''} alt={product.name} className="h-full w-full object-cover" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <h3 className="text-base font-medium text-luxury-black truncate">{product.name}</h3>
@@ -530,79 +530,91 @@ export default function AdminPage() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-luxury-black mb-2">Product Image *</label>
+                                <label className="block text-sm font-medium text-luxury-black mb-2">Product Images * (Up to 3)</label>
+                                <p className="text-xs text-luxury-black/60 mb-4">At least one image is required. You can add up to 3 images.</p>
 
-                                {/* Tab Buttons */}
-                                <div className="flex gap-2 mb-3">
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setImageMode('url');
-                                            setImagePreview('');
-                                        }}
-                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${imageMode === 'url'
-                                            ? 'bg-luxury-black text-white'
-                                            : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
-                                            }`}
-                                    >
-                                        Image URL
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setImageMode('upload')}
-                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${imageMode === 'upload'
-                                            ? 'bg-luxury-black text-white'
-                                            : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
-                                            }`}
-                                    >
-                                        Upload from Device
-                                    </button>
-                                </div>
+                                <div className="space-y-6">
+                                    {[0, 1, 2].map((index) => (
+                                        <div key={index} className="p-4 border border-champagne-dark/30 rounded-lg bg-champagne-light/50">
+                                            <p className="text-sm font-medium text-luxury-black mb-2">
+                                                Image {index + 1} {index === 0 && <span className="text-red-500">*</span>}
+                                            </p>
 
-                                {/* URL Input */}
-                                {imageMode === 'url' && (
-                                    <input
-                                        type="url"
-                                        required={imageMode === 'url'}
-                                        value={formData.image}
-                                        onChange={(e) => {
-                                            setFormData({ ...formData, image: e.target.value });
-                                            setImagePreview(e.target.value);
-                                        }}
-                                        placeholder="https://images.unsplash.com/..."
-                                        className="w-full px-4 py-2 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
-                                    />
-                                )}
+                                            {/* Tab Buttons for each image */}
+                                            <div className="flex gap-2 mb-3">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setImageModeForIndex('url', index)}
+                                                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${imageMode[index] === 'url'
+                                                        ? 'bg-luxury-black text-white'
+                                                        : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
+                                                        }`}
+                                                >
+                                                    URL
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setImageModeForIndex('upload', index)}
+                                                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${imageMode[index] === 'upload'
+                                                        ? 'bg-luxury-black text-white'
+                                                        : 'bg-champagne text-luxury-black hover:bg-champagne-dark'
+                                                        }`}
+                                                >
+                                                    Upload
+                                                </button>
+                                            </div>
 
-                                {/* File Upload */}
-                                {imageMode === 'upload' && (
-                                    <div>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            required={imageMode === 'upload' && !formData.image}
-                                            onChange={handleImageUpload}
-                                            className="w-full px-4 py-2 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-luxury-black file:text-white hover:file:bg-luxury-black/90"
-                                        />
-                                        <p className="mt-1 text-xs text-luxury-black/60">
-                                            Upload an image from your device (JPG, PNG, WebP)
-                                        </p>
-                                    </div>
-                                )}
+                                            {/* URL Input */}
+                                            {imageMode[index] === 'url' && (
+                                                <input
+                                                    type="url"
+                                                    required={index === 0 && !formData.images[0]}
+                                                    value={formData.images[index]}
+                                                    onChange={(e) => handleImageUrlChange(e.target.value, index)}
+                                                    placeholder="https://images.unsplash.com/..."
+                                                    className="w-full px-4 py-2 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black"
+                                                />
+                                            )}
 
-                                {/* Image Preview */}
-                                {(imagePreview || formData.image) && (
-                                    <div className="mt-3">
-                                        <p className="text-xs font-medium text-luxury-black mb-2">Preview:</p>
-                                        <div className="relative w-full h-48 rounded-lg overflow-hidden bg-champagne-dark/20">
-                                            <img
-                                                src={imagePreview || formData.image}
-                                                alt="Preview"
-                                                className="w-full h-full object-cover"
-                                            />
+                                            {/* File Upload */}
+                                            {imageMode[index] === 'upload' && (
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => handleImageUpload(e, index)}
+                                                    className="w-full px-4 py-2 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-luxury-black file:text-white hover:file:bg-luxury-black/90"
+                                                />
+                                            )}
+
+                                            {/* Image Preview */}
+                                            {imagePreviews[index] && (
+                                                <div className="mt-3">
+                                                    <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-champagne-dark/20">
+                                                        <img
+                                                            src={imagePreviews[index]}
+                                                            alt={`Preview ${index + 1}`}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                const newImages = [...formData.images];
+                                                                newImages[index] = '';
+                                                                setFormData({ ...formData, images: newImages });
+                                                                const newPreviews = [...imagePreviews];
+                                                                newPreviews[index] = '';
+                                                                setImagePreviews(newPreviews);
+                                                            }}
+                                                            className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
-                                    </div>
-                                )}
+                                    ))}
+                                </div>
                             </div>
 
                             <div className="flex items-center">
@@ -637,12 +649,13 @@ export default function AdminPage() {
                                             price: '',
                                             category: 'wigs',
                                             description: '',
-                                            image: '',
+                                            images: ['', '', ''],
                                             isFeatured: false,
                                             stock: '',
                                             discountPercent: '',
                                         });
-                                        setImagePreview('');
+                                        setImagePreviews(['', '', '']);
+                                        setImageMode(['url', 'url', 'url']);
                                     }}
                                     disabled={isSubmitting}
                                     className="flex-1 bg-champagne-dark text-luxury-black px-6 py-3 rounded-full hover:bg-champagne-dark/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
