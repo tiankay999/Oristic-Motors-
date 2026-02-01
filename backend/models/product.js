@@ -19,9 +19,16 @@ const Product = sequelize.define('Product', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
-    image: {
-        type: DataTypes.STRING, // URL or path to image
+    images: {
+        type: DataTypes.TEXT, // JSON array of up to 3 image URLs
         allowNull: true,
+        get() {
+            const rawValue = this.getDataValue('images');
+            return rawValue ? JSON.parse(rawValue) : [];
+        },
+        set(value) {
+            this.setDataValue('images', JSON.stringify(value || []));
+        }
     },
     category: {
         type: DataTypes.STRING,
