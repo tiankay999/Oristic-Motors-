@@ -20,8 +20,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Minaglitzy | Luxury Beauty & Fashion",
-  description: "Premium wigs, accessories, and beauty essentials.",
+  title: "Oristic Motors | Luxury Automobile Dealership",
+  description: "Premium cars, SUVs, and luxury vehicles. Discover your dream ride at Oristic Motors.",
 };
 
 export default function RootLayout({
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${montserrat.variable} antialiased bg-champagne-light text-luxury-black flex flex-col min-h-screen`}
+        className={`${playfair.variable} ${montserrat.variable} antialiased bg-oristic-black text-oristic-light flex flex-col min-h-screen`}
       >
         <AuthProvider>
           <ProductProvider>

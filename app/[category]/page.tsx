@@ -30,22 +30,22 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
     }
 
     return (
-        <div className="min-h-screen bg-champagne-light py-12">
+        <div className="min-h-screen bg-oristic-black py-12">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col items-baseline justify-between border-b border-champagne-dark/30 pb-6 pt-12">
-                    <h1 className="font-serif text-4xl font-bold tracking-tight text-luxury-black">
-                        {categoryName}
+                <div className="flex flex-col items-baseline justify-between border-b border-oristic-gold/20 pb-6 pt-12">
+                    <h1 className="font-serif text-4xl font-bold tracking-tight text-white">
+                        {categoryName} <span className="text-oristic-gold">Collection</span>
                     </h1>
 
                     <div className="mt-4 flex items-center">
-                        <label htmlFor="sort" className="mr-3 text-sm font-medium text-luxury-black/70">
+                        <label htmlFor="sort" className="mr-3 text-sm font-medium text-white/50">
                             Sort by:
                         </label>
                         <select
                             id="sort"
                             value={sortBy}
                             onChange={(e) => setSortBy(e.target.value)}
-                            className="rounded-md border-champagne-dark bg-white py-1.5 pl-3 pr-8 text-base text-luxury-black focus:border-luxury-black focus:outline-none focus:ring-1 focus:ring-luxury-black sm:text-sm shadow-sm"
+                            className="rounded-md border-oristic-gray bg-oristic-dark py-1.5 pl-3 pr-8 text-base text-white focus:border-oristic-gold focus:outline-none focus:ring-1 focus:ring-oristic-gold sm:text-sm shadow-sm"
                         >
                             <option value="newest">Newest</option>
                             <option value="price-low">Price: Low to High</option>
@@ -63,8 +63,8 @@ export default function CategoryPage({ params }: { params: Promise<{ category: s
                         </div>
                     ) : (
                         <div className="py-32 text-center">
-                            <p className="text-xl text-luxury-black/50 font-serif italic">
-                                No products found in this category yet.
+                            <p className="text-xl text-white/40 font-serif italic">
+                                No vehicles available in this category yet.
                             </p>
                         </div>
                     )}

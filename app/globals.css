@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAF3F0;
-  /* champagne-light */
-  --foreground: #1A1A1A;
-  /* luxury-black */
+  --background: #0A0A0A;
+  --foreground: #F5F5F5;
 }
 
 @theme inline {
@@ -13,19 +11,22 @@
   --font-sans: var(--font-montserrat);
   --font-serif: var(--font-playfair);
 
-  /* Champagne Palette */
-  --color-champagne: #F3E5DC;
-  --color-champagne-light: #FAF3F0;
-  --color-champagne-dark: #E6D0C2;
-  --color-luxury-black: #1A1A1A;
-  --color-gold-accent: #D4AF37;
-}
+  /* Oristic Motors — Black & Gold Palette */
+  --color-oristic-black: #0A0A0A;
+  --color-oristic-dark: #111111;
+  --color-oristic-darker: #1A1A1A;
+  --color-oristic-gray: #2A2A2A;
+  --color-oristic-light: #F5F5F5;
+  --color-oristic-gold: #D4A843;
+  --color-oristic-gold-light: #E8C875;
+  --color-oristic-gold-dark: #B8922E;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Legacy mappings for easy migration */
+  --color-champagne: #111111;
+  --color-champagne-light: #0A0A0A;
+  --color-champagne-dark: #2A2A2A;
+  --color-luxury-black: #F5F5F5;
+  --color-gold-accent: #D4A843;
 }
 
 body {
@@ -41,4 +42,28 @@ h4,
 h5,
 h6 {
   font-family: var(--font-playfair), serif;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4A843;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E8C875;
+}
+
+/* Model viewer styling */
+model-viewer {
+  width: 100%;
+  height: 100%;
 }

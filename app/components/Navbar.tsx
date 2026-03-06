@@ -12,11 +12,16 @@ export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-champagne-dark/30 bg-black/95 backdrop-blur-md shadow-sm">
+        <nav className="sticky top-0 z-50 w-full border-b border-oristic-gold/20 bg-oristic-black/95 backdrop-blur-md shadow-lg">
             <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
-                <Link href="/" className="font-serif text-2xl font-bold tracking-tight text-white">
-                    MinaGlitzy
+                <Link href="/" className="flex items-center gap-2">
+                    <span className="font-serif text-2xl font-bold tracking-tight text-oristic-gold">
+                        Oristic
+                    </span>
+                    <span className="font-serif text-2xl font-bold tracking-tight text-white">
+                        Motors
+                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -25,15 +30,12 @@ export default function Navbar() {
                         <Link
                             key={category.slug}
                             href={`/${category.slug}`}
-                            className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide"
+                            className="text-sm font-medium text-white/70 hover:text-oristic-gold transition-colors uppercase tracking-wide"
                         >
                             {category.name}
                         </Link>
                     ))}
-                    <Link href="/more" className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide">
-                        More
-                    </Link>
-                    <Link href="/about" className="text-sm font-medium text-white/80 hover:text-white transition-colors uppercase tracking-wide">
+                    <Link href="/about" className="text-sm font-medium text-white/70 hover:text-oristic-gold transition-colors uppercase tracking-wide">
                         About
                     </Link>
                 </div>
@@ -46,7 +48,7 @@ export default function Navbar() {
                             <>
                                 <button
                                     onClick={logout}
-                                    className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+                                    className="text-sm font-medium text-white/70 hover:text-oristic-gold transition-colors"
                                 >
                                     Logout
                                 </button>
@@ -55,13 +57,13 @@ export default function Navbar() {
                             <>
                                 <Link
                                     href="/login"
-                                    className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+                                    className="text-sm font-medium text-white/70 hover:text-oristic-gold transition-colors"
                                 >
                                     Login
                                 </Link>
                                 <Link
                                     href="/signup"
-                                    className="bg-white text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-luxury-black/90 transition-all"
+                                    className="bg-oristic-gold text-oristic-black px-4 py-2 rounded-full text-sm font-medium hover:bg-oristic-gold-light transition-all"
                                 >
                                     Sign Up
                                 </Link>
@@ -71,7 +73,7 @@ export default function Navbar() {
 
                     {/* Profile Icon (Visible when authenticated) */}
                     {isAuthenticated && (
-                        <Link href="/profile" className="p-2 text-white hover:text-white/80 transition-colors">
+                        <Link href="/profile" className="p-2 text-white/70 hover:text-oristic-gold transition-colors">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -89,7 +91,7 @@ export default function Navbar() {
                         </Link>
                     )}
 
-                    <Link href="/cart" className="relative p-2 text-white hover:text-white/80 transition-colors">
+                    <Link href="/cart" className="relative p-2 text-white/70 hover:text-oristic-gold transition-colors">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -105,7 +107,7 @@ export default function Navbar() {
                             />
                         </svg>
                         {totalItems > 0 && (
-                            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] font-bold text-champagne">
+                            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-oristic-gold text-[10px] font-bold text-oristic-black">
                                 {totalItems}
                             </span>
                         )}
@@ -136,13 +138,13 @@ export default function Navbar() {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="border-t border-champagne-dark/30 bg-black md:hidden">
+                <div className="border-t border-oristic-gold/20 bg-oristic-black md:hidden">
                     <div className="space-y-1 px-4 py-4">
                         {categories.map((category) => (
                             <Link
                                 key={category.slug}
                                 href={`/${category.slug}`}
-                                className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                className="block py-3 text-base font-medium text-white hover:text-oristic-gold hover:bg-oristic-gray/30 rounded-md px-2 transition-colors"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 {category.name}
@@ -150,19 +152,19 @@ export default function Navbar() {
                         ))}
                         <Link
                             href="/about"
-                            className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                            className="block py-3 text-base font-medium text-white hover:text-oristic-gold hover:bg-oristic-gray/30 rounded-md px-2 transition-colors"
                             onClick={() => setIsMenuOpen(false)}
                         >
                             About
                         </Link>
 
                         {/* Mobile Auth Links */}
-                        <div className="border-t border-champagne-dark/30 mt-4 pt-4 space-y-2">
+                        <div className="border-t border-oristic-gold/20 mt-4 pt-4 space-y-2">
                             {isAuthenticated ? (
                                 <>
                                     <Link
                                         href="/profile"
-                                        className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                        className="block py-3 text-base font-medium text-white hover:text-oristic-gold hover:bg-oristic-gray/30 rounded-md px-2 transition-colors"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         Profile
@@ -172,7 +174,7 @@ export default function Navbar() {
                                             logout();
                                             setIsMenuOpen(false);
                                         }}
-                                        className="block w-full text-left py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                        className="block w-full text-left py-3 text-base font-medium text-white hover:text-oristic-gold hover:bg-oristic-gray/30 rounded-md px-2 transition-colors"
                                     >
                                         Logout
                                     </button>
@@ -181,14 +183,14 @@ export default function Navbar() {
                                 <>
                                     <Link
                                         href="/login"
-                                        className="block py-3 text-base font-medium text-white hover:bg-champagne-dark/20 rounded-md px-2"
+                                        className="block py-3 text-base font-medium text-white hover:text-oristic-gold hover:bg-oristic-gray/30 rounded-md px-2 transition-colors"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         Login
                                     </Link>
                                     <Link
                                         href="/signup"
-                                        className="block py-3 text-center text-base font-medium bg-white text-black rounded-full"
+                                        className="block py-3 text-center text-base font-medium bg-oristic-gold text-oristic-black rounded-full"
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         Sign Up
