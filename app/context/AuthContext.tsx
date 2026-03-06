@@ -14,8 +14,10 @@ interface AuthContextType {
     user: User | null;
     token: string | null;
     isAdmin: boolean;
+    adminToken: string | null;
+    isLoading: boolean;
     login: (token: string, userData: User) => void;
-    loginAdmin: (token: string) => void;
+    loginAdmin: (token: string, adminData?: any) => void;
     logout: () => void;
 }
 
@@ -26,24 +28,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [adminToken, setAdminToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         // Check if user is already authenticated
         const storedToken = localStorage.getItem('token');
         const storedAdminToken = localStorage.getItem('adminToken');
 
+        let pending = 0;
+        const checkDone = () => {
+            pending--;
+            if (pending <= 0) setIsLoading(false);
+        };
+
         if (storedToken) {
+            pending++;
             setToken(storedToken);
-            // Verify token and fetch user details
             fetch('http://localhost:5006/me', {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`
                 }
             })
                 .then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
+                    if (res.ok) return res.json();
                     throw new Error('Token invalid');
                 })
                 .then(userData => {
@@ -51,34 +59,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     setIsAuthenticated(true);
                 })
                 .catch(() => {
-                    // Token invalid or expired
                     logout();
-                });
+                })
+                .finally(checkDone);
         }
 
         if (storedAdminToken) {
+            pending++;
+            setAdminToken(storedAdminToken);
             fetch('http://localhost:5006/admin/me', {
                 headers: {
                     'Authorization': `Bearer ${storedAdminToken}`
                 }
             })
                 .then(res => {
-                    if (res.ok) {
-                        return res.json();
-                    }
+                    if (res.ok) return res.json();
                     throw new Error('Admin token invalid');
                 })
-                .then(adminData => {
-                    // You might want to store admin data separately if needed
-                    // For now, we can reuse the user state or add a specific admin state
-                    // But typically admin and user are separate.
-                    // Let's add isAdmin to the context.
-                    console.log('Admin verified', adminData);
+                .then(() => {
+                    setIsAdmin(true);
                 })
                 .catch(() => {
                     localStorage.removeItem('adminToken');
-                });
+                    setAdminToken(null);
+                })
+                .finally(checkDone);
         }
+
+        if (pending === 0) setIsLoading(false);
     }, []);
 
     const login = (newToken: string, userData: User) => {
@@ -88,8 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('token', newToken);
     };
 
-    const loginAdmin = (newToken: string) => {
+    const loginAdmin = (newToken: string, adminData?: any) => {
         setIsAdmin(true);
+        setAdminToken(newToken);
         localStorage.setItem('adminToken', newToken);
     };
 
@@ -97,12 +106,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsAuthenticated(false);
         setUser(null);
         setToken(null);
+        setIsAdmin(false);
+        setAdminToken(null);
         localStorage.removeItem('token');
         localStorage.removeItem('adminToken');
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, user, token, isAdmin, login, loginAdmin, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, token, isAdmin, adminToken, isLoading, login, loginAdmin, logout }}>
             {children}
         </AuthContext.Provider>
     );
