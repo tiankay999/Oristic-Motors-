@@ -4,110 +4,88 @@ import Image from 'next/image';
 
 export default function AboutPage() {
     return (
-        <div className="bg-champagne min-h-screen">
+        <div className="min-h-screen bg-oristic-black">
             {/* Hero Section */}
-            <section className="relative h-[40vh] w-full overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 z-0">
-                    <Image
-                        src="https://images.unsplash.com/photo-1616091216791-a5360b5fc78a?auto=format&fit=crop&q=80&w=1920"
-                        alt="Luxury Background"
-                        fill
-                        className="object-cover opacity-30"
-                        priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-champagne/50 to-champagne" />
-                </div>
-                <div className="relative z-10 text-center px-4">
-                    <h1 className="font-serif text-5xl md:text-6xl font-bold text-luxury-black mb-4">
-                        The Story of <span className="text-gold-accent">Minaglitzy</span>
-                    </h1>
-                    <p className="text-lg md:text-xl text-luxury-black/70 max-w-2xl mx-auto">
-                        Where elegance meets authenticity.
-                    </p>
+            <section className="relative h-[50vh] overflow-hidden">
+                <Image
+                    src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920"
+                    alt="Luxury Car Showroom"
+                    fill
+                    className="object-cover opacity-40"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-oristic-black via-oristic-black/50 to-transparent" />
+                <div className="relative z-10 flex h-full items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="font-serif text-5xl font-bold text-white sm:text-6xl">
+                            Our <span className="text-oristic-gold">Story</span>
+                        </h1>
+                        <div className="mt-4 mx-auto h-1 w-24 bg-oristic-gold rounded-full"></div>
+                    </div>
                 </div>
             </section>
 
-            {/* Owner Section */}
-            <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    {/* Owner Image */}
-                    <div className="relative aspect-[3/4] w-full max-w-md mx-auto md:max-w-none rounded-2xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition-transform duration-500">
-                        <Image
-                            src="/missmina.jpg"
-                            alt="Founder of Minaglitzy"
-                            fill
-                            className="object-cover"
-                        />
-                        <div className="absolute inset-0 border-2 border-gold-accent/20 rounded-2xl m-4 pointer-events-none" />
-                    </div>
-
-                    {/* Owner Bio */}
-                    <div className="space-y-6 text-center md:text-left">
-                        <h2 className="font-serif text-3xl md:text-4xl font-bold text-luxury-black">
-                            Meet the <span className="text-gold-accent">Founder</span>
+            {/* Story Section */}
+            <section className="py-24">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                    <div className="text-center">
+                        <h2 className="font-serif text-3xl font-bold text-white">
+                            Where <span className="text-oristic-gold">Luxury</span> Meets the Road
                         </h2>
-                        <div className="w-24 h-1 bg-gold-accent mx-auto md:mx-0 rounded-full" />
-                        <p className="text-lg text-luxury-black/80 leading-relaxed">
-                            Welcome to Minaglitzy. I founded this brand with a singular vision: to empower individuals to express their unique beauty through high-quality, luxurious accessories.
+                        <p className="mt-8 text-lg leading-relaxed text-white/60">
+                            Founded with a passion for exceptional automobiles, Oristic Motors has grown into one of the most
+                            trusted names in luxury car dealership. We believe that every driver deserves a vehicle that matches
+                            their ambition — one that combines world-class engineering with breathtaking design.
                         </p>
-                        <p className="text-lg text-luxury-black/80 leading-relaxed">
-                            From our premium bone straight wigs to our handcrafted jewelry, every piece in our collection is curated with love and an eye for detail. I believe that true luxury isn't just about the price tag—it's about how it makes you feel.
+                        <p className="mt-6 text-lg leading-relaxed text-white/60">
+                            From the moment you walk into our showroom, you&apos;ll feel the difference. Our curated collection
+                            spans the finest brands in the world, handpicked for performance enthusiasts and luxury seekers alike.
+                            At Oristic Motors, we don&apos;t just sell cars — we help you find your perfect driving companion.
                         </p>
-                        <p className="text-lg text-luxury-black/80 leading-relaxed">
-                            "Beauty is power, and a smile is its sword." Thank you for being part of our journey.
-                        </p>
-                        <div className="pt-4">
-                            <p className="font-serif text-xl font-bold text-luxury-black">– Mina</p>
-                            <p className="text-sm text-luxury-black/60 uppercase tracking-wider">Founder & CEO</p>
-                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Values Section */}
-            <section className="py-20 bg-white/50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-16">
-                        <h2 className="font-serif text-3xl font-bold text-luxury-black">Our Values</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: 'Quality First',
-                                description: 'We never compromise on the quality of our materials. Only the best for our customers.',
-                                icon: (
-                                    <svg className="w-8 h-8 text-gold-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                )
-                            },
-                            {
-                                title: 'Timeless Elegance',
-                                description: 'Our designs are meant to transcend trends, offering you style that lasts a lifetime.',
-                                icon: (
-                                    <svg className="w-8 h-8 text-gold-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                )
-                            },
-                            {
-                                title: 'Customer Love',
-                                description: 'Your satisfaction is our heartbeat. We are dedicated to providing an exceptional shopping experience.',
-                                icon: (
-                                    <svg className="w-8 h-8 text-gold-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                )
-                            }
-                        ].map((value, index) => (
-                            <div key={index} className="bg-champagne p-8 rounded-xl text-center shadow-sm hover:shadow-md transition-shadow">
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white mb-6 shadow-sm">
-                                    {value.icon}
-                                </div>
-                                <h3 className="font-serif text-xl font-bold text-luxury-black mb-4">{value.title}</h3>
-                                <p className="text-luxury-black/70">{value.description}</p>
+            <section className="py-20 bg-oristic-dark">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-center font-serif text-3xl font-bold text-white mb-16">
+                        What <span className="text-oristic-gold">Drives</span> Us
+                    </h2>
+                    <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+                        <div className="text-center group">
+                            <div className="mx-auto w-20 h-20 rounded-full bg-oristic-gold/10 flex items-center justify-center mb-6 group-hover:bg-oristic-gold/20 transition-colors">
+                                <svg className="w-10 h-10 text-oristic-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                                </svg>
                             </div>
-                        ))}
+                            <h3 className="font-serif text-xl font-bold text-oristic-gold">Performance</h3>
+                            <p className="mt-4 text-sm text-white/50 leading-relaxed">
+                                Every vehicle in our collection is chosen for its exceptional performance, engineering excellence, and driving dynamics.
+                            </p>
+                        </div>
+                        <div className="text-center group">
+                            <div className="mx-auto w-20 h-20 rounded-full bg-oristic-gold/10 flex items-center justify-center mb-6 group-hover:bg-oristic-gold/20 transition-colors">
+                                <svg className="w-10 h-10 text-oristic-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-serif text-xl font-bold text-oristic-gold">Craftsmanship</h3>
+                            <p className="mt-4 text-sm text-white/50 leading-relaxed">
+                                We celebrate the art of automotive design — every curve, every stitch, every detail crafted to perfection.
+                            </p>
+                        </div>
+                        <div className="text-center group">
+                            <div className="mx-auto w-20 h-20 rounded-full bg-oristic-gold/10 flex items-center justify-center mb-6 group-hover:bg-oristic-gold/20 transition-colors">
+                                <svg className="w-10 h-10 text-oristic-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                </svg>
+                            </div>
+                            <h3 className="font-serif text-xl font-bold text-oristic-gold">Service</h3>
+                            <p className="mt-4 text-sm text-white/50 leading-relaxed">
+                                From your first visit to long after the keys are in your hand, our dedicated team ensures a world-class ownership experience.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
