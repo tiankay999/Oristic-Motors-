@@ -1,11 +1,14 @@
 'use client';
+
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
 import FormSpinner from '../components/formspinner';
 
 export default function SignupPage() {
+    const { login } = useAuth();
+    const router = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -14,163 +17,171 @@ export default function SignupPage() {
         phone: '',
     });
     const [error, setError] = useState('');
-    const router = useRouter();
-    const [loading, setLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
-    const { login } = useAuth();
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
         setError('');
-        setLoading(true);
 
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
-            setLoading(false);
+            setIsLoading(false);
             return;
         }
 
         if (formData.password.length < 6) {
             setError('Password must be at least 6 characters');
-            setLoading(false);
+            setIsLoading(false);
             return;
         }
 
         try {
             const res = await fetch('http://localhost:5006/api/signup', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                    phone: formData.phone,
+                }),
             });
 
             const data = await res.json();
-            console.log(data);
 
-            if (res.ok) {
-                if (data.token && data.user) {
-                    login(data.token, data.user);
-                }
-                router.push('/');
-            } else {
+            if (!res.ok) {
                 setError(data.message || 'Signup failed');
+                return;
             }
 
-
+            login(data.token, data.user);
+            router.push('/');
         } catch (err) {
-            console.log(err);
             setError('Something went wrong. Please try again.');
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-champagne-light flex items-center justify-center px-4 py-12">
-            <div className="max-w-md w-full">
-                <div className="bg-champagne rounded-2xl shadow-lg p-8">
-                    <h1 className="font-serif text-3xl font-bold text-luxury-black text-center mb-2">
-                        Create Account
+        <div className="flex min-h-screen items-center justify-center bg-oristic-black px-4 py-12">
+            <div className="w-full max-w-md space-y-10">
+                <div className="text-center">
+                    <h1 className="font-serif text-3xl font-bold text-white">
+                        Join{' '}
+                        <span className="text-oristic-gold">Oristic Motors</span>
                     </h1>
-                    <p className="text-center text-luxury-black/60 mb-8">
-                        Join Minaglitzy today
+                    <p className="mt-3 text-sm text-white/50">
+                        Create your account and start your premium driving journey.
                     </p>
+                </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="rounded-2xl border border-oristic-gold/20 bg-oristic-dark p-8 shadow-lg">
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        {error && (
+                            <div className="rounded-lg bg-red-900/30 border border-red-500/30 p-3 text-sm text-red-400">
+                                {error}
+                            </div>
+                        )}
+
                         <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-luxury-black mb-2">
+                            <label htmlFor="name" className="block text-sm font-medium text-white/80">
                                 Full Name
                             </label>
                             <input
-                                type="text"
                                 id="name"
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                type="text"
+                                name="name"
                                 required
-                                className="w-full px-4 py-3 border text-black border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md border-oristic-gray bg-oristic-black text-white px-4 py-3 text-sm shadow-sm focus:border-oristic-gold focus:ring-oristic-gold placeholder-white/30"
                                 placeholder="John Doe"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-luxury-black mb-2">
+                            <label htmlFor="email" className="block text-sm font-medium text-white/80">
                                 Email Address
                             </label>
                             <input
-                                type="email"
                                 id="email"
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                type="email"
+                                name="email"
                                 required
-                                className="w-full px-4 py-3 border border-champagne-dark text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md border-oristic-gray bg-oristic-black text-white px-4 py-3 text-sm shadow-sm focus:border-oristic-gold focus:ring-oristic-gold placeholder-white/30"
                                 placeholder="you@example.com"
                             />
                         </div>
+
                         <div>
-                            <label htmlFor="phone" className="block text-sm font-medium text-luxury-black mb-2">
-                                Phone number
+                            <label htmlFor="phone" className="block text-sm font-medium text-white/80">
+                                Phone Number
                             </label>
                             <input
-                                type="text"
                                 id="phone"
-                                value={formData.phone}
-                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                type="text"
+                                name="phone"
                                 required
-                                className="w-full px-4 py-3 border border-champagne-dark text-luxury-black rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white text-black"
-                                placeholder="0505504505"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md border-oristic-gray bg-oristic-black text-white px-4 py-3 text-sm shadow-sm focus:border-oristic-gold focus:ring-oristic-gold placeholder-white/30"
+                                placeholder="+233..."
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-luxury-black mb-2">
+                            <label htmlFor="password" className="block text-sm font-medium text-white/80">
                                 Password
                             </label>
                             <input
-                                type="password"
                                 id="password"
-                                value={formData.password}
-                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                type="password"
+                                name="password"
                                 required
-                                className="w-full px-4 py-3 border border-champagne-dark  text-black rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white"
-                                placeholder="Min. 6 characters"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md border-oristic-gray bg-oristic-black text-white px-4 py-3 text-sm shadow-sm focus:border-oristic-gold focus:ring-oristic-gold placeholder-white/30"
+                                placeholder="••••••••"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-luxury-black mb-2">
+                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-white/80">
                                 Confirm Password
                             </label>
                             <input
-                                type="password"
                                 id="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                type="password"
+                                name="confirmPassword"
                                 required
-                                className="w-full px-4 py-3 border border-champagne-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-luxury-black bg-white text-black"
-                                placeholder="Re-enter password"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md border-oristic-gray bg-oristic-black text-white px-4 py-3 text-sm shadow-sm focus:border-oristic-gold focus:ring-oristic-gold placeholder-white/30"
+                                placeholder="••••••••"
                             />
                         </div>
 
-                        {error && (
-                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                                {error}
-                            </div>
-                        )}
-
                         <button
-                            disabled={loading}
                             type="submit"
-                            className="w-full bg-luxury-black text-white py-3 rounded-full font-semibold hover:bg-luxury-black/90 transition-all shadow-md"
+                            disabled={isLoading}
+                            className="w-full rounded-full bg-oristic-gold py-3.5 text-sm font-semibold text-oristic-black transition-all hover:bg-oristic-gold-light disabled:bg-gray-700 disabled:text-gray-500"
                         >
-                            {loading ? <FormSpinner /> : "Create Account"}
+                            {isLoading ? <FormSpinner /> : 'Create Account'}
                         </button>
                     </form>
 
-                    <p className="mt-6 text-center text-sm text-luxury-black/60">
+                    <p className="mt-8 text-center text-sm text-white/50">
                         Already have an account?{' '}
-                        <Link href="/login" className="text-luxury-black font-semibold hover:underline">
-                            Sign In
+                        <Link href="/login" className="font-medium text-oristic-gold hover:text-oristic-gold-light">
+                            Sign in
                         </Link>
                     </p>
                 </div>

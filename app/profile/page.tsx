@@ -1,138 +1,131 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+interface OrderItem {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+}
 
 interface Order {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
     phone: string;
     address: string;
-    totalAmount: string;
-    price: string;
+    totalAmount: number;
+    items: OrderItem[];
     createdAt: string;
 }
 
 export default function ProfilePage() {
-    const { user, isAuthenticated } = useAuth();
+    const { user, token, isAuthenticated, isLoading: authLoading } = useAuth();
+    const router = useRouter();
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
-    const router = useRouter();
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!authLoading && !isAuthenticated) {
             router.push('/login');
-            return;
         }
+    }, [authLoading, isAuthenticated, router]);
 
-        const fetchOrders = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            try {
-                const res = await fetch(`http://localhost:5006/api/my-orders`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+    useEffect(() => {
+        if (token) {
+            fetch('http://localhost:5006/api/my-orders', {
+                headers: { 'Authorization': `Bearer ${token}` },
+            })
+                .then(res => res.json())
+                .then(data => {
+                    setOrders(Array.isArray(data) ? data : []);
+                    setLoading(false);
+                })
+                .catch(err => {
+                    console.error(err);
+                    setLoading(false);
                 });
-                if (res.ok) {
-                    const data = await res.json();
-                    setOrders(data);
-                } else {
-                    console.error('Failed to fetch orders');
-                }
-            } catch (error) {
-                console.error('Error fetching orders:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        }
+    }, [token]);
 
-        fetchOrders();
-    }, [isAuthenticated, router]);
-
-    if (!isAuthenticated) {
-        return null; // Or a loading spinner while redirecting
+    if (authLoading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-oristic-black">
+                <p className="text-white/60 animate-pulse font-serif">Loading...</p>
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-champagne-light py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-                <h1 className="text-3xl font-serif font-bold text-luxury-black mb-8">My Profile</h1>
-
-                <div className="bg-white shadow rounded-lg overflow-hidden mb-8">
-                    <div className="px-4 py-5 sm:px-6 bg-champagne">
-                        <h3 className="text-lg leading-6 font-medium text-luxury-black">User Details</h3>
-                    </div>
-                    <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
-                        <dl className="sm:divide-y sm:divide-gray-200">
-                            <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">Full name</dt>
-                                <dd className="mt-1 text-sm text-luxury-black sm:mt-0 sm:col-span-2">{user?.name}</dd>
-                            </div>
-                            <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                                <dd className="mt-1 text-sm text-luxury-black sm:mt-0 sm:col-span-2">{user?.email}</dd>
-                            </div>
-                            <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">Phone number</dt>
-                                <dd className="mt-1 text-sm text-luxury-black sm:mt-0 sm:col-span-2">{user?.phone}</dd>
-                            </div>
-                        </dl>
+        <div className="min-h-screen bg-oristic-black py-12">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-12">
+                {/* User Info Section */}
+                <div className="rounded-2xl border border-oristic-gold/20 bg-oristic-dark p-8 shadow-lg">
+                    <h1 className="font-serif text-3xl font-bold text-white">
+                        My <span className="text-oristic-gold">Profile</span>
+                    </h1>
+                    <div className="mt-6 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+                        <div>
+                            <span className="text-white/50">Name</span>
+                            <p className="mt-1 text-white font-medium">{user?.name || '--'}</p>
+                        </div>
+                        <div>
+                            <span className="text-white/50">Email</span>
+                            <p className="mt-1 text-white font-medium">{user?.email || '--'}</p>
+                        </div>
+                        <div>
+                            <span className="text-white/50">Phone</span>
+                            <p className="mt-1 text-white font-medium">{user?.phone || '--'}</p>
+                        </div>
                     </div>
                 </div>
 
-                <h2 className="text-2xl font-serif font-bold text-luxury-black mb-6">Order History</h2>
+                {/* Order History */}
+                <div className="mt-12">
+                    <h2 className="font-serif text-2xl font-bold text-white mb-6">
+                        Order <span className="text-oristic-gold">History</span>
+                    </h2>
 
-                {loading ? (
-                    <div className="text-center py-10">
-                        <p className="text-luxury-black">Loading orders...</p>
-                    </div>
-                ) : orders.length > 0 ? (
-                    <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                        <ul className="divide-y divide-gray-200">
+                    {loading ? (
+                        <p className="text-white/50 animate-pulse">Loading orders...</p>
+                    ) : orders.length === 0 ? (
+                        <div className="rounded-2xl border border-oristic-gray/30 bg-oristic-dark p-12 text-center">
+                            <p className="text-white/40 font-serif italic text-lg">No orders yet</p>
+                            <p className="text-white/30 text-sm mt-2">Your vehicle reservations will appear here.</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
                             {orders.map((order) => (
-                                <li key={order.id}>
-                                    <div className="px-4 py-4 sm:px-6">
-                                        <div className="flex items-center justify-between">
-                                            <p className="text-sm font-medium text-luxury-black truncate">
-                                                Order #{order.id}
+                                <div key={order.id} className="rounded-xl border border-oristic-gray/30 bg-oristic-dark p-6">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="text-sm text-white/50">Order #{order.id}</p>
+                                            <p className="mt-1 font-serif text-lg font-bold text-oristic-gold">
+                                                ₵{Number(order.totalAmount).toLocaleString()}
                                             </p>
-                                            <div className="ml-2 flex-shrink-0 flex">
-                                                <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                    Completed
-                                                </p>
-                                            </div>
                                         </div>
-                                        <div className="mt-2 sm:flex sm:justify-between">
-                                            <div className="sm:flex">
-                                                <p className="flex items-center text-sm text-gray-500">
-                                                    Total: GH₵{order.totalAmount}
-                                                </p>
-                                            </div>
-                                            <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                                                <p>
-                                                    Placed on {new Date(order.createdAt).toLocaleDateString()}
-                                                </p>
-                                            </div>
-                                        </div>
+                                        <span className="text-xs text-white/40">
+                                            {new Date(order.createdAt).toLocaleDateString()}
+                                        </span>
                                     </div>
-                                </li>
+                                    {order.items && (
+                                        <div className="mt-4 border-t border-oristic-gray/30 pt-3">
+                                            {(Array.isArray(order.items) ? order.items : JSON.parse(order.items as any)).map((item: any, idx: number) => (
+                                                <p key={idx} className="text-sm text-white/60">
+                                                    {item.name || item.productname} × {item.quantity}
+                                                </p>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             ))}
-                        </ul>
-                    </div>
-                ) : (
-                    <div className="bg-white shadow rounded-lg p-6 text-center">
-                        <p className="text-gray-500 mb-4">You haven't placed any orders yet.</p>
-                        <Link href="/" className="text-luxury-black font-semibold hover:underline">
-                            Start Shopping
-                        </Link>
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
