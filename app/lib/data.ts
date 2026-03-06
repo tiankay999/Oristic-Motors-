@@ -133,6 +133,28 @@ export const products: Product[] = [
         isFeatured: true,
         stock: 4,
     },
+    {
+        id: '11',
+        name: 'Toyota GR  Supra',
+        slug: '2024-toyota-supra',
+        price: 25000000,
+        category: 'coupe',
+        description: 'The ultimate driving experience. The GR Supra is a true masterpiece of automotive engineering, combining power, precision, and style.',
+        images: ['https://cdn-fastly.autoguide.com/media/2023/06/28/13406665/2021-toyota-gr-supra-adds-more-power-new-entry-level-four-cylinder.jpg?size=1224x1438&nocrop=1'],
+        isFeatured: true,
+        stock: 9,
+    },
+    {
+        id: '12',
+        name: 'Lexus RC',
+        slug: 'Lexus-RC',
+        price: 250000000,
+        category: 'coupe',
+        description: 'The ultimate driving experience. The Lexus RC is a true masterpiece of automotive engineering, combining power, precision, and style.',
+        images: ['https://sportscar365.com/wp-content/uploads/2024/08/DSC_5306.jpg'],
+        isFeatured: true,
+        stock: 9,
+    },
 ];
 
 export const categories = [
