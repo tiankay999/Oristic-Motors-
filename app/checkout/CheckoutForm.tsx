@@ -29,10 +29,8 @@ export default function CheckoutForm() {
         publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY as string,
     };
 
-    // Define callbacks before using the hook to avoid dependency issues if defined inline (though inline is often fine)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onSuccess = (reference: any) => {
-        // Implementation for whatever you want to do with reference and after success call.
         console.log(reference);
         clearCart();
         alert('Order placed successfully! Reference: ' + reference.reference);
@@ -40,7 +38,6 @@ export default function CheckoutForm() {
     };
 
     const onClose = () => {
-        // implementation for  whatever you want to do when the Paystack dialog closed.
         console.log('closed');
         setIsProcessing(false);
     };
@@ -84,12 +81,6 @@ export default function CheckoutForm() {
             setIsProcessing(false);
         }
 
-
-
-
-
-
-
         if (!process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY) {
             alert("Paystack public key is missing!");
             setIsProcessing(false);
@@ -101,28 +92,25 @@ export default function CheckoutForm() {
 
     if (items.length === 0) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-champagne-light">
-                <p className="text-luxury-black/60">Your cart is empty. Redirecting...</p>
+            <div className="flex min-h-screen items-center justify-center bg-oristic-black">
+                <p className="text-white/60">Your garage is empty. Redirecting...</p>
             </div>
         );
     }
 
-
-
-
-
-
     return (
-        <div className="min-h-screen bg-champagne-light py-12">
+        <div className="min-h-screen bg-oristic-black py-12">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12">
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
                     <div>
-                        <h2 className="font-serif text-2xl font-medium text-luxury-black">Contact information</h2>
+                        <h2 className="font-serif text-2xl font-medium text-white">
+                            Contact <span className="text-oristic-gold">Information</span>
+                        </h2>
 
                         <form onSubmit={handleSubmit} className="mt-6">
                             <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-4">
                                 <div className="sm:col-span-2">
-                                    <label htmlFor="email" className="block text-sm font-medium text-luxury-black/80">
+                                    <label htmlFor="email" className="block text-sm font-medium text-white/80">
                                         Email address
                                     </label>
                                     <div className="mt-1">
@@ -134,13 +122,13 @@ export default function CheckoutForm() {
                                             required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md border-oristic-gray bg-oristic-dark text-white shadow-sm focus:border-oristic-gold focus:ring-oristic-gold sm:text-sm py-3 px-4"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="first-name" className="block text-sm font-medium text-luxury-black/80">
+                                    <label htmlFor="first-name" className="block text-sm font-medium text-white/80">
                                         First name
                                     </label>
                                     <div className="mt-1">
@@ -152,13 +140,13 @@ export default function CheckoutForm() {
                                             name="first-name"
                                             autoComplete="given-name"
                                             required
-                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md border-oristic-gray bg-oristic-dark text-white shadow-sm focus:border-oristic-gold focus:ring-oristic-gold sm:text-sm py-3 px-4"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="last-name" className="block text-sm font-medium text-luxury-black/80">
+                                    <label htmlFor="last-name" className="block text-sm font-medium text-white/80">
                                         Last name
                                     </label>
                                     <div className="mt-1">
@@ -170,12 +158,12 @@ export default function CheckoutForm() {
                                             name="last-name"
                                             autoComplete="family-name"
                                             required
-                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md border-oristic-gray bg-oristic-dark text-white shadow-sm focus:border-oristic-gold focus:ring-oristic-gold sm:text-sm py-3 px-4"
                                         />
                                     </div>
                                 </div>
                                 <div>
-                                    <label htmlFor="phone" className="block text-sm font-medium text-luxury-black/80">
+                                    <label htmlFor="phone" className="block text-sm font-medium text-white/80">
                                         Phone
                                     </label>
                                     <div className="mt-1">
@@ -187,13 +175,13 @@ export default function CheckoutForm() {
                                             name="phone"
                                             autoComplete="Phone"
                                             required
-                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md border-oristic-gray bg-oristic-dark text-white shadow-sm focus:border-oristic-gold focus:ring-oristic-gold sm:text-sm py-3 px-4"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="sm:col-span-2">
-                                    <label htmlFor="address" className="block text-sm font-medium text-luxury-black/80">
+                                    <label htmlFor="address" className="block text-sm font-medium text-white/80">
                                         Address
                                     </label>
                                     <div className="mt-1">
@@ -205,7 +193,7 @@ export default function CheckoutForm() {
                                             id="address"
                                             autoComplete="street-address"
                                             required
-                                            className="block w-full rounded-md text-black border-champagne-dark shadow-sm focus:border-luxury-black focus:ring-luxury-black sm:text-sm py-3 px-4 bg-white"
+                                            className="block w-full rounded-md border-oristic-gray bg-oristic-dark text-white shadow-sm focus:border-oristic-gold focus:ring-oristic-gold sm:text-sm py-3 px-4"
                                         />
                                     </div>
                                 </div>
@@ -214,7 +202,7 @@ export default function CheckoutForm() {
                                     <button
                                         type="submit"
                                         disabled={isProcessing}
-                                        className="w-full rounded-full border border-transparent bg-luxury-black px-6 py-4 text-base font-medium text-white shadow-sm hover:bg-luxury-black/90 focus:outline-none focus:ring-2 focus:ring-luxury-black focus:ring-offset-2 focus:ring-offset-champagne disabled:bg-gray-400 transition-all"
+                                        className="w-full rounded-full border border-transparent bg-oristic-gold px-6 py-4 text-base font-semibold text-oristic-black shadow-sm hover:bg-oristic-gold-light focus:outline-none focus:ring-2 focus:ring-oristic-gold focus:ring-offset-2 focus:ring-offset-oristic-black disabled:bg-gray-700 disabled:text-gray-500 transition-all"
                                     >
                                         {isProcessing ? <FormSpinner /> : `Pay ₵${totalPrice.toLocaleString()}`}
                                     </button>
@@ -225,14 +213,16 @@ export default function CheckoutForm() {
 
                     {/* Order Summary Side */}
                     <div className="mt-10 lg:mt-0">
-                        <h2 className="font-serif text-2xl font-medium text-luxury-black">Order summary</h2>
+                        <h2 className="font-serif text-2xl font-medium text-white">
+                            Order <span className="text-oristic-gold">Summary</span>
+                        </h2>
 
-                        <div className="mt-6 rounded-2xl border border-champagne-dark/30 bg-champagne shadow-sm">
-                            <ul role="list" className="divide-y divide-champagne-dark/30">
+                        <div className="mt-6 rounded-2xl border border-oristic-gold/30 bg-oristic-dark shadow-sm">
+                            <ul role="list" className="divide-y divide-oristic-gray/30">
                                 {items.map((item) => (
                                     <li key={item.id} className="flex py-6 px-6">
                                         <div className="shrink-0">
-                                            <div className="relative h-20 w-20 rounded-lg bg-white overflow-hidden">
+                                            <div className="relative h-20 w-24 rounded-lg bg-oristic-gray/20 overflow-hidden">
                                                 <Image
                                                     src={(item.images && item.images[0]) || item.image || '/placeholder.jpg'}
                                                     alt={item.name}
@@ -245,26 +235,26 @@ export default function CheckoutForm() {
                                             <div className="flex">
                                                 <div className="min-w-0 flex-1">
                                                     <h4 className="text-sm">
-                                                        <a href={`/product/${item.slug}`} className="font-medium text-luxury-black hover:text-luxury-black/80">
+                                                        <a href={`/product/${item.slug}`} className="font-medium text-white hover:text-oristic-gold transition-colors">
                                                             {item.name}
                                                         </a>
                                                     </h4>
                                                 </div>
                                             </div>
                                             <div className="flex flex-1 items-end justify-between pt-2">
-                                                <p className="mt-1 text-sm font-medium text-luxury-black">₵{item.price.toLocaleString()}</p>
+                                                <p className="mt-1 text-sm font-medium text-oristic-gold">₵{item.price.toLocaleString()}</p>
                                                 <div className="ml-4">
-                                                    <p className="text-sm text-luxury-black/60">Qty {item.quantity}</p>
+                                                    <p className="text-sm text-white/60">Qty {item.quantity}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
                                 ))}
                             </ul>
-                            <dl className="border-t border-champagne-dark/30 py-6 px-6 space-y-6">
+                            <dl className="border-t border-oristic-gray/30 py-6 px-6 space-y-6">
                                 <div className="flex items-center justify-between pt-2">
-                                    <dt className="text-lg font-bold text-luxury-black">Total</dt>
-                                    <dd className="text-lg font-bold text-luxury-black">₵{totalPrice.toLocaleString()}</dd>
+                                    <dt className="text-lg font-bold text-white">Total</dt>
+                                    <dd className="text-lg font-bold text-oristic-gold">₵{totalPrice.toLocaleString()}</dd>
                                 </div>
                             </dl>
                         </div>
