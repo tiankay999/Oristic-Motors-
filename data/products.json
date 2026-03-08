@@ -6,7 +6,9 @@
     "price": 450000,
     "category": "suv",
     "description": "The ultimate luxury SUV with a supercharged V8 engine, delivering 575 HP of raw power combined with unmatched refinement.",
-    "images": ["https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 3,
     "discountPercent": 0,
@@ -19,7 +21,9 @@
     "price": 680000,
     "category": "sports-car",
     "description": "A track-bred precision machine with a naturally aspirated 4.0L flat-six engine. Pure driving perfection.",
-    "images": ["https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 2,
     "discountPercent": 0,
@@ -32,7 +36,9 @@
     "price": 520000,
     "category": "sedan",
     "description": "The pinnacle of automotive luxury. Advanced technology meets timeless elegance in every detail.",
-    "images": ["https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 4,
     "discountPercent": 0,
@@ -45,7 +51,9 @@
     "price": 380000,
     "category": "coupe",
     "description": "Twin-turbo inline-six producing 503 HP. Aggressive styling meets racetrack capability.",
-    "images": ["https://images.unsplash.com/photo-1617531653332-bd46c24f2068?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 5,
     "discountPercent": 0,
@@ -58,7 +66,9 @@
     "price": 1200000,
     "category": "convertible",
     "description": "Italian excellence in a retractable hardtop convertible. A V8 masterpiece designed for la dolce vita.",
-    "images": ["https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 1,
     "discountPercent": 0,
@@ -71,7 +81,9 @@
     "price": 120000,
     "category": "hatchback",
     "description": "The iconic hot hatch. Turbocharged performance with everyday practicality and German engineering.",
-    "images": ["https://images.unsplash.com/photo-1551830820-330a71b99659?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1551830820-330a71b99659?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": false,
     "stock": 8,
     "discountPercent": 0,
@@ -84,7 +96,9 @@
     "price": 180000,
     "category": "crossover",
     "description": "Efficient hybrid powertrain meets adventure-ready design. The perfect blend of economy and capability.",
-    "images": ["https://images.unsplash.com/photo-1581540222194-0def2dda95b8?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1581540222194-0def2dda95b8?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": false,
     "stock": 10,
     "discountPercent": 0,
@@ -97,7 +111,9 @@
     "price": 220000,
     "category": "minivan",
     "description": "Redefining family travel with premium comfort, hybrid efficiency, and captain's chairs for all.",
-    "images": ["https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1559416523-140ddc3d238c?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 6,
     "discountPercent": 0,
@@ -110,7 +126,9 @@
     "price": 1500000,
     "category": "sports-car",
     "description": "Naturally aspirated V10 producing 631 HP. A symphony of speed, technology, and Italian artistry.",
-    "images": ["https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=800"],
+    "images": [
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=800"
+    ],
     "isFeatured": true,
     "stock": 1,
     "discountPercent": 0,
@@ -123,8 +141,10 @@
     "price": 250000,
     "category": "crossover",
     "description": "Coupe-like elegance meets SUV versatility. Quattro all-wheel drive and virtual cockpit technology.",
-    "images": ["https://images.unsplash.com/photo-1606611013016-969c19ba27a5?auto=format&fit=crop&q=80&w=800"],
-    "isFeatured": true,
+    "images": [
+      "https://en.wheelz.me/wp-content/uploads/2024/11/Audi-Q5_Sportback-2025-9.webp"
+    ],
+    "isFeatured": false,
     "stock": 4,
     "discountPercent": 0,
     "stockStatus": "instock"
