@@ -8,7 +8,7 @@ export default function AboutPage() {
             {/* Hero Section */}
             <section className="relative h-[50vh] overflow-hidden">
                 <Image
-                    src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920"
+                    src="/icon.png"
                     alt="Luxury Car Showroom"
                     fill
                     className="object-cover opacity-40"
@@ -35,12 +35,12 @@ export default function AboutPage() {
                         <p className="mt-8 text-lg leading-relaxed text-white/60">
                             Founded with a passion for exceptional automobiles, Oristic Motors has grown into one of the most
                             trusted names in luxury car dealership. We believe that every driver deserves a vehicle that matches
-                            their ambition — one that combines world-class engineering with breathtaking design.
+                            their ambition, one that combines world-class engineering with breathtaking design and STEEZE.
                         </p>
                         <p className="mt-6 text-lg leading-relaxed text-white/60">
                             From the moment you walk into our showroom, you&apos;ll feel the difference. Our curated collection
                             spans the finest brands in the world, handpicked for performance enthusiasts and luxury seekers alike.
-                            At Oristic Motors, we don&apos;t just sell cars — we help you find your perfect driving companion.
+                            At Oristic Motors, we don&apos;t just sell cars, we help you find your perfect driving companion.
                         </p>
                     </div>
                 </div>
