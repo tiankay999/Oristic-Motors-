@@ -43,6 +43,7 @@ export default function AdminPage() {
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [showOrderModal, setShowOrderModal] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     // Form states
     const [formData, setFormData] = useState({
@@ -52,7 +53,7 @@ export default function AdminPage() {
         category: 'suv',
         stock: '',
         discountPercent: '0',
-        images: ['', '', ''],
+        images: ['', '', '', '', '', ''],
     });
 
     useEffect(() => {
@@ -88,7 +89,7 @@ export default function AdminPage() {
             category: 'suv',
             stock: '',
             discountPercent: '0',
-            images: ['', '', ''],
+            images: ['', '', '', '', '', ''],
         });
         setShowModal(true);
     };
@@ -106,9 +107,57 @@ export default function AdminPage() {
                 product.images?.[0] || '',
                 product.images?.[1] || '',
                 product.images?.[2] || '',
+                product.images?.[3] || '',
+                product.images?.[4] || '',
+                product.images?.[5] || '',
             ],
         });
         setShowModal(true);
+    };
+
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+
+        setIsUploading(true);
+        const uploadData = new FormData();
+        Array.from(e.target.files).forEach(file => {
+            uploadData.append('images', file);
+        });
+
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: uploadData,
+            });
+            const data = await res.json();
+
+            if (res.ok && data.urls) {
+                // Find empty slots and fill them
+                const newImages = [...formData.images];
+                let urlIndex = 0;
+
+                for (let i = 0; i < newImages.length && urlIndex < data.urls.length; i++) {
+                    if (!newImages[i].trim()) {
+                        // Ensure full backend URL
+                        const url = data.urls[urlIndex].startsWith('/')
+                            ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006'}${data.urls[urlIndex]}`
+                            : data.urls[urlIndex];
+                        newImages[i] = url;
+                        urlIndex++;
+                    }
+                }
+
+                setFormData({ ...formData, images: newImages });
+            } else {
+                alert(data.message || 'Upload failed');
+            }
+        } catch (error) {
+            console.error('Upload Error:', error);
+            alert('Failed to upload images');
+        } finally {
+            setIsUploading(false);
+            e.target.value = ''; // Reset input
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -391,24 +440,87 @@ export default function AdminPage() {
                                 </div>
                             </div>
 
-                            {/* Image URLs */}
+                            {/* Images Section */}
                             <div>
-                                <label className="block text-sm font-medium text-white/80 mb-1">Image URLs (up to 3)</label>
-                                {formData.images.map((img, index) => (
-                                    <input
-                                        key={index}
-                                        type="text"
-                                        value={img}
-                                        onChange={(e) => {
-                                            const newImages = [...formData.images];
-                                            newImages[index] = e.target.value;
-                                            setFormData({ ...formData, images: newImages });
-                                        }}
-                                        className="w-full rounded-md border-oristic-gray bg-oristic-black text-white px-4 py-2.5 text-sm focus:border-oristic-gold focus:ring-oristic-gold mb-2"
-                                        placeholder={`Image URL ${index + 1}${index === 0 ? ' (required)' : ' (optional)'}`}
-                                        required={index === 0}
-                                    />
-                                ))}
+                                <label className="block text-sm font-medium text-white/80 mb-2">Vehicle Images (up to 6)</label>
+
+                                {/* Upload Box */}
+                                <div className="mb-4">
+                                    <label className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer bg-oristic-black/50 transition-colors ${isUploading ? 'border-oristic-gold/50 cursor-wait' : 'border-oristic-gray/50 hover:border-oristic-gold/50'}`}>
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                            {isUploading ? (
+                                                <p className="text-sm text-oristic-gold animate-pulse font-medium">Uploading Images...</p>
+                                            ) : (
+                                                <>
+                                                    <svg className="w-8 h-8 mb-3 text-oristic-gold/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                    </svg>
+                                                    <p className="mb-2 text-sm text-white/70"><span className="font-semibold text-oristic-gold">Click to upload</span> gallery images</p>
+                                                    <p className="text-xs text-white/40">PNG, JPG or WEBP (Max 5MB)</p>
+                                                </>
+                                            )}
+                                        </div>
+                                        <input
+                                            type="file"
+                                            className="hidden"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            disabled={isUploading}
+                                        />
+                                    </label>
+                                    <div className="text-center mt-3 text-xs text-white/50 uppercase tracking-widest font-semibold flex items-center gap-2 before:flex-1 before:h-px before:bg-oristic-gray/30 after:flex-1 after:h-px after:bg-oristic-gray/30">
+                                        Or Enter URLs Below
+                                    </div>
+                                </div>
+
+                                {/* Image Slots Grid */}
+                                <div className="grid grid-cols-2 gap-3">
+                                    {formData.images.map((img, index) => (
+                                        <div key={index} className="relative flex items-center border border-oristic-gray/30 rounded-md bg-oristic-black overflow-hidden group focus-within:border-oristic-gold focus-within:ring-1 focus-within:ring-oristic-gold">
+                                            {img ? (
+                                                <div className="relative w-12 h-full min-h-[40px] flex-shrink-0 bg-oristic-dark border-r border-oristic-gray/30">
+                                                    <Image
+                                                        src={img}
+                                                        alt={`Preview ${index + 1}`}
+                                                        fill
+                                                        className="object-cover"
+                                                        unoptimized={img.startsWith('http')}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="w-12 h-full min-h-[40px] flex-shrink-0 bg-oristic-gray/10 flex items-center justify-center text-white/20 text-xs font-mono border-r border-oristic-gray/30">
+                                                    {index + 1}
+                                                </div>
+                                            )}
+                                            <input
+                                                type="text"
+                                                value={img}
+                                                onChange={(e) => {
+                                                    const newImages = [...formData.images];
+                                                    newImages[index] = e.target.value;
+                                                    setFormData({ ...formData, images: newImages });
+                                                }}
+                                                className="w-full bg-transparent text-white px-3 py-2 text-xs focus:outline-none"
+                                                placeholder={`Image URL ${index + 1}${index === 0 ? ' (req)' : ''}`}
+                                                required={index === 0}
+                                            />
+                                            {img && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const newImages = [...formData.images];
+                                                        newImages[index] = '';
+                                                        setFormData({ ...formData, images: newImages });
+                                                    }}
+                                                    className="absolute right-2 text-white/30 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity bg-oristic-black rounded-full"
+                                                >
+                                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
 
                             <div className="flex gap-3 pt-4">

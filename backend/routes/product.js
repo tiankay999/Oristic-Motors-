@@ -1,6 +1,38 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Configure multer for image upload
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const uploadDir = path.join(__dirname, '../uploads');
+        // Ensure directory exists
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        // Create unique filename
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, 'product-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.startsWith('image/')) {
+            cb(null, true);
+        } else {
+            cb(new Error('Not an image! Please upload an image.'), false);
+        }
+    }
+});
 
 
 
@@ -18,6 +50,22 @@ router.get('/products', async (req, res) => {
     }
 });
 
+// New upload endpoint
+router.post('/upload-images', upload.array('images', 6), (req, res) => {
+    try {
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ message: 'No images uploaded' });
+        }
+
+        // Return array of file URLs (relative to server root)
+        const fileUrls = req.files.map(file => `/uploads/${file.filename}`);
+        res.status(200).json({ urls: fileUrls });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error uploading images' });
+    }
+});
+
 router.post('/products', async (req, res) => {
     try {
         const { name, description, price, images, category, stock, discountPercent } = req.body;
@@ -27,13 +75,13 @@ router.post('/products', async (req, res) => {
             return res.status(400).json({ message: "Name, description, price, and category are required" });
         }
 
-        // Validate images - must have at least one image, max 3
+        // Validate images - must have at least one image, max 6
         const imageArray = Array.isArray(images) ? images.filter(img => img && img.trim()) : [];
         if (imageArray.length === 0) {
             return res.status(400).json({ message: "At least one image is required" });
         }
-        if (imageArray.length > 3) {
-            return res.status(400).json({ message: "Maximum 3 images allowed" });
+        if (imageArray.length > 6) {
+            return res.status(400).json({ message: "Maximum 6 images allowed" });
         }
 
         // Determine stock status based on stock count
@@ -67,12 +115,12 @@ router.put('/products/:id', async (req, res) => {
             return res.status(404).json({ message: "Product not found" });
         }
 
-        // Validate images if provided - max 3
+        // Validate images if provided - max 6
         let imageArray = undefined;
         if (images !== undefined) {
             imageArray = Array.isArray(images) ? images.filter(img => img && img.trim()) : [];
-            if (imageArray.length > 3) {
-                return res.status(400).json({ message: "Maximum 3 images allowed" });
+            if (imageArray.length > 6) {
+                return res.status(400).json({ message: "Maximum 6 images allowed" });
             }
         }
 

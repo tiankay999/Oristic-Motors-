@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const path = require('path');
+const multer = require('multer');
 const { sequelize } = require('./config/database');
 const User = require('./models/user');
 const Admin = require('./models/admin');
@@ -19,6 +21,9 @@ require('dotenv').config();
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Serve uploaded images statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 1) CORS FIRST (above any routes)
 const allowed = ["http://localhost:3000", "http://127.0.0.1:3000"];

@@ -35,7 +35,7 @@ export default function Home() {
             <span className="text-oristic-gold">Ambition</span>
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/70">
-            Discover our exclusive collection of premium vehicles — from powerful SUVs to exhilarating sports cars. Every car tells a story of craftsmanship and performance.
+            Discover our exclusive collection of premium vehicles  from powerful SUVs to exhilarating sports cars. Every car tells a story of craftsmanship and performance.
           </p>
           <div className="mt-12 flex gap-4">
             <Link
