@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'products.json');
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006/api';
 
-// PUT: Update product by ID
+// PUT: Update product by ID via backend API
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
@@ -13,29 +11,30 @@ export async function PUT(
         const { id } = await params;
         const updates = await request.json();
 
-        // Read existing products
-        const fileContents = await fs.readFile(DATA_FILE, 'utf8');
-        const products = JSON.parse(fileContents);
+        const response = await fetch(`${BACKEND_URL}/products/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updates),
+        });
 
-        // Find and update the product
-        const productIndex = products.findIndex((p: any) => p.id === id);
-        if (productIndex === -1) {
-            return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Backend responded with status: ${response.status} - ${errorText}`);
         }
 
-        products[productIndex] = { ...products[productIndex], ...updates };
+        const updatedProduct = await response.json();
 
-        // Write back to file
-        await fs.writeFile(DATA_FILE, JSON.stringify(products, null, 2));
-
-        return NextResponse.json(products[productIndex]);
+        return NextResponse.json(updatedProduct);
     } catch (error) {
-        console.error('Error updating product:', error);
-        return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
+        console.error('Error proxying product update:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Failed to proxy update product';
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
 
-// DELETE: Remove product by ID
+// DELETE: Remove product by ID via backend API
 export async function DELETE(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
@@ -43,19 +42,19 @@ export async function DELETE(
     try {
         const { id } = await params;
 
-        // Read existing products
-        const fileContents = await fs.readFile(DATA_FILE, 'utf8');
-        const products = JSON.parse(fileContents);
+        const response = await fetch(`${BACKEND_URL}/products/${id}`, {
+            method: 'DELETE',
+        });
 
-        // Filter out the product to delete
-        const updatedProducts = products.filter((p: any) => p.id !== id);
-
-        // Write back to file
-        await fs.writeFile(DATA_FILE, JSON.stringify(updatedProducts, null, 2));
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Backend responded with status: ${response.status} - ${errorText}`);
+        }
 
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error('Error deleting product:', error);
-        return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });
+        console.error('Error proxying product deletion:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Failed to proxy delete product';
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
