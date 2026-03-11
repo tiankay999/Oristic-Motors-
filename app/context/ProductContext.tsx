@@ -27,8 +27,7 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
             // Add caching to reduce redundant API calls
             // cache: 'force-cache' with revalidation enables CDN and browser caching
             const response = await fetch('/api/products', {
-                cache: 'force-cache',
-                next: { revalidate: 60 } // Revalidate every 60 seconds
+                cache: 'no-store' // Changed from force-cache to no-store to ensure fresh data while actively developing
             });
 
             if (response.ok) {
