@@ -441,7 +441,7 @@ export const products: Product[] = [
         price: 210000,
         category: 'minivan',
         description: 'The traditional standard for family haulers featuring Magic Slide seats and an ultra-reliable V6.',
-        images: ['https://images.unsplash.com/photo-1621252179027-94459d278660?auto=format&fit=crop&q=80&w=800'], // Fallback img
+        images: ['https://www.bostonherald.com/wp-content/uploads/2024/07/IMG_7144.jpg?w=467'], // Fallback img
         isFeatured: false,
         stock: 8,
     },
