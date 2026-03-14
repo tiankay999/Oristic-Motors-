@@ -25,11 +25,11 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 1) CORS FIRST (above any routes)
-const allowedOrigins = process.env.FRONTEND_URL 
-  ? process.env.FRONTEND_URL.split(',') 
-  : ["http://localhost:3000", "http://127.0.0.1:3000"];
+const allowedOrigins = process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',').map(origin => origin.trim())
+    : ["http://localhost:3000", "http://127.0.0.1:3000"];
 
-  //my cors b
+//my cors b
 
 app.use(cors({
     origin(origin, cb) {
