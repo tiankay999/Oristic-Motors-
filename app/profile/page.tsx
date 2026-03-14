@@ -37,7 +37,11 @@ export default function ProfilePage() {
 
     useEffect(() => {
         if (token) {
-            fetch('http://localhost:5006/api/my-orders', {
+            // The original code used .then() chains.
+            // The instruction provided an 'await' keyword with .then() chains, which is syntactically incorrect.
+            // To maintain the original promise-chaining style while applying the URL change,
+            // we will replace the URL string within the existing fetch call.
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006'}/api/my-orders`, {
                 headers: { 'Authorization': `Bearer ${token}` },
             })
                 .then(res => res.json())

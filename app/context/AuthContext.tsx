@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (storedToken) {
             pending++;
             setToken(storedToken);
-            fetch('http://localhost:5006/me', {
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006'}/me`, {
                 headers: {
                     'Authorization': `Bearer ${storedToken}`
                 }
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (storedAdminToken) {
             pending++;
             setAdminToken(storedAdminToken);
-            fetch('http://localhost:5006/admin/me', {
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006'}/admin/me`, {
                 headers: {
                     'Authorization': `Bearer ${storedAdminToken}`
                 }

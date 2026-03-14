@@ -26,10 +26,13 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // 1) CORS FIRST (above any routes)
-const allowed = ["http://localhost:3000", "http://127.0.0.1:3000"];
+const allowedOrigins = process.env.FRONTEND_URL 
+  ? process.env.FRONTEND_URL.split(',') 
+  : ["http://localhost:3000", "http://127.0.0.1:3000"];
+
 app.use(cors({
     origin(origin, cb) {
-        if (!origin || allowed.includes(origin)) return cb(null, true);
+        if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
         return cb(new Error("Not allowed by CORS"));
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -37,7 +40,7 @@ app.use(cors({
     credentials: false, // set true only if using cookies/sessions
 }));
 // Handle preflight for all routes
-app.options("", cors());
+app.options("*", cors());
 
 sequelize.sync()
     .then(() => {

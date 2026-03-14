@@ -16,7 +16,7 @@ export default function CartPage() {
             // Sync cart with backend if user is logged in
             if (token) {
                 for (const item of items) {
-                    await fetch('http://localhost:5006/api/cart', {
+                    await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006'}/api/cart`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

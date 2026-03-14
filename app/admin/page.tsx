@@ -65,7 +65,7 @@ export default function AdminPage() {
     useEffect(() => {
         if (activeTab === 'orders' && adminToken) {
             setOrdersLoading(true);
-            fetch('http://localhost:5006/all-orders', {
+            fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5006'}/all-orders`, {
                 headers: { 'Authorization': `Bearer ${adminToken}` },
             })
                 .then(res => res.json())
