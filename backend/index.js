@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const multer = require('multer');
 const { sequelize } = require('./config/database');
 const User = require('./models/user');
 const Admin = require('./models/admin');
@@ -42,7 +41,7 @@ app.use(cors({
     credentials: false, // set true only if using cookies/sessions
 }));
 // Handle preflight for all routes
-app.options("*", cors());
+
 
 sequelize.sync()
     .then(() => {
