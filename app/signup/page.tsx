@@ -174,7 +174,7 @@ export default function SignupPage() {
                             disabled={isLoading}
                             className="w-full rounded-full bg-oristic-gold py-3.5 text-sm font-semibold text-oristic-black transition-all hover:bg-oristic-gold-light disabled:bg-gray-700 disabled:text-gray-500"
                         >
-                            {isLoading ? <FormSpinner /> : 'Create Account'}
+                            {isLoading ? 'Creating Account...' : 'Create Account'}
                         </button>
                     </form>
 
