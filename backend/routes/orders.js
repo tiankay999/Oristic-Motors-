@@ -6,15 +6,20 @@ const authenticateToken = require('../middleware/auth');
 
 
 
-router.post('/orders',authenticateToken, async (req, res) => {
+router.post('/orders', authenticateToken, async (req, res) => {
     try {
-        const { firstName, lastName, email, phone, address, totalAmount, items } = req.body;
+        const { firstName, lastName, email, phone, address, totalAmount, items, deliveryMode, deliveryLocation } = req.body;
         if (!firstName || !lastName || !email || !phone || !address || !totalAmount) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Create order directly with items (including images)
-        const order = await Order.create({ firstName, lastName, email, phone, address, totalAmount, items });
+        // Create order with items (including images) and delivery info
+        const order = await Order.create({
+            firstName, lastName, email, phone, address, totalAmount, items,
+            deliveryMode: deliveryMode || 'pickup',
+            deliveryLocation: deliveryLocation || null,
+            deliveryStatus: 'processing'
+        });
         if (order) {
             res.status(201).json({ message: "Order Created Successfully", order });
         } else {

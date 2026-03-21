@@ -17,6 +17,9 @@ interface Order {
     totalAmount: number;
     items: any[];
     createdAt: string;
+    deliveryMode?: 'pickup' | 'delivery';
+    deliveryLocation?: 'accra' | 'outside-accra';
+    deliveryStatus?: 'processing' | 'dispatched' | 'in-transit' | 'delivered';
 }
 
 const CAR_CATEGORIES = [
@@ -365,6 +368,16 @@ export default function AdminPage() {
                                                 <p className="text-white font-medium mt-1">
                                                     {order.firstName} {order.lastName}
                                                 </p>
+                                                {/* Delivery badge */}
+                                                <span className={`mt-1.5 inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${
+                                                    !order.deliveryMode || order.deliveryMode === 'pickup'
+                                                        ? 'bg-blue-900/30 text-blue-300 border border-blue-700/25'
+                                                        : order.deliveryLocation === 'outside-accra'
+                                                            ? 'bg-amber-900/30 text-amber-300 border border-amber-700/25'
+                                                            : 'bg-green-900/30 text-green-300 border border-green-700/25'
+                                                }`}>
+                                                    {!order.deliveryMode || order.deliveryMode === 'pickup' ? '🏛 Pickup' : order.deliveryLocation === 'outside-accra' ? '🗺 Outside Accra' : '📍 Accra Delivery'}
+                                                </span>
                                             </div>
                                             <div className="text-right">
                                                 <p className="font-serif text-lg font-bold text-oristic-gold">
@@ -605,6 +618,16 @@ export default function AdminPage() {
                                 <div>
                                     <span className="text-white/50">Address</span>
                                     <p className="text-white font-medium">{selectedOrder.address}</p>
+                                </div>
+                                <div className="col-span-2">
+                                    <span className="text-white/50">Delivery</span>
+                                    <p className="text-white font-medium mt-0.5">
+                                        {!selectedOrder.deliveryMode || selectedOrder.deliveryMode === 'pickup'
+                                            ? '🏛 Showroom Pickup'
+                                            : selectedOrder.deliveryLocation === 'outside-accra'
+                                                ? `🗺 Home Delivery — Outside Accra (${selectedOrder.deliveryStatus || 'processing'})`
+                                                : '📍 Home Delivery — Within Accra'}
+                                    </p>
                                 </div>
                             </div>
 

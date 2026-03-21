@@ -34,6 +34,22 @@ const Order = sequelize.define('order', {
     items: {
         type: DataTypes.JSON,
         allowNull: true
+    },
+    // Delivery fields
+    deliveryMode: {
+        type: DataTypes.ENUM('pickup', 'delivery'),
+        allowNull: false,
+        defaultValue: 'pickup'
+    },
+    deliveryLocation: {
+        type: DataTypes.ENUM('accra', 'outside-accra'),
+        allowNull: true,
+        defaultValue: null
+    },
+    deliveryStatus: {
+        type: DataTypes.ENUM('processing', 'dispatched', 'in-transit', 'delivered'),
+        allowNull: false,
+        defaultValue: 'processing'
     }
 });
 

@@ -43,9 +43,9 @@ app.use(cors({
 // Handle preflight for all routes
 
 
-sequelize.sync()
+sequelize.sync({ alter: true })
     .then(() => {
-        console.log('Database & tables created!');
+        console.log('Database & tables synced (alter mode)!');
     });
 
 app.get('/health', (req, res) => {
