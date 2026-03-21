@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useProducts } from '../context/ProductContext';
 import { useRouter } from 'next/navigation';
@@ -44,6 +44,14 @@ export default function AdminPage() {
     const [showOrderModal, setShowOrderModal] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+
+    // Toast notification state
+    const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+    const showToast = useCallback((message: string, type: 'success' | 'error') => {
+        setToast({ message, type });
+        setTimeout(() => setToast(null), 3500);
+    }, []);
 
     // Form states
     const [formData, setFormData] = useState({
@@ -165,6 +173,11 @@ export default function AdminPage() {
         const validImages = formData.images.filter(img => img.trim());
         const slug = formData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
+        if (validImages.length === 0) {
+            showToast('Please add at least one image.', 'error');
+            return;
+        }
+
         const productData: any = {
             name: formData.name,
             description: formData.description,
@@ -177,14 +190,19 @@ export default function AdminPage() {
             isFeatured: false,
         };
 
-        if (editingProduct) {
-            await updateProduct(editingProduct.id, productData);
-        } else {
-            productData.id = Date.now().toString();
-            await addProduct(productData);
+        try {
+            if (editingProduct) {
+                await updateProduct(editingProduct.id, productData);
+                showToast('Vehicle updated successfully!', 'success');
+            } else {
+                productData.id = Date.now().toString();
+                await addProduct(productData);
+                showToast('Vehicle added successfully!', 'success');
+            }
+            setShowModal(false);
+        } catch {
+            showToast('Something went wrong. Please try again.', 'error');
         }
-
-        setShowModal(false);
     };
 
     const handleDelete = async (id: string) => {
@@ -203,6 +221,18 @@ export default function AdminPage() {
 
     return (
         <div className="min-h-screen bg-oristic-black py-12">
+            {/* Toast Notification */}
+            {toast && (
+                <div
+                    className={`fixed top-6 right-6 z-[100] px-5 py-3.5 rounded-xl shadow-2xl text-sm font-medium flex items-center gap-2.5 transition-all ${
+                        toast.type === 'success'
+                            ? 'bg-green-900/90 border border-green-500/40 text-green-300'
+                            : 'bg-red-900/90 border border-red-500/40 text-red-300'
+                    }`}
+                >
+                    {toast.type === 'success' ? '✓' : '✕'} {toast.message}
+                </div>
+            )}
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-8">
@@ -581,9 +611,21 @@ export default function AdminPage() {
                             <div className="border-t border-oristic-gray/30 pt-4">
                                 <h3 className="text-sm font-medium text-white/50 mb-3">Items</h3>
                                 {selectedOrder.items && (Array.isArray(selectedOrder.items) ? selectedOrder.items : JSON.parse(selectedOrder.items as any)).map((item: any, idx: number) => (
-                                    <div key={idx} className="flex justify-between text-sm py-2 border-b border-oristic-gray/20 last:border-0">
-                                        <span className="text-white">{item.name || item.productname} × {item.quantity}</span>
-                                        <span className="text-oristic-gold">₵{(item.price * item.quantity).toLocaleString()}</span>
+                                    <div key={idx} className="flex items-center gap-3 py-2.5 border-b border-oristic-gray/20 last:border-0">
+                                        {/* Car thumbnail */}
+                                        <div className="relative h-12 w-16 rounded-lg overflow-hidden bg-oristic-gray/20 flex-shrink-0">
+                                            <Image
+                                                src={item.image || '/placeholder.jpg'}
+                                                alt={item.name || item.productname || 'Vehicle'}
+                                                fill
+                                                className="object-cover"
+                                                unoptimized={(item.image || '').startsWith('http')}
+                                            />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-sm text-white font-medium truncate">{item.name || item.productname} × {item.quantity}</p>
+                                        </div>
+                                        <span className="text-sm text-oristic-gold font-medium flex-shrink-0">₵{(item.price * item.quantity).toLocaleString()}</span>
                                     </div>
                                 ))}
                             </div>

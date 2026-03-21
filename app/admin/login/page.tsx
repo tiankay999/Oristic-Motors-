@@ -98,7 +98,7 @@ export default function AdminLoginPage() {
                             disabled={isLoading}
                             className="w-full rounded-full bg-oristic-gold py-3.5 text-sm font-semibold text-oristic-black transition-all hover:bg-oristic-gold-light disabled:bg-gray-700 disabled:text-gray-500"
                         >
-                            {isLoading ? <FormSpinner /> : 'Sign In'}
+                            {isLoading ? 'Signing in...please wait' : 'Sign In'}
                         </button>
                     </form>
                 </div>
