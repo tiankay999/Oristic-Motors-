@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface OrderItem {
     id: string;
     name: string;
     price: number;
     quantity: number;
+    image?: string;
 }
 
 interface Order {
@@ -117,11 +119,23 @@ export default function ProfilePage() {
                                         </span>
                                     </div>
                                     {order.items && (
-                                        <div className="mt-4 border-t border-oristic-gray/30 pt-3">
+                                        <div className="mt-4 border-t border-oristic-gray/30 pt-3 space-y-2">
                                             {(Array.isArray(order.items) ? order.items : JSON.parse(order.items as any)).map((item: any, idx: number) => (
-                                                <p key={idx} className="text-sm text-white/60">
-                                                    {item.name || item.productname} × {item.quantity}
-                                                </p>
+                                                <div key={idx} className="flex items-center gap-3">
+                                                    {/* Car thumbnail */}
+                                                    <div className="relative h-10 w-14 rounded-md overflow-hidden bg-oristic-gray/20 flex-shrink-0">
+                                                        <Image
+                                                            src={item.image || '/placeholder.jpg'}
+                                                            alt={item.name || item.productname || 'Vehicle'}
+                                                            fill
+                                                            className="object-cover"
+                                                            unoptimized={(item.image || '').startsWith('http')}
+                                                        />
+                                                    </div>
+                                                    <p className="text-sm text-white/70">
+                                                        {item.name || item.productname} <span className="text-white/40">&times; {item.quantity}</span>
+                                                    </p>
+                                                </div>
                                             ))}
                                         </div>
                                     )}

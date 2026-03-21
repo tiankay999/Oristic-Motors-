@@ -63,11 +63,13 @@ export default function CheckoutForm() {
                     phone,
                     totalAmount: totalprice,
 
-                    items: items.map((item: any) => {
-
-                        const { image, ...rest } = item;
-                        return rest;
-                    })
+                    items: items.map((item: any) => ({
+                        id: item.id,
+                        name: item.name,
+                        price: item.price,
+                        quantity: item.quantity,
+                        image: (item.images && item.images[0]) || item.image || '',
+                    }))
                 }),
 
 
